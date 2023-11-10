@@ -7,15 +7,18 @@ Source: [Microsoft](https://learn.microsoft.com/en-gb/training/)
 - [C# Fundamentals](#c-fundamentals)
   - [Table of contents](#table-of-contents)
   - [Introduction](#introduction)
-  - [Challenge 1](#challenge-1)
+  - [Challenge 1: printing on console](#challenge-1-printing-on-console)
   - [Variables](#variables)
     - [Data types](#data-types)
     - [Implicitly typed local variables](#implicitly-typed-local-variables)
-    - [Challenge 2](#challenge-2)
+    - [Challenge 2: typed variables](#challenge-2-typed-variables)
     - [Character escape sequences](#character-escape-sequences)
     - [String interpolation](#string-interpolation)
-    - [Challenge 3](#challenge-3)
+    - [Challenge 3: string interpolation](#challenge-3-string-interpolation)
     - [Type casting](#type-casting)
+    - [Challenge 4: operations](#challenge-4-operations)
+  - [Project 1 : calculate average and query list](#project-1--calculate-average-and-query-list)
+  - [Namespaces](#namespaces)
   - [Glossary](#glossary)
   - [| syntax | rules for writing code |](#-syntax--rules-for-writing-code-)
   - [Variables](#variables-1)
@@ -57,15 +60,16 @@ graph LR
 | class | a class is an object, having methods live within it | `Console` |
 | method | each method has one job; they live within classes | `WriteLine()` |
 
-## Challenge 1
+## Challenge 1: printing on console
 
 ```c#
 Console.WriteLine("This is the first line.");
 Console.Write("This is the second line.");
+Console.Write("This is the third line.");
 ```
 ```terminal
 This is the first line.
-This is the second line.
+This is the second line.This is the third line.
 ```
 
 ## Variables
@@ -98,24 +102,20 @@ However, it's best practice to always type your variables.
 
 `/!\` C# always attributes a data type to a variable, even if implicit.
 
-### Challenge 2
+### Challenge 2: typed variables
 
 ```c#
 string userName = "Bob";
 int messageNumber = 3;
 float temperature = 34.4f;
 
-Console.Write("Hello, ");
-Console.Write(userName);
-Console.Write("! You have ");
-Console.Write(messageNumber);
-Console.Write(" messages in your inbox. The temperature is ");
-Console.Write(temperature);
-Console.Write(" celsius.");
+Console.WriteLine($"Hello, {userName}!");
+Console.Write($"You have {messageNumber} messages in your inbox. The temperature is {temperature} celsius.");
 ```
 
 ```terminal
-Hello, Bob! You have 3 messages in your inbox. The temperature is 34.4 celsius.
+Hello, Bob!
+You have 3 messages in your inbox. The temperature is 34.4 celsius.
 ```
 
 ### Character escape sequences
@@ -149,7 +149,7 @@ Console.Write($@"C:\Output\{projectName}\Data");
 C:\Output\helloWorld\Data
 ```
 
-### Challenge 3
+### Challenge 3: string interpolation
 
 ```c#
 string englishMessage = "View English output:";
@@ -180,6 +180,81 @@ Make a variable **pretend** to be a different type (within a sort of computed ca
 int a = 10;
 int b = 4;
 double c = a / (double) b;
+```
+
+### Challenge 4: operations
+
+```c#
+int fahrenheit = 94;
+float celsius = (fahrenheit - 32) * (5/9f);
+Console.Write($"The temperature is {Math.Round(celsius, 1)} Celsius.");
+```
+
+```terminal
+The temperature is 34.4 Celsius.
+```
+
+## Project 1 : calculate average and query list
+
+```c#
+// grades
+int[] sophia = {93, 87, 98, 95, 100};
+int[] nicolas = {80, 83, 82, 88, 85};
+int[] zahirah = {84, 96, 73, 85, 79};
+int[] jeong = {90, 92, 98, 100, 97};
+
+// Averages
+float sophiaAverage = (float) sophia.Sum() / sophia.Length;
+float nicolasAverage = (float) nicolas.Sum() / nicolas.Length;
+float zahirahAverage = (float) zahirah.Sum() / zahirah.Length;
+float jeongAverage = (float) jeong.Sum() / jeong.Length;
+
+// Grading
+List<(int, int, string)> grades = new List<(int, int, string)> {
+    (97, 100, "A+"),
+    (93, 96, "A"),
+    (90, 92, "A-"),
+    (87, 89, "B+"),
+    (83, 86, "B")
+};
+
+// List with results
+List<(string, float, string)> results = new List<(string, float, string)> {
+    ("Sophia", sophiaAverage, grades.FirstOrDefault(g => sophiaAverage >= g.Item1 && sophiaAverage <= g.Item2).Item3),
+    ("Nicolas", nicolasAverage, grades.FirstOrDefault(g => nicolasAverage >= g.Item1 && nicolasAverage <= g.Item2).Item3),
+    ("Zahirah", zahirahAverage, grades.FirstOrDefault(g => zahirahAverage >= g.Item1 && zahirahAverage <= g.Item2).Item3),
+    ("Jeong", jeongAverage, grades.FirstOrDefault(g => jeongAverage >= g.Item1 && jeongAverage <= g.Item2).Item3),
+};
+
+Console.WriteLine(string.Join("\n", results));
+```
+
+```terminal
+(Sophia, 94.6, A)
+(Nicolas, 83.6, B)
+(Zahirah, 83.4, B)
+(Jeong, 95.4, A)
+```
+
+## Namespaces
+
+In C#, like in other languages, `namespaces` are containers that group similar classes, interfaces, functions and other code.
+
+```mermaid
+graph TB
+Namespaces --> System --> 0[Fundamental classes]
+Namespaces --> System.Collections.Generic --> 1[Advanced arrays]
+1[Advanced arrays] --> List
+1[Advanced arrays] --> Dictionary
+1[Advanced arrays] --> HashSet --> A[When converting an array to a HashSet, duplicates are automatically removed]
+1[Advanced arrays] --> Queue
+1[Advanced arrays] --> Stack
+Namespaces --> System.Linq --> 2[Library with useful methods]
+Namespaces --> System.IO
+Namespaces --> System.Net
+Namespaces --> System.Threading
+
+style A stroke:yellow
 ```
 
 ## Glossary
