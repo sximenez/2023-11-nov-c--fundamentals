@@ -5,41 +5,16 @@ Source: [Microsoft](https://learn.microsoft.com/en-gb/training/)
 ## Table of contents
 
 <!--TOC-->
-- [First C# code](#first-c-code)
-  - [Introduction](#introduction)
-  - [Challenge 1: printing on console](#challenge-1-printing-on-console)
-  - [Variables](#variables)
-    - [Data types](#data-types)
-    - [Implicitly typed local variables](#implicitly-typed-local-variables)
-    - [Challenge 2: typed variables](#challenge-2-typed-variables)
-    - [Character escape sequences](#character-escape-sequences)
-    - [String interpolation](#string-interpolation)
-    - [Challenge 3: string interpolation](#challenge-3-string-interpolation)
-    - [Type casting](#type-casting)
-    - [Challenge 4: operations](#challenge-4-operations)
-  - [Project 1 : calculate average and query list](#project-1-calculate-average-and-query-list)
-  - [Project 2 : calculate GPA](#project-2-calculate-gpa)
-- [Exercism](#exercism)
-  - [Basics](#basics)
-  - [Booleans](#booleans)
-  - [Strings](#strings)
-    - [Substring](#substring)
-    - [Regex](#regex)
-  - [Numbers](#numbers)
-  - [Namespaces](#namespaces)
-  - [Glossary](#glossary)
-  - [| Term | Definition | Example |
-| --- | --- | --- |
-| compiler | *converts your code from a human higher-level language (C#) into an executable format that the computer can understand.* | x |
-| precompilation | process before the main compilation process to help with performance | red squiggly lines underlining the code that will produce an error |
-| programming language | *A programming language's job is to allow a human to express their intent [to a computer] in a human-readable and understandable way.* |
-| syntax | rules for writing code | X |
----](#-term-definition-example-compiler-converts-your-code-from-a-human-higher-level-language-c-into-an-executable-format-that-the-computer-can-understand.-x-precompilation-process-before-the-main-compilation-process-to-help-with-performance-red-squiggly-lines-underlining-the-code-that-will-produce-an-error-programming-language-a-programming-languages-job-is-to-allow-a-human-to-express-their-intent-to-a-computer-in-a-human-readable-and-understandable-way.-syntax-rules-for-writing-code-x-)
-  - [Variables](#variables)
-    - [Primitive types: numeric](#primitive-types-numeric)
-    - [Type casting](#type-casting)
-    - [Primitive types: strings](#primitive-types-strings)
-    - [Constants](#constants)
+  - [## Int](#-int)
+    - [h method has](#h-method-has)
+  - [: designers](#-designers)
+  - [r | present](#r-present)
+  - [= "hello](#-hello)
+  - [o";
+str](#o-str)
+    - [cation}\n");](#cationn)
+    - [2\u043e\u](#2u043eu)
+  - [different type](#different-type)
 <!--/TOC-->
 
 # First C# code
@@ -370,7 +345,7 @@ double largeDouble = 9_876_543.21;
 // => 9876543.21
 ```
 
-test
+another test
 
 ## Namespaces
 
