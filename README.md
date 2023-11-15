@@ -4,8 +4,8 @@ Source: [Microsoft](https://learn.microsoft.com/en-gb/training/)
 
 ## Table of contents
 
-- [C# Fundamentals](#c-fundamentals)
-  - [Table of contents](#table-of-contents)
+<!--TOC-->
+- [First C# code](#first-c-code)
   - [Introduction](#introduction)
   - [Challenge 1: printing on console](#challenge-1-printing-on-console)
   - [Variables](#variables)
@@ -17,15 +17,32 @@ Source: [Microsoft](https://learn.microsoft.com/en-gb/training/)
     - [Challenge 3: string interpolation](#challenge-3-string-interpolation)
     - [Type casting](#type-casting)
     - [Challenge 4: operations](#challenge-4-operations)
-  - [Project 1 : calculate average and query list](#project-1--calculate-average-and-query-list)
+  - [Project 1 : calculate average and query list](#project-1-calculate-average-and-query-list)
+  - [Project 2 : calculate GPA](#project-2-calculate-gpa)
+- [Exercism](#exercism)
+  - [Basics](#basics)
+  - [Booleans](#booleans)
+  - [Strings](#strings)
+    - [Substring](#substring)
+    - [Regex](#regex)
+  - [Numbers](#numbers)
   - [Namespaces](#namespaces)
   - [Glossary](#glossary)
-  - [| syntax | rules for writing code |](#-syntax--rules-for-writing-code-)
-  - [Variables](#variables-1)
+  - [| Term | Definition | Example |
+| --- | --- | --- |
+| compiler | *converts your code from a human higher-level language (C#) into an executable format that the computer can understand.* | x |
+| precompilation | process before the main compilation process to help with performance | red squiggly lines underlining the code that will produce an error |
+| programming language | *A programming language's job is to allow a human to express their intent [to a computer] in a human-readable and understandable way.* |
+| syntax | rules for writing code | X |
+---](#-term-definition-example-compiler-converts-your-code-from-a-human-higher-level-language-c-into-an-executable-format-that-the-computer-can-understand.-x-precompilation-process-before-the-main-compilation-process-to-help-with-performance-red-squiggly-lines-underlining-the-code-that-will-produce-an-error-programming-language-a-programming-languages-job-is-to-allow-a-human-to-express-their-intent-to-a-computer-in-a-human-readable-and-understandable-way.-syntax-rules-for-writing-code-x-)
+  - [Variables](#variables)
     - [Primitive types: numeric](#primitive-types-numeric)
-    - [Type casting](#type-casting-1)
+    - [Type casting](#type-casting)
     - [Primitive types: strings](#primitive-types-strings)
     - [Constants](#constants)
+<!--/TOC-->
+
+# First C# code
 
 ## Introduction
 
@@ -236,6 +253,123 @@ Console.WriteLine(string.Join("\n", results));
 (Jeong, 95.4, A)
 ```
 
+## Project 2 : calculate GPA
+
+```c#
+List<(string, int, int)> finalGrades = new List<(string, int, int)> {
+("English 101", 4, 3),
+("Algebra 101", 3, 3),
+("Biology 101", 3, 4),
+("Computer Science 101", 3, 4),
+("Pyschology 101", 4, 3)
+};
+
+var credits = finalGrades.Select(g => g.Item2).ToArray();
+var grades = finalGrades.Select(g => g.Item3).ToArray();
+
+int[] results = new int[credits.Length];
+for (int i = 0; i < results.Length; i++) {
+    results[i] = credits[i] * grades[i];
+}
+
+float gpa = (results.Sum() / (float) credits.Sum());
+gpa = (float)Math.Round(gpa, 2);
+
+Console.Write(gpa);
+```
+
+# Exercism
+
+## Basics
+
+C# is a statically-typed language:
+
+```c#
+int explicitVar = 10; // Explicitly typed
+var implicitVar = 10; // Implicitly typed
+```
+
+And an object-oriented language where functions are defined in classes.
+
+Classes need to be instantiated using `new`:
+
+```C#
+class Calculator
+{
+    // ...
+}
+
+var calculator = new Calculator();
+```
+
+Classes group methods, whose parameters and return values need to be explicitly typed.
+
+`public` allows a method to be called by code in other files.
+
+```c#
+class Calculator
+{
+    public int Add(int x, int y)
+    {
+        return x + y;
+    }
+}
+```
+
+Comments can be single line `//` or multiline `/* */`.
+
+## Booleans
+
+Type `bool`.
+
+Operators `!` (NOT), `&&` (AND), and `||` (OR).
+
+## Strings
+
+### Substring
+
+```c#
+public static string Message(string logLine)
+    {
+        int first = logLine.IndexOf(":") + ":".Length;
+        int last = logLine.Length;
+        return logLine.Substring(first, last - first).Trim();
+    }
+```
+
+```terminal
+LogLine.Message("[ERROR]: Invalid operation")
+// => "Invalid operation"
+```
+
+### Regex
+
+```c#
+public static string LogLevel(string logLine)
+    {
+        Regex rx = new Regex("\\[(.*)\\]");
+        MatchCollection matches = rx.Matches(logLine);
+        return matches[0].Groups[1].Value.ToLower();
+    }
+```
+
+```terminal
+// "[ERROR]: Disk full"
+error
+```
+
+## Numbers
+
+Digit separator:
+
+```c#
+int largeInt = 1_000_000;
+// => 1000000
+
+double largeDouble = 9_876_543.21;
+// => 9876543.21
+```
+
 ## Namespaces
 
 In C#, like in other languages, `namespaces` are containers that group similar classes, interfaces, functions and other code.
@@ -261,10 +395,10 @@ style A stroke:yellow
 
 | Term | Definition | Example |
 | --- | --- | --- |
-| compiler | *converts your code from a human higher-level language (C#) into an executable format that the computer can understand.* |  |
+| compiler | *converts your code from a human higher-level language (C#) into an executable format that the computer can understand.* | x |
 | precompilation | process before the main compilation process to help with performance | red squiggly lines underlining the code that will produce an error |
 | programming language | *A programming language's job is to allow a human to express their intent [to a computer] in a human-readable and understandable way.* |
-| syntax | rules for writing code |
+| syntax | rules for writing code | X |
 ---
 
 ## Variables
