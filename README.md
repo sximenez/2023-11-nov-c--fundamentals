@@ -370,6 +370,8 @@ double largeDouble = 9_876_543.21;
 // => 9876543.21
 ```
 
+test
+
 ## Namespaces
 
 In C#, like in other languages, `namespaces` are containers that group similar classes, interfaces, functions and other code.
