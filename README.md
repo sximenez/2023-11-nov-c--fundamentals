@@ -26,15 +26,18 @@ Source: [Microsoft](https://learn.microsoft.com/en-gb/training/)
     - [Substring](#substring)
     - [Regex](#regex)
   - [Numbers](#numbers)
+  - [Extended methods](#extended-methods)
+  - [Tuples](#tuples)
+    - [Dictionary](#dictionary)
+  - [Nullability](#nullability)
+  - [While](#while)
+    - [Do While](#do-while)
+- [Unit testing](#unit-testing)
+  - [Naming conventions](#naming-conventions)
+- [General knowledge](#general-knowledge)
+  - [32-bit (x86), 64-bit (x64)](#32-bit-x86-64-bit-x64)
   - [Namespaces](#namespaces)
   - [Glossary](#glossary)
-  - [| Term | Definition | Example |
-| --- | --- | --- |
-| compiler | *converts your code from a human higher-level language (C#) into an executable format that the computer can understand.* | x |
-| precompilation | process before the main compilation process to help with performance | red squiggly lines underlining the code that will produce an error |
-| programming language | *A programming language's job is to allow a human to express their intent [to a computer] in a human-readable and understandable way.* |
-| syntax | rules for writing code | X |
----](#-term-definition-example-compiler-converts-your-code-from-a-human-higher-level-language-c-into-an-executable-format-that-the-computer-can-understand.-x-precompilation-process-before-the-main-compilation-process-to-help-with-performance-red-squiggly-lines-underlining-the-code-that-will-produce-an-error-programming-language-a-programming-languages-job-is-to-allow-a-human-to-express-their-intent-to-a-computer-in-a-human-readable-and-understandable-way.-syntax-rules-for-writing-code-x-)
   - [Variables](#variables)
     - [Primitive types: numeric](#primitive-types-numeric)
     - [Type casting](#type-casting)
@@ -370,7 +373,217 @@ double largeDouble = 9_876_543.21;
 // => 9876543.21
 ```
 
-another test
+## Extended methods
+
+```c#
+// TODO: define the 'SubstringAfter()' extension method on the `string` type
+    public static string SubstringAfter(this string str, string input) {
+        return str.Split(input)[1];
+    }
+    // TODO: define the 'SubstringBetween()' extension method on the `string` type
+    
+    public static string SubstringBetween(this string str, string input1, string input2) {
+        return str.Split(input1)[1].Split(input2)[0];
+    }
+    
+    // TODO: define the 'Message()' extension method on the `string` type
+    public static string Message(this string str) {
+        return str.SubstringAfter("]:").Trim();
+    }
+    // TODO: define the 'LogLevel()' extension method on the `string` type
+    public static string LogLevel(this string str) {
+        return str.SubstringBetween("[", "]");
+    }
+```
+
+```c#
+public static class Bob
+{
+    // Check if string is uppercase
+    private static bool IsUpperCase(this string statement) =>
+        statement.Any(char.IsLetter) &&
+        statement.All(e => !char.IsLetter(e) || char.IsUpper(e));
+
+    // Check if string ends with ?
+    private static bool IsQuestion(this string statement) => statement.Trim().EndsWith("?");
+    
+    public static string Response(string statement)
+    {
+        if (statement.IsQuestion() && statement.IsUpperCase()) {
+            return "Calm down, I know what I'm doing!";
+        }
+    
+        if (statement.IsQuestion()) {
+            return "Sure.";
+        }
+    
+        if (statement.IsUpperCase()) {
+            return "Whoa, chill out!";
+        }
+    
+        if (string.IsNullOrWhiteSpace(statement)) {
+            return "Fine. Be that way!";
+        }
+            
+        return "Whatever.";
+    }
+}
+```
+
+## Tuples
+
+```c#
+string boast = "All you need to know";
+bool success = !string.IsNullOrWhiteSpace(boast);
+(bool, int, string) triple = (success, 42, boast);
+```
+
+```c#
+// Change tuple field names
+
+// Name items in declaration
+(bool success, string message) results = (true, "well done!");
+bool mySuccess = results.success;
+string myMessage = results.message;
+
+// Name items in creating expression
+var results2 = (success: true, message: "well done!");
+bool mySuccess2 = results2.success;
+string myMessage2 = results2.message;
+```
+
+```c#
+public static class PhoneNumber
+{
+    private static string IsSplit(this string phoneNumber, int index) {
+        return phoneNumber.Split("-")[index];
+    }
+    
+    public static (bool IsNewYork, bool IsFake, string LocalNumber) Analyze(string phoneNumber)
+    {
+        return ((phoneNumber.IsSplit(0) == "212"), phoneNumber.IsSplit(1) == "555", phoneNumber.IsSplit(2));
+    }
+
+    public static bool IsFake((bool IsNewYork, bool IsFake, string LocalNumber) phoneNumberInfo) => phoneNumberInfo.IsFake;
+}
+```
+
+### Dictionary
+
+```c#
+public static class ScrabbleScore
+{
+    public static int Score(string input)
+        {
+            List<(string, int)> tuples = new()
+            {
+                ("aeioulnrst", 1),
+                ("dg", 2),
+                ("bcmp", 3),
+                ("fhvwy", 4),
+                ("k", 5),
+                ("jx", 8),
+                ("qz", 10)
+            };
+
+            Dictionary<char, int> dictionary = new();
+
+            foreach (var tuple in tuples)
+            {
+                foreach (char c in tuple.Item1)
+                {
+                    dictionary[c] = tuple.Item2;
+                }
+            }
+
+            int count = 0;
+
+            char[] charArray = input.ToLower().ToArray();
+
+            foreach (char c in charArray)
+            {
+                count += dictionary[c];
+            }
+        
+        return count;
+    }
+}
+```
+
+## Nullability
+
+```c#
+public static string Print(int? id, string name, string? department)
+    {
+        
+        if (!id.HasValue && string.IsNullOrEmpty(department)) {
+            return $"{name} - OWNER";
+        }
+        
+        if (!id.HasValue) {
+            return $"{name} - {department.ToUpper()}"; 
+        }
+
+        if (string.IsNullOrEmpty(department)) {
+            return $"[{id}] - {name} - OWNER";
+        }
+        
+        return $"[{id}] - {name} - {department.ToUpper()}";
+    }
+```
+
+## While
+
+```c#
+int x = 23;
+
+while (x > 10)
+{
+    // Execute logic if x > 10
+    x = x - 2;
+}
+```
+
+### Do While
+```c#
+int x = 23;
+
+// Execute at least once, then loop
+do
+{
+    // Execute logic if x > 10
+    x = x - 2;
+} while (x > 10)
+```
+
+# Unit testing
+
+## Naming conventions
+
+```c#
+Namespaces, classes, methods: PascalCase;
+Public variables: camelCase;
+Private variables: m_camelCase;
+Test methods: MethodTested_Scenario_ExpectedOutcome
+```
+
+# General knowledge
+
+## 32-bit (x86), 64-bit (x64) 
+
+In a nutshell, 16 (1978) -> 32 (1985) -> 64-bit (2003).
+
+32-bit `int`: range from -2,147,483,648 to 2,147,483,647.
+
+64-bit `int`: range from -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807.
+
+> The transition to 64-bit computing was indeed significant for handling complex data. The 64-bit architecture provides a larger address space, which means it can access more memory and handle larger data sets more efficiently. This is particularly beneficial for applications that require high-performance computing or are data-intensive, such as databases, scientific simulations, and video encoding. However, for many everyday applications, the difference between 32-bit and 64-bit might not be noticeable.
+
+
+| Term | Acronym | Description | Extension |
+| --- | --- | --- | --- |
+| Access | | MS-provided relational DB manager like mySQL for small, end-user oriented projects. | .mdb |
+| OLEDB | Object Linking and Embedding Database | MS API for accessing data. | |
 
 ## Namespaces
 
@@ -395,13 +608,13 @@ style A stroke:yellow
 
 ## Glossary
 
-| Term | Definition | Example |
+<!--| Term | Definition | Example |
 | --- | --- | --- |
 | compiler | *converts your code from a human higher-level language (C#) into an executable format that the computer can understand.* | x |
 | precompilation | process before the main compilation process to help with performance | red squiggly lines underlining the code that will produce an error |
 | programming language | *A programming language's job is to allow a human to express their intent [to a computer] in a human-readable and understandable way.* |
 | syntax | rules for writing code | X |
----
+----->
 
 ## Variables
 
