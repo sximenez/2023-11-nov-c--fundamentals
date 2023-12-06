@@ -32,10 +32,29 @@ Source: [Microsoft](https://learn.microsoft.com/en-gb/training/)
   - [Nullability](#nullability)
   - [While](#while)
     - [Do While](#do-while)
-- [Unit testing](#unit-testing)
-  - [Naming conventions](#naming-conventions)
+  - [Class](#class)
+    - [Encapsulation](#encapsulation)
+- [Software craft](#software-craft)
+  - [Intro](#intro)
+  - [Historique](#historique)
+    - [V-model](#v-model)
+    - [Méthode agile](#methode-agile)
+    - [Scrum](#scrum)
+    - [XP (Extreme programming)](#xp-extreme-programming)
+    - [Agile hangover](#agile-hangover)
+    - [Craft](#craft)
+  - [Test-driven development (TDD)](#test-driven-development-tdd)
+    - [Nommage](#nommage)
+    - [Arrange Act Assert](#arrange-act-assert)
+    - [Exemple FizzBuzz](#exemple-fizzbuzz)
+    - [Red phase](#red-phase)
+    - [Green phase](#green-phase)
+    - [Final code](#final-code)
 - [General knowledge](#general-knowledge)
+  - [Git](#git)
   - [32-bit (x86), 64-bit (x64)](#32-bit-x86-64-bit-x64)
+  - [Exception handling](#exception-handling)
+    - [Understanding stack tracing](#understanding-stack-tracing)
   - [Namespaces](#namespaces)
   - [Glossary](#glossary)
   - [Variables](#variables)
@@ -556,9 +575,238 @@ do
 } while (x > 10)
 ```
 
-# Unit testing
+## Class
 
-## Naming conventions
+Primary C# object-oriented construct.
+
+Combination of fields (data) and methods (behaviors): members.
+
+Access to members (fields and methods) is restricted using access modifiers: 
+
+| Access modifier | Description |
+| --- | --- |
+| public | No restrictions. |
+| private | Access only by code in same class. |
+
+```c#
+Class Car
+{
+
+    // This is accessible by anyone.
+    // Public fields use PascalCase (you can use camelCase).
+    public int carWeight;
+
+    // This is only accessible by code in the class.
+    // Private fields use _camelCase.
+    private string _carColor;
+
+}
+
+// Create an object of the Car class
+var oneCar = new Car();
+```
+
+```c#
+class CarImporter
+{
+    private int _carsImported;
+
+    // Use void to calculate without a return statement.
+    public void ImportCars(int numberOfCars)
+    {
+        _carsImported = _carsImported + numberOfCars;
+    }
+}
+```
+
+### Encapsulation
+
+```c#
+private int _distance;
+
+public int Distance
+{
+    get
+    {
+        return _distance;
+    }
+    set
+    {
+        _distance += value;
+    }
+}
+```
+
+Encapsulation is a fundamental concept in object-oriented programming: **it allows to expose fields safely**.
+
+You hide the internal state of an object and control how that state is modified.
+
+In this case, the _distance field is private, which means it can't be accessed directly from outside the class. 
+
+Instead, you provide a public property Distance that allows external code to get and set the value of _distance.
+
+# Software craft
+
+## Intro
+
+Le software craft, c'est un ensemble d'attitudes, de réflexes pragmatiques.
+
+C'est redéfinir ce qu'est un "bon" logiciel :
+
+- Un logiciel qui marche, c'est le strict minimum : *le vrai enjeu du développement logiciel est de rester évolutif dans la durée, ajouter et modifier facilement des fonctionnalités existantes.*
+- Un logiciel n'est jamais fini, à moins qu'il soit en fin de vie : le code doit donc être le plus plastique possible.
+- Le code est plus lu qu'écrit : il faut donc privilégier une écriture simple.
+- Les problèmes complexes ne peuvent tenir *en une seule tête* : il est important de poser des questions.
+
+*Les compétences en software craft deviennent désirables voire requises en développement logiciel.*
+
+## Historique
+
+```mermaid
+graph TB
+
+0[Cycle développement en V] --> A[Pratiques inefficaces] --> 1[Méthodes agile]
+1[Méthodes agile] -->|Production de code| Scrum
+1[Méthodes agile] -->|Ingénierie de code| 2[XP, Extreme Programming]
+Scrum --> 3[Agile hangover]
+3[Agile hangover] --> Craft
+2[XP, Extreme Programming] --> Craft
+
+style A stroke:red;
+style 3 stroke:red;
+
+```
+
+### V-model
+
+Modèle de développement logiciel traditionnel devenu rigide vers la fin des années 1990.
+
+Critiques principales :
+
+- Cycle trop linéaire manquant des itérations.
+- Ce qui le rend rigide face à des besoins de moins en moins précis.
+- Les tests sont effectués trop tard dans le cycle.
+- Ce qui fait que revenir en arrière devient compliqué.
+
+```mermaid
+graph LR
+
+subgraph Définition
+0[Analyse des besoins] --> 1[Design système] --> 2[Découpage]
+end
+Définition--> 3[Développement]
+3[Développement] --> Intégration
+
+subgraph Intégration
+4[Tests unitaires] --> Déploiement --> Validation
+end
+```
+
+### Méthode agile
+
+Modèle en réaction à la rigidité du V-model, découpant le développement en sprints par feature.
+
+Avantages :
+
+- Feedback plus régulier, permettant d'ajuster.
+- Livraison de features opérationnelles petit à petit.
+- La livraison par feature permet d'identifier des problèmes en cours de développement et non à la fin.
+
+```mermaid
+graph TB
+
+0[Product Owner] -->|Lists all features| Backlog
+Backlog --> 1[Sprint planning]
+1[Sprint planning] --> A[Sprint 1]
+
+subgraph A[Sprint 1]
+
+2[Daily stand-up] --> Review
+Review --> Améliorations
+end
+
+3[Sprint N...]
+A[Sprint 1] --> 3[Sprint N...]
+```
+
+### Scrum
+
+*Scrum is one framework of the Agile philosophy.*
+
+Dans Scrum, un Scrum master sert d'intermédiaire entre le PO et les développeurs.
+
+Il assure également le bon déroulement des processus et des sprints.
+
+Des outils spécifiques sont également mis en place : product backlog, sprint backlog, burndown charts (work to do vs time), etc.
+
+### XP (Extreme programming)
+
+XP est également une implémentation d'Agile, focalisée sur la qualité du code produit.
+
+On y ajoute du pair programming, du test-driven development (TDD), de l'intégration continue (CI), des pratiques de refactorisation, etc.
+
+### Agile hangover
+
+L'arivée des méthodes Agile a permis de surmonter le problème de rigidité posé par les méthodes de développement traditionnelles (V-model). 
+
+Scrum est devenu populaire et les équipes ont gagné en efficacité de production de code.
+
+Cependant, cela a créé un autre problème : en l'absence de bonnes pratiques d'ingénierie de code, le code produit est devenu difficile à entretenir.
+
+Robert C. Martin (uncle Bob) a relancé la mouvance XP pour rappeler l'importance des pratiques de code.
+
+Le Craft est apparu comme une boîte à outils de techniques encourageant la production de code propre.
+
+### Craft
+
+```mermaid
+graph LR
+
+Craft --> TDD
+TDD --> BDD
+Craft --> 0[Clean Code]
+Craft --> DDD
+Craft --> 1[Legacy remediation]
+Craft --> SOLID
+
+```
+
+## Test-driven development (TDD)
+
+- Ecrire des tests avant ou en parallèle du code de production :
+    - Fixer l'objectif du besoin.
+    - Définir les comportements attendus.
+    - Ecrire le moins de code possible pour satisfaire ces comportements attendus.
+
+- Trois règles :
+    1. Ecrire un test qui échoue avant tout écriture de code.
+    2. Ne pas écrire plus de tests que nécessaire.
+    3. N'écrire que le code suffisant à passer les tests.
+
+- Chaque itération se décline en trois étapes : rouge (échec) -> green (succès) -> refacto
+
+```mermaid
+graph LR
+
+Echec --> Succès --> Refacto
+Refacto --> Echec
+
+style Echec stroke:red
+style Succès stroke:lightgreen
+```
+
+### Nommage
+
+should/when
+
+```terminal
+Method_should_do_this_when_this
+```
+
+given/when/then
+```terminal
+Given_x_when_I_do_x_then_x_happens
+```
 
 ```c#
 Namespaces, classes, methods: PascalCase;
@@ -567,7 +815,253 @@ Private variables: m_camelCase;
 Test methods: MethodTested_Scenario_ExpectedOutcome
 ```
 
+### Arrange Act Assert
+
+Préparer Agir Vérifier
+
+- Commencer par la vérification (assert).
+- Puis écrire l'action (act).
+- Puis initialiser les variables à tester (arrange).
+
+### Exemple FizzBuzz
+
+```terminal
+Voir le TDD comme l'écriture d'un kata.
+```
+
+- Objectif :
+    - Ecrire un programme qui permette, de 1 à 100, afficher :
+
+```terminal
+"Fizz" si multiple de 3,
+"Buzz" si multiple de 5,
+"FizzBuzz", si multiple de 3 et 5,
+le nombre lui-même autrement.
+```
+
+- Exemples :
+    - Aller du plus simple au plus complexe :
+
+```terminal
+Si n = 1, "1",
+Si n = 3, "Fizz",
+Si n = 5, "Buzz",
+Si n = 15, "FizzBuzz".
+```
+
+```c#
+namespace FizzBuzz
+{
+    public class Program
+    {
+        public static void Test()
+        {
+            Console.WriteLine("hello");
+        }
+
+        public static void Main()
+        {
+            Test();
+        }
+    }
+}
+```
+
+```terminal
+Right-click > Créer des tests unitaires
+```
+
+```c#
+namespace FizzBuzzTests
+{
+    [TestClass]
+    public class ProgramTests
+    {
+        [TestMethod]
+        public void TestTest()
+        {
+            Assert.Fail();
+        }
+    }
+}
+```
+
+### Red phase
+
+```c#
+namespace FizzBuzz
+{
+    public class Program
+    {
+        public string Print(int number)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Main()
+        {
+
+        }
+    }
+}
+```
+
+```c#
+namespace FizzBuzzTests
+{
+    [TestClass]
+    public class ProgramTests
+    {
+        [TestMethod]
+        public void Should_return_same_number_when_not_multiple_of_three_or_five()
+        {
+            Program fizzBuzz = new();
+            int number = 1;
+            string value = fizzBuzz.Print(number);
+            Assert.AreEqual("1", value);
+        }
+    }
+}
+```
+
+```terminal
+La méthode de test FizzBuzzTests.ProgramTests.Should_return_same_number_when_not_multiple_of_three_or_five a levé une exception : 
+System.NotImplementedException: The method or operation is not implemented.
+```
+
+### Green phase
+
+```c#
+namespace FizzBuzz
+{
+    public class Program
+    {
+        public string Print(int number)
+        {
+            return number.ToString();
+        }
+
+        public static void Main()
+        {
+
+        }
+    }
+}
+```
+
+### Final code
+
+```c#
+public class Program
+    {
+        private bool IsMultipleOf(int number, int divider)
+        {
+            return number % divider == 0;
+        }
+        
+        public string Print(int number)
+        {
+
+            string fizzBuzzValue = null;
+            
+            if (IsMultipleOf(number, 3))
+            {
+                fizzBuzzValue += "Fizz";
+            }
+            
+            if (IsMultipleOf(number, 5))
+            {
+                fizzBuzzValue += "Buzz";
+            }
+
+            if (fizzBuzzValue != null)
+            {
+                return fizzBuzzValue;
+            }
+            
+            return number.ToString();
+        }
+
+        public static void Main()
+        {
+            Program test = new Program();
+            Random random = new Random();
+            int number = random.Next(1, 101);
+            string result = test.Print(number);
+            Console.WriteLine($"{number} {result}");
+        }
+    }
+```
+
+```c#
+[TestClass]
+    public class ProgramTests
+    {
+        private Program fizzBuzz;
+        private int number;
+        private string value;
+        
+        [TestInitialize]
+        public void TestArrange()
+        {
+            fizzBuzz = new Program();
+        }
+        
+        [TestMethod]
+        public void Should_return_same_number_when_not_multiple_of_three_or_five()
+        {
+            // Arrange
+            number = 1;
+            
+            // Act
+            value = fizzBuzz.Print(number);
+            
+            // Assert
+            Assert.AreEqual("1", value);
+        }
+
+        [TestMethod]
+        public void Should_return_fizz_when_multiple_of_three()
+        {
+            number = 3;
+            value = fizzBuzz.Print(number);
+            Assert.AreEqual("Fizz", value);
+        }
+
+        [TestMethod]
+        public void Should_return_buzz_when_multiple_of_five()
+        {
+            number = 5;
+            value = fizzBuzz.Print(number);
+            Assert.AreEqual("Buzz", value);
+        }
+
+        [TestMethod]
+        public void Should_return_fizzbuzz_when_multiple_of_three_and_five()
+        {
+            number = 15;
+            value = fizzBuzz.Print(number);
+            Assert.AreEqual("FizzBuzz", value);
+        }
+    }
+```
+
+[Troubleshooting](https://learn.microsoft.com/en-us/visualstudio/test/unit-test-basics?view=vs-2022)
+
 # General knowledge
+
+## Git
+
+| Command | Description |
+| --- | --- |
+| Add | New code or feature. |
+| Update | Changes to existing. |
+| Fix | Bug correction. |
+| Remove | Deletion. |
+| Refactor | Changes not affecting functionality. |
+| Document | Comments or documentation. |
+| Merge | Code combination. |
+| Revert | Undo changes. |
 
 ## 32-bit (x86), 64-bit (x64) 
 
@@ -584,6 +1078,232 @@ In a nutshell, 16 (1978) -> 32 (1985) -> 64-bit (2003).
 | --- | --- | --- | --- |
 | Access | | MS-provided relational DB manager like mySQL for small, end-user oriented projects. | .mdb |
 | OLEDB | Object Linking and Embedding Database | MS API for accessing data. | |
+
+## Exception handling
+
+```c#
+public static void Main()
+{
+    int[] arr = { 1, 2, 3, 4, 5 };
+    Console.WriteLine(arr[5]); // Error here <- You get an error message.
+
+    // Unhandled exception
+    // System.IndexOutOfRangeException : 'Index was outside the bounds of the array.'
+}
+```
+
+```c#
+public static void Main()
+{
+    int[] arr = { 1, 2, 3, 4, 5 };
+    Console.WriteLine(arr[5]); // Error <- The program will terminate here since no error handler.
+    Console.WriteLine(arr[4]); // 5 <- This line will not be reached.
+}
+```
+
+```c#
+public static void Main()
+{
+    int[] arr = { 1, 2, 3, 4, 5 };
+
+    try
+    {
+        // Potentially error-prone code.
+        Console.WriteLine(arr[5]);
+    }
+
+    catch (Exception ex)
+    {
+        // Error handler.
+        Console.WriteLine(ex.ToString());
+
+        // System.IndexOutOfRangeException: Index was outside the bounds of the array.
+        // at ConsoleApp1.Program.Main() in C:\Users\steven.jimenez\source\repos\ConsoleApp1\Program.cs:line 11
+
+    }
+
+    Console.WriteLine(arr[4]); // 5 <- This line will now be reached.
+}
+```
+
+```c#
+catch (Exception ex)
+{
+    Console.WriteLine(ex.ToString());
+
+    // System.IndexOutOfRangeException: Index was outside the bounds of the array.
+    // at ConsoleApp1.Program.Main() in C:\Users\steven.jimenez\source\repos\ConsoleApp1\Program.cs:line 11
+
+    Console.WriteLine(ex.GetType());
+
+    // System.IndexOutOfRangeException
+
+    Console.WriteLine(ex.Message);
+
+    // Index was outside the bounds of the array.
+
+    Console.WriteLine(ex.StackTrace);
+
+    // at ConsoleApp1.Program.Main() in C:\Users\steven.jimenez\source\repos\ConsoleApp1\Program.cs:line 11
+}
+```
+
+```c#
+public static void Main()
+{
+    int[] arr = { 1, 2, 3, 4, 5 };
+
+    try
+    {
+        // Potentially error-prone code.
+        Console.WriteLine(arr[5]);
+    }
+
+    catch (Exception ex)
+    {
+        // Error handler.
+        Console.WriteLine(ex.ToString());
+
+    }
+    finally
+    {
+        Console.WriteLine("Code always executed."); // This line will always be reached.
+        // Usually used to close or clean up resources used in the try block
+        // (files, connections, etc.).
+    }
+
+    Console.WriteLine(arr[4]); // This line will also be reached.
+}
+```
+
+```c#
+private static void CheckAge(int age)
+{
+    if (age < 18)
+    {
+        Console.WriteLine("Access denied"); // This way of signaling an error can't keep track of its trace.
+        // For better debugging, declare an error condition.
+    }
+    else
+    {
+        Console.WriteLine("Adult.");
+    }
+}
+        
+public static void Main()
+{
+    CheckAge(15);
+}
+```
+
+```c#
+private static void CheckAge(int age)
+{
+    if (age < 18)
+    {
+        throw new Exception("Access denied"); // This will terminate the program, since there is no catch block.
+    }
+    else
+    {
+        Console.WriteLine("Adult.");
+    }
+}
+        
+public static void Main()
+{
+    CheckAge(15);
+}
+```
+
+```c#
+private static void CheckAge(int age)
+{
+    try
+    {
+
+        if (age < 18)
+        {
+            throw new Exception("Access denied.");
+        }
+        else
+        {
+            Console.WriteLine("Adult.");
+        }
+
+    }
+
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message); // This will catch the error and log it (keeping a trace).
+    }
+}
+        
+public static void Main()
+{
+    CheckAge(15); // Access denied.
+    CheckAge(21); // Adult. <- This line will now be reached.
+}
+```
+
+### Understanding stack tracing
+
+```c#
+private static void MethodA()
+{
+    MethodB();
+}
+private static void MethodB()
+{
+    throw new Exception("Error here.");
+}
+
+public static void Main()
+{
+    try
+    {
+        MethodA();
+    }
+            
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.StackTrace);
+        // at ConsoleApp1.Program.MethodB() in C:\Users\steven.jimenez\source\repos\ConsoleApp1\Program.cs:line 11
+        // at ConsoleApp1.Program.MethodA() in C:\Users\steven.jimenez\source\repos\ConsoleApp1\Program.cs:line 7
+        // at ConsoleApp1.Program.Main() in C:\Users\steven.jimenez\source\repos\ConsoleApp1\Program.cs:line 18
+    }
+}
+```
+
+```c#
+
+private static void MethodA()
+{
+    MethodB();
+}
+private static void MethodB()
+{
+    throw new Exception("Error here.");
+}
+private static void MethodC()
+{
+    Console.WriteLine("You reached me!");
+}
+
+public static void Main()
+{
+    try
+    {
+        MethodA();
+    }
+
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message); // Error here.
+    }
+
+    MethodC(); // You reached me!
+}
+```
 
 ## Namespaces
 
