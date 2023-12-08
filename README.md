@@ -34,6 +34,9 @@ Source: [Microsoft](https://learn.microsoft.com/en-gb/training/)
     - [Do While](#do-while)
   - [Class](#class)
     - [Encapsulation](#encapsulation)
+  - [Collections](#collections)
+    - [For and foreach loop](#for-and-foreach-loop)
+    - [Lists](#lists)
 - [Software craft](#software-craft)
   - [Intro](#intro)
   - [Historique](#historique)
@@ -632,7 +635,7 @@ public int Distance
     }
     set
     {
-        _distance += value;
+        _distance = value;
     }
 }
 ```
@@ -644,6 +647,72 @@ You hide the internal state of an object and control how that state is modified.
 In this case, the _distance field is private, which means it can't be accessed directly from outside the class. 
 
 Instead, you provide a public property Distance that allows external code to get and set the value of _distance.
+
+C# allows to simplify this set up by hidding private variables with this syntax:
+
+```c#
+// This private variable is now hidden.
+// private int _distance;
+
+public int Distance
+{
+    get;
+    set;
+}
+
+// In a constructor, you can set it like this:
+public RemoteControlCar(int distance, int batteryDrain)
+{
+    Distance = distance;
+}
+
+// The hidden private variable can be initialized like this:
+public int Distance { get; set; } = 100;
+
+// Properties can be restricted like this:
+public int Distance { get; private set; } = 100;
+```
+
+## Collections
+
+Collections are data structures holding zero or more elements.
+
+Arrays are collections with a fixed type and given lenght.
+
+They use indexes to retrieve information.
+
+```c#
+// Three equivalent ways to declare and initialize an array (size is 3)
+int[] threeIntsV1 = new int[] { 4, 9, 7 };
+int[] threeIntsV2 = new[] { 4, 9, 7 };
+int[] threeIntsV3 = { 4, 9, 7 };
+```
+
+### For and foreach loop
+
+```c#
+for (int i = 0; i < 5; i++)
+{
+    System.Console.Write(i);
+}
+
+// => 01234
+// You can define the initializer (i) and the iterator (i++, i--).
+
+char[] vowels = new [] { 'a', 'e', 'i', 'o', 'u' };
+
+foreach (char vowel in vowels)
+{
+    // Output the vowel
+    System.Console.Write(vowel);
+}
+
+// => aeiou
+// You can't define the initializer as it loops through each element.
+```
+
+### Lists
+
 
 # Software craft
 
