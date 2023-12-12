@@ -5,66 +5,19 @@ Source: [Microsoft](https://learn.microsoft.com/en-gb/training/)
 ## Table of contents
 
 <!--TOC-->
-- [First C# code](#first-c-code)
-  - [Introduction](#introduction)
-  - [Challenge 1: printing on console](#challenge-1-printing-on-console)
-  - [Variables](#variables)
-    - [Data types](#data-types)
-    - [Implicitly typed local variables](#implicitly-typed-local-variables)
-    - [Challenge 2: typed variables](#challenge-2-typed-variables)
-    - [Character escape sequences](#character-escape-sequences)
-    - [String interpolation](#string-interpolation)
-    - [Challenge 3: string interpolation](#challenge-3-string-interpolation)
-    - [Type casting](#type-casting)
-    - [Challenge 4: operations](#challenge-4-operations)
-  - [Project 1 : calculate average and query list](#project-1-calculate-average-and-query-list)
-  - [Project 2 : calculate GPA](#project-2-calculate-gpa)
-- [Exercism](#exercism)
-  - [Basics](#basics)
-  - [Booleans](#booleans)
-  - [Strings](#strings)
-    - [Substring](#substring)
-    - [Regex](#regex)
-  - [Numbers](#numbers)
-  - [Extended methods](#extended-methods)
-  - [Tuples](#tuples)
-    - [Dictionary](#dictionary)
-  - [Nullability](#nullability)
-  - [While](#while)
-    - [Do While](#do-while)
-  - [Class](#class)
-    - [Encapsulation](#encapsulation)
-  - [Collections](#collections)
-    - [For and foreach loop](#for-and-foreach-loop)
-    - [Lists](#lists)
-- [Software craft](#software-craft)
-  - [Intro](#intro)
-  - [Historique](#historique)
-    - [V-model](#v-model)
-    - [Méthode agile](#methode-agile)
-    - [Scrum](#scrum)
-    - [XP (Extreme programming)](#xp-extreme-programming)
-    - [Agile hangover](#agile-hangover)
-    - [Craft](#craft)
-  - [Test-driven development (TDD)](#test-driven-development-tdd)
-    - [Nommage](#nommage)
-    - [Arrange Act Assert](#arrange-act-assert)
-    - [Exemple FizzBuzz](#exemple-fizzbuzz)
-    - [Red phase](#red-phase)
-    - [Green phase](#green-phase)
-    - [Final code](#final-code)
-- [General knowledge](#general-knowledge)
-  - [Git](#git)
-  - [32-bit (x86), 64-bit (x64)](#32-bit-x86-64-bit-x64)
-  - [Exception handling](#exception-handling)
-    - [Understanding stack tracing](#understanding-stack-tracing)
-  - [Namespaces](#namespaces)
-  - [Glossary](#glossary)
-  - [Variables](#variables)
-    - [Primitive types: numeric](#primitive-types-numeric)
-    - [Type casting](#type-casting)
-    - [Primitive types: strings](#primitive-types-strings)
-    - [Constants](#constants)
+    - [| Definitio](#-definitio)
+  - [("This is t](#this-is-t)
+  - [C#: designe](#c-designe)
+  - [geNumber =](#genumber-)
+  - [| new line |
+| `\t`](#-new-line-t)
+  - [View English output:";
+str](#view-english-output-str)
+  - [yschology 101", 4, 3](#yschology-101-4-3)
+  - [s are de](#s-are-de)
+    - [e `bool`.](#e-bool.)
+    - [int firs](#int-firs)
+  - [.*)\\]");](#.)
 <!--/TOC-->
 
 # First C# code
@@ -1118,6 +1071,48 @@ public class Program
 [Troubleshooting](https://learn.microsoft.com/en-us/visualstudio/test/unit-test-basics?view=vs-2022)
 
 # General knowledge
+
+## Extract, Transform, Load (ETL)
+
+Common approach in data handling and database management:
+
+```mermaid
+graph TB
+subgraph Extract
+direction TB
+0[Connect to source DB] --> 1[Retrieve data]
+end
+
+subgraph Transform
+direction TB
+2[Apply formatting]
+end
+
+subgraph Load
+direction TB
+3[Connect to target DB] --> 4[Store data]
+4[Store data]
+end
+
+Extract --> Transform --> Load
+
+subgraph Extract1
+direction TB
+5([Connector])
+end
+
+subgraph Transform1
+direction TB
+6([Formatter])
+end
+
+subgraph Load1
+direction TB
+7([Connector]) --> 8([Loader])
+end
+
+Extract1 --> Transform1 --> Load1
+```
 
 ## Git
 
