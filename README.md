@@ -5,19 +5,70 @@ Source: [Microsoft](https://learn.microsoft.com/en-gb/training/)
 ## Table of contents
 
 <!--TOC-->
-    - [| Definitio](#-definitio)
-  - [("This is t](#this-is-t)
-  - [C#: designe](#c-designe)
-  - [geNumber =](#genumber-)
-  - [| new line |
-| `\t`](#-new-line-t)
-  - [View English output:";
-str](#view-english-output-str)
-  - [yschology 101", 4, 3](#yschology-101-4-3)
-  - [s are de](#s-are-de)
-    - [e `bool`.](#e-bool.)
-    - [int firs](#int-firs)
-  - [.*)\\]");](#.)
+- [First C# code](#first-c-code)
+  - [Introduction](#introduction)
+  - [Challenge 1: printing on console](#challenge-1-printing-on-console)
+  - [Variables](#variables)
+    - [Data types](#data-types)
+    - [Implicitly typed local variables](#implicitly-typed-local-variables)
+    - [Challenge 2: typed variables](#challenge-2-typed-variables)
+    - [Character escape sequences](#character-escape-sequences)
+    - [String interpolation](#string-interpolation)
+    - [Challenge 3: string interpolation](#challenge-3-string-interpolation)
+    - [Type casting](#type-casting)
+    - [Challenge 4: operations](#challenge-4-operations)
+  - [Project 1 : calculate average and query list](#project-1-calculate-average-and-query-list)
+  - [Project 2 : calculate GPA](#project-2-calculate-gpa)
+- [Exercism](#exercism)
+  - [Basics](#basics)
+  - [Booleans](#booleans)
+  - [Strings](#strings)
+    - [Substring](#substring)
+    - [Regex](#regex)
+  - [Numbers](#numbers)
+  - [Extended methods](#extended-methods)
+  - [Tuples](#tuples)
+    - [Dictionary](#dictionary)
+  - [Nullability](#nullability)
+  - [While](#while)
+    - [Do While](#do-while)
+  - [Class](#class)
+    - [Encapsulation](#encapsulation)
+  - [Collections](#collections)
+    - [For and foreach loop](#for-and-foreach-loop)
+    - [Lists](#lists)
+  - [Inheritance](#inheritance)
+    - [Polymorphism](#polymorphism)
+- [Software craft](#software-craft)
+  - [Intro](#intro)
+  - [Historique](#historique)
+    - [V-model](#v-model)
+    - [Méthode agile](#methode-agile)
+    - [Scrum](#scrum)
+    - [XP (Extreme programming)](#xp-extreme-programming)
+    - [Agile hangover](#agile-hangover)
+    - [Craft](#craft)
+  - [Test-driven development (TDD)](#test-driven-development-tdd)
+    - [Nommage](#nommage)
+    - [Arrange Act Assert](#arrange-act-assert)
+    - [Exemple FizzBuzz](#exemple-fizzbuzz)
+    - [Red phase](#red-phase)
+    - [Green phase](#green-phase)
+    - [Final code](#final-code)
+- [General knowledge](#general-knowledge)
+  - [Extract, Transform, Load (ETL)](#extract-transform-load-etl)
+  - [Git](#git)
+  - [32-bit (x86), 64-bit (x64)](#32-bit-x86-64-bit-x64)
+  - [Exception handling](#exception-handling)
+    - [Understanding stack tracing](#understanding-stack-tracing)
+    - [Three error handling strategies](#three-error-handling-strategies)
+  - [Namespaces](#namespaces)
+  - [Glossary](#glossary)
+  - [Variables](#variables)
+    - [Primitive types: numeric](#primitive-types-numeric)
+    - [Type casting](#type-casting)
+    - [Primitive types: strings](#primitive-types-strings)
+    - [Constants](#constants)
 <!--/TOC-->
 
 # First C# code
@@ -666,6 +717,112 @@ foreach (char vowel in vowels)
 
 ### Lists
 
+## Inheritance
+
+|Term|Description|
+|------|-----------|
+|public| Can be accessed by outside code. |
+|private| Cannot be accessed by outside code.|
+|static| Can be invoked without creating an instance of the class.|
+|virtual| Can be overriden in a subclass.|
+|abstract class| Abstract (to implement) and non-abstract (implemented) method catalog.|
+|interface| Completely abstract method catalog.|
+
+```c#
+// Inherits from the 'object' class
+abstract class Vehicle
+{
+    // Can be overridden
+    public virtual void Drive()
+    {
+    }
+
+    // Must be overridden
+    protected abstract int Speed();
+}
+
+class Car : Vehicle
+{
+    public override void Drive()
+    {
+        // Override virtual method
+
+        // Call parent implementation
+        base.Drive();
+    }
+
+    protected override int Speed()
+    {
+        // Implement abstract method
+    }
+}
+```
+
+Parent classes are always called first.
+
+The protected keyword means parent methods can only be called by direct children.
+
+```c#
+abstract class Vehicle
+{
+    protected Vehicle(int wheels)
+    {
+        Console.WriteLine("Called first");
+    }
+}
+
+class Car : Vehicle
+{
+    public Car() : base(4)
+    {
+        Console.WriteLine("Called second");
+    }
+}
+```
+
+### Polymorphism
+
+```c#
+// Classes derived from the same parent (Vehicle), will often implement the same base methods (GetDescription) differently.
+// So, a same parent input can have different outputs (many forms).
+
+abstract class Vehicle
+{
+   public abstract string GetDescription();
+}
+
+class Car : Vehicle
+{
+   public Car()
+   {
+   }
+
+   public override string GetDescription()
+   {
+      return "Runabout";
+   }
+}
+
+class Rig : Vehicle
+{
+   public Rig()
+   {
+   }
+
+   public override string GetDescription()
+   {
+      return "Big Rig";
+   }
+}
+
+Vehicle v1 = new Car();
+Vehicle v2 = new Rig();
+
+v1.GetDescription();
+// => Runabout
+v2.GetDescription();
+// => Big Rig
+```
 
 # Software craft
 
@@ -1077,41 +1234,49 @@ public class Program
 Common approach in data handling and database management:
 
 ```mermaid
-graph TB
+graph LR
 subgraph Extract
-direction TB
+direction LR
 0[Connect to source DB] --> 1[Retrieve data]
 end
 
 subgraph Transform
-direction TB
+direction LR
 2[Apply formatting]
 end
 
 subgraph Load
-direction TB
+direction LR
 3[Connect to target DB] --> 4[Store data]
 4[Store data]
 end
 
 Extract --> Transform --> Load
+```
 
-subgraph Extract1
-direction TB
-5([Connector])
+```mermaid
+graph LR
+subgraph Extractor
+direction LR
+
+subgraph Extract
+direction LR
+0[Source connector] --> Retriever
 end
 
-subgraph Transform1
-direction TB
-6([Formatter])
+subgraph Transform
+direction LR
+Formatter
 end
 
-subgraph Load1
-direction TB
-7([Connector]) --> 8([Loader])
+subgraph Load
+direction LR
+1[Destination connector] --> Writer
 end
 
-Extract1 --> Transform1 --> Load1
+end
+
+Extract --> Transform --> Load
 ```
 
 ## Git
@@ -1137,11 +1302,43 @@ In a nutshell, 16 (1978) -> 32 (1985) -> 64-bit (2003).
 
 > The transition to 64-bit computing was indeed significant for handling complex data. The 64-bit architecture provides a larger address space, which means it can access more memory and handle larger data sets more efficiently. This is particularly beneficial for applications that require high-performance computing or are data-intensive, such as databases, scientific simulations, and video encoding. However, for many everyday applications, the difference between 32-bit and 64-bit might not be noticeable.
 
+## Data and data accessing
 
 | Term | Acronym | Description | Extension |
 | --- | --- | --- | --- |
 | Access | | MS-provided relational DB manager like mySQL for small, end-user oriented projects. | .mdb |
 | OLEDB | Object Linking and Embedding Database | MS API for accessing data. | |
+
+### OLEDB
+
+```mermaid
+---
+title: Flow of data
+---
+graph TB
+0[Visual Studio] -->|OleDbConnection| 1[OLEDB Provider]
+
+subgraph 1[OLEDB Provider]
+direction TB
+4[SQL Server] --> SQLOLEDB
+Access --> 6["Microsoft.Jet.OLEDB.4.0 (.mdb)"]
+Access --> 7["Microsoft.ACE.OLEDB.12.0 (.accdb)"]
+5["Excel/CSV"] --> 6["Microsoft.Jet.OLEDB.4.0 (.mdb)"]
+5["Excel/CSV"] --> 7["Microsoft.ACE.OLEDB.12.0 (.accdb)"]
+Oracle --> OracleOLEDB.Oracle
+end
+
+1 --> 2[OLEDB API]
+
+2 --> 3[(DB)]
+```
+
+```mermaid
+graph TB
+OleDbConnection -->|"Provider=X;Data Source=Y"| 2["Connection.Open()"]
+
+2 --> 3[OleDbCommand] -->|SQL queries| 4[(DB)]
+```
 
 ## Exception handling
 
@@ -1366,6 +1563,61 @@ public static void Main()
     }
 
     MethodC(); // You reached me!
+}
+```
+
+### Three error handling strategies
+
+```c#
+// Catch and log.
+
+try {
+    // Your main program logic here
+}
+catch (Exception exception) {
+    // Log the error details
+    logError(exception.message, exception.stackTrace);
+}
+```
+
+```c#
+// Catch, recover and continue.
+
+try {
+    // Your main program logic here
+}
+catch (Exception exception) {
+    // Attempt to recover from the error
+    if (canRecover(exception)) {
+        recover();
+    } else {
+        // If recovery is not possible, re-throw the exception
+        throw;
+    }
+}
+```
+
+```c#
+// Catch and wrap.
+
+try {
+    // Your main program logic here
+}
+catch (Exception exception) {
+    // Throw a new, more specific or custom exception
+    throw new DatabaseConnectionException("Connection error", exception);
+}
+```
+
+```c#
+// Logging method set up example.
+
+void logError(string message, string stackTrace) {
+    using (StreamWriter writer = new StreamWriter("log.txt", true)) {
+        writer.WriteLine(DateTime.Now);
+        writer.WriteLine(message);
+        writer.WriteLine(stackTrace);
+    }
 }
 ```
 
