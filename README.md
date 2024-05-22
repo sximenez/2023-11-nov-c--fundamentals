@@ -23,16 +23,29 @@ console.WriteLine("hello world");
 (1,1): error CS0103: The name 'console' does not exist in the current context
 ```
 
+C# is a compiled language.
+
+Computers can't understand it directly.
+
+As a result, a compiler translates its syntax at build time into Intermediate Language (IL).
+
+This Intermediate Language is then translated at runtime into machine code.
+
+Compilers don't like errors and act as a safeguard.
+
+If the code contains errors, compilation fails.
+
 ```mermaid
 graph LR
 
-1["Higher-level language (human)"] ---|Compilation| 2["Lower-level language (machine)"]
+1["Higher-level language (human)"] ---|Compilation| 2["Intermediate language"]
+2 ---|Runtime| 3["Lower-level language (machine)"]
 ```
 
 ```mermaid
 graph LR
 
-1[C#] ---|Compiler| 2[Microsoft Intermediate Language, MSIL]
+1[C#] ---|Compiler| 2[Microsoft Intermediate Language, MSIL] --- |Runtime| Binary
 ```
 
 | Term | Definition | Example |
@@ -74,7 +87,7 @@ Designers believed strict type declaration helped to avoid common bugs.
 
 Variables types are checked at compile time.
 
-If an operation on a variable is not compatible with its type, compilation will fail.
+Operations on a variable need to be compatible with its type.
 
 #### Implicitly typed variables
 
@@ -320,9 +333,20 @@ public class GpaCalculator
 
 An `IDE` (integrated development environment) is the developer's work toolkit.
 
-It supports the development process or `lifecycle`: 
+It supports the development process or `lifecycle` at the coding level: 
 
-writing, testing, debugging, publishing and versioning code.
+```mermaid
+graph LR
+
+subgraph Implementation
+direction LR
+0[Test writing] --- 1[Code writing]
+end
+
+Maintenance --> Implementation
+Implementation --> Versioning
+Versioning --> Maintenance
+```
 
 Some IDEs support certain languages by default and others via extensions.
 
@@ -350,10 +374,153 @@ Program -->|API| Library
 
 `.NET` is a Microsoft general-purpose framework.
 
-### Create a console application
+### Create a console application (higher-level)
 
 ```terminal
 dotnet new console -o ./CsharpProjects/TestProject
+
+// dotnet: driver
+// new console: command
+// -o ./CsharpProjects/TestProject: arguments (-o stands for output)
+```
+
+This command creates two files: `.csproj` and `.cs`.
+
+```xml
+// .csproj: project config file.
+
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
+```
+
+```csharp
+// .cs: code file (entry point of the application).
+
+// See https://aka.ms/new-console-template for more information
+Console.WriteLine("Hello, World!");
+```
+
+### Build a console application (intermediate level)
+
+```terminal
+dotnet build
+```
+
+Building is the process of compiling the project.
+
+It creates a `bin` folder containing config and execution files the computer can process.
+
+```json
+// .deps.json: project build lock file.
+// Tracks dependencies and their versions for build consistency.
+
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "TestProject/1.0.0": {
+        "runtime": {
+          "TestProject.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "TestProject/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
+```
+
+``` terminal
+// .exe: compiled output of the application in Intermediate Language (IL).
+// It can be run by the OS.
+
+"MZ   ÿÿ ¸ @ ð º ´	Í!¸LÍ!This program cannot be run in DOS mode.$ Nv’é
+üº
+üº
+üº
+üºüº–ø»üº–ÿ»üº–ù»\üºooºüºAoý»üº
+ýºÃüºc–õ» üºc–þ»üºRich
+üº PE d† he ð "" & j Ð    @        `Á      ,   € ´ @ ¼ p  0Ó T Õ ( ðÑ @ €  .text œi  j  `.rdata æ• € – n @ @.data P 
+...
+```
+
+```terminal
+// .dll: library for the application in Intermediate Language (IL). 
+// Contains reference classes and methods.
+// Linked to the .exe, it can't be run by the OS.
+
+MZ   ÿÿ ¸ @ € º ´	Í!¸LÍ!This program cannot be run in DOS mode.$ PE L -W¶ à " 
+0   Z' @ @    €   `…      ' O @ ¸ `  ô% T   H .text `   `.rsrc ¸ @  
+ @ @.reloc  `   @ B <' H   h Œ    2r p(
+...
+ <Main>$ 
+ <Module> 
+ System.Console 
+ System.Runtime 
+ WriteLine 
+ ...
+ TestProject H e l l o , W o r l d ! ²VóSzÒéNˆæØdÈö—'      °?_Õ
+...                   
+```
+
+```terminal
+// .pdb: Program Database file, essential for debugging the application.
+
+BSJB         PDB v1.0       |   D   #Pdb    À   €   #~  @     #Strings    D     #US H  P   #GUID   ˜  Ä(  #Blob   f,{Ú:ÊI½Ÿü²kdKFÄûÕ  G  	                                          §       „                l  w  Ç  Ù  ) ; x Š  4(                    «('  «'  ƒ'  Å          Ð)ˆ¸B‡‹w…—¬øbQ?ÆÓS ÀO£¡VÌ‘ 8MŸì%«š5jìþµÐŒƒJ–ÚFb„»KØGM~n	\L®ÚËºjt
+ C:Userssteven.jimenezsourcerepos2023-11-nov-csharp-fundamentalsCsharpProjectsTestProject
+Program.cs
+\
+ &FUa À§ßl7662¥àN„%e¬’I9šË~(V
+–Ê?¤ùobjDebugnet8.0TestProject.GlobalUsings.g.cs\
+ &FU€˜€œ€¢€© óñ4éè%ãç&€õ‹ò½¢ÞQ?a œVô‹›a*¼..NETCoreApp,Version=v8.0.AssemblyAttributes.cs\
+ &FU€˜€œ€¢€ú ÷¥Ùxœ†6%á9ÿ™á:P80ö¸Zˆö™ßƒ¬v´žTestProject.AssemblyInfo.cs\
+```
+
+```json
+// .runtimeconfig.json: project runtime config file.
+// Specifies the version of the .NET runtime to be used during execution.
+
+{
+  "runtimeOptions": {
+    "tfm": "net8.0",
+    "framework": {
+      "name": "Microsoft.NETCore.App",
+      "version": "8.0.0"
+    },
+    "configProperties": {
+      "System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization": false
+    }
+  }
+}
+```
+
+### Run a console application (lower level)
+
+```terminal
+dotnet run
+
+// This command builds and runs the application.
+```
+
+```
+Hello C#!
 ```
 
 # Exercism

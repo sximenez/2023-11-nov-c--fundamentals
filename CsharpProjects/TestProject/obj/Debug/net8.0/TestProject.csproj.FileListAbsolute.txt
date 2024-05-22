@@ -1,0 +1,15 @@
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestProject\bin\Debug\net8.0\TestProject.exe
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestProject\bin\Debug\net8.0\TestProject.deps.json
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestProject\bin\Debug\net8.0\TestProject.runtimeconfig.json
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestProject\bin\Debug\net8.0\TestProject.dll
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestProject\bin\Debug\net8.0\TestProject.pdb
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestProject\obj\Debug\net8.0\TestProject.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestProject\obj\Debug\net8.0\TestProject.AssemblyInfoInputs.cache
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestProject\obj\Debug\net8.0\TestProject.AssemblyInfo.cs
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestProject\obj\Debug\net8.0\TestProject.csproj.CoreCompileInputs.cache
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestProject\obj\Debug\net8.0\TestProject.sourcelink.json
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestProject\obj\Debug\net8.0\TestProject.dll
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestProject\obj\Debug\net8.0\refint\TestProject.dll
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestProject\obj\Debug\net8.0\TestProject.pdb
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestProject\obj\Debug\net8.0\TestProject.genruntimeconfig.cache
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestProject\obj\Debug\net8.0\ref\TestProject.dll
