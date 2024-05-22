@@ -1,79 +1,14 @@
-# C# Fundamentals
+# Foundational C# certification
 
-Source: [Microsoft](https://learn.microsoft.com/en-gb/training/)
+Source: [Microsoft Learn](https://learn.microsoft.com/en-gb/training/)
 
 ## Table of contents
 
-<!--TOC-->
-- [First C# code](#first-c-code)
-  - [Introduction](#introduction)
-  - [Challenge 1: printing on console](#challenge-1-printing-on-console)
-  - [Variables](#variables)
-    - [Data types](#data-types)
-    - [Implicitly typed local variables](#implicitly-typed-local-variables)
-    - [Challenge 2: typed variables](#challenge-2-typed-variables)
-    - [Character escape sequences](#character-escape-sequences)
-    - [String interpolation](#string-interpolation)
-    - [Challenge 3: string interpolation](#challenge-3-string-interpolation)
-    - [Type casting](#type-casting)
-    - [Challenge 4: operations](#challenge-4-operations)
-  - [Project 1 : calculate average and query list](#project-1-calculate-average-and-query-list)
-  - [Project 2 : calculate GPA](#project-2-calculate-gpa)
-- [Exercism](#exercism)
-  - [Basics](#basics)
-  - [Booleans](#booleans)
-  - [Strings](#strings)
-    - [Substring](#substring)
-    - [Regex](#regex)
-  - [Numbers](#numbers)
-  - [Extended methods](#extended-methods)
-  - [Tuples](#tuples)
-    - [Dictionary](#dictionary)
-  - [Nullability](#nullability)
-  - [While](#while)
-    - [Do While](#do-while)
-  - [Class](#class)
-    - [Encapsulation](#encapsulation)
-  - [Collections](#collections)
-    - [For and foreach loop](#for-and-foreach-loop)
-    - [Lists](#lists)
-  - [Inheritance](#inheritance)
-    - [Polymorphism](#polymorphism)
-- [Software craft](#software-craft)
-  - [Intro](#intro)
-  - [Historique](#historique)
-    - [V-model](#v-model)
-    - [Méthode agile](#methode-agile)
-    - [Scrum](#scrum)
-    - [XP (Extreme programming)](#xp-extreme-programming)
-    - [Agile hangover](#agile-hangover)
-    - [Craft](#craft)
-  - [Test-driven development (TDD)](#test-driven-development-tdd)
-    - [Nommage](#nommage)
-    - [Arrange Act Assert](#arrange-act-assert)
-    - [Exemple FizzBuzz](#exemple-fizzbuzz)
-    - [Red phase](#red-phase)
-    - [Green phase](#green-phase)
-    - [Final code](#final-code)
-- [General knowledge](#general-knowledge)
-  - [Extract, Transform, Load (ETL)](#extract-transform-load-etl)
-  - [Git](#git)
-  - [32-bit (x86), 64-bit (x64)](#32-bit-x86-64-bit-x64)
-  - [Exception handling](#exception-handling)
-    - [Understanding stack tracing](#understanding-stack-tracing)
-    - [Three error handling strategies](#three-error-handling-strategies)
-  - [Namespaces](#namespaces)
-  - [Glossary](#glossary)
-  - [Variables](#variables)
-    - [Primitive types: numeric](#primitive-types-numeric)
-    - [Type casting](#type-casting)
-    - [Primitive types: strings](#primitive-types-strings)
-    - [Constants](#constants)
-<!--/TOC-->
 
-# First C# code
 
-## Introduction
+## First C# code
+
+### Introduction
 
 C# is a case-sensitive language.
 
@@ -82,7 +17,7 @@ C# is a case-sensitive language.
 Interpreting error messages is key:
 
 ```c#
-console.WriteLine("i like ice cream");
+console.WriteLine("hello world");
 ```
 ```terminal
 (1,1): error CS0103: The name 'console' does not exist in the current context
@@ -91,7 +26,7 @@ console.WriteLine("i like ice cream");
 ```mermaid
 graph LR
 
-1[Higher-level language] ---|Compilation| 2[Lower-level language]
+1["Higher-level language (human)"] ---|Compilation| 2["Lower-level language (machine)"]
 ```
 
 ```mermaid
@@ -102,11 +37,12 @@ graph LR
 
 | Term | Definition | Example |
 | --- | --- | --- |
-| literal string | data is output literally | `"hello world"` |
-| class | a class is an object, having methods live within it | `Console` |
-| method | each method has one job; they live within classes | `WriteLine()` |
+| class | A class is an object, having methods live within it. | `Console` |
+| accessor | Methods living within objects can be accessed this way. | `.` |
+| method | Each method has one job; they are invoked using parenthesis. | `WriteLine()` |
+| literal string | Data is output literally. | `"hello world"` |
 
-## Challenge 1: printing on console
+#### Challenge 1: Printing on console
 
 ```c#
 Console.WriteLine("This is the first line.");
@@ -118,25 +54,31 @@ This is the first line.
 This is the second line.This is the third line.
 ```
 
-## Variables
+### Variables
 
-### Data types
+#### Data types
 
-Data typing is a key characteristic of C#: designers believed it can lead to avoiding common bugs.
+C# is a strongly-typed language.
+
+Designers believed strict type declaration helped to avoid common bugs.
 
 | Data type | Use case | Example |
 | --- | --- | --- |
-| string | presentation or text manipulation | `string myString = "Hello";` |
-| char | presentation or text manipulation | `char myChar = 'A';` |
-| int | calculation | `int myInt = 10;` |
-| float | calculation (6-9 digits) | `float mySmallNumber = 3.14f;` |
-| double | calculation (15-17 digits; default in C#, no literal suffix needed) | `double myMediumNumber = 3.14;` |
-| decimal | calculation (28-29 digits) | `decimal myLargeNumber = 3.14m;` |
-| bool | evaluation | `bool myBool = true;` |
+| string | Presentation or text manipulation. | `string myString = "Hello";` |
+| char | Presentation or text manipulation. | `char myChar = 'A';` |
+| int | Calculation. | `int myInt = 10;` |
+| float | Calculation (6-9 digits). | `float mySmallNumber = 3.14f;` |
+| double | Calculation (15-17 digits; default in C#, no literal suffix needed). | `double myMediumNumber = 3.14;` |
+| decimal | Calculation (28-29 digits). | `decimal myLargeNumber = 3.14m;` |
+| bool | Evaluation. | `bool myBool = true;` |
 
-### Implicitly typed local variables
+Variables types are checked at compile time.
 
-Use the `var` keyword: it tells the compiler that data type is implied.
+If an operation on a variable is not compatible with its type, compilation will fail.
+
+#### Implicitly typed variables
+
+The `var` keyword tells the compiler that data type is implied.
 
 ```c#
 var message = "hello world";
@@ -144,11 +86,11 @@ var message = "hello world";
 
 You can use `var` when the data type is not known.
 
-However, it's best practice to always type your variables.
+However, it's best practice to always type your variables explicitly.
 
 `/!\` C# always attributes a data type to a variable, even if implicit.
 
-### Challenge 2: typed variables
+#### Challenge 2: typed variables
 
 ```c#
 string userName = "Bob";
@@ -195,7 +137,7 @@ Console.Write($@"C:\Output\{projectName}\Data");
 C:\Output\helloWorld\Data
 ```
 
-### Challenge 3: string interpolation
+#### Challenge 3: string interpolation
 
 ```c#
 string englishMessage = "View English output:";
@@ -228,7 +170,7 @@ int b = 4;
 double c = a / (double) b;
 ```
 
-### Challenge 4: operations
+#### Challenge 4: operations
 
 ```c#
 int fahrenheit = 94;
@@ -240,71 +182,178 @@ Console.Write($"The temperature is {Math.Round(celsius, 1)} Celsius.");
 The temperature is 34.4 Celsius.
 ```
 
-## Project 1 : calculate average and query list
+## Project 1 : Average calculator
+
+### Console application
+
+A `console application` is the simplest form of a C# program.
+
+It takes input and displays output at the console only.
 
 ```c#
-// grades
-int[] sophia = {93, 87, 98, 95, 100};
-int[] nicolas = {80, 83, 82, 88, 85};
-int[] zahirah = {84, 96, 73, 85, 79};
-int[] jeong = {90, 92, 98, 100, 97};
+public class AverageCalculator
+{   
+    // Properties.
+    public float? Average { get; private set; }
+    public string? LetterGrade { get; }
 
-// Averages
-float sophiaAverage = (float) sophia.Sum() / sophia.Length;
-float nicolasAverage = (float) nicolas.Sum() / nicolas.Length;
-float zahirahAverage = (float) zahirah.Sum() / zahirah.Length;
-float jeongAverage = (float) jeong.Sum() / jeong.Length;
+    // Constructor.
+    public AverageCalculator(int[] grades) 
+    { 
+        Average = (float) grades.Sum() / grades.Length;
 
-// Grading
-List<(int, int, string)> grades = new List<(int, int, string)> {
-    (97, 100, "A+"),
-    (93, 96, "A"),
-    (90, 92, "A-"),
-    (87, 89, "B+"),
-    (83, 86, "B")
-};
+        if (Average >= 97 && Average <= 100)
+        {
+            LetterGrade = "A+";
+        }
+        else if (Average >= 93 && Average <= 96)
+        {
+            LetterGrade = "A";
+        }
+        else if (Average >= 90 && Average <= 92)
+        {
+            LetterGrade = "A-";
+        }
+        else if (Average >= 87 && Average <= 89)
+        {
+            LetterGrade = "B+";
+        }
+        else if (Average >= 83 && Average <= 86)
+        {
+            LetterGrade = "B";
+        }
+    }
 
-// List with results
-List<(string, float, string)> results = new List<(string, float, string)> {
-    ("Sophia", sophiaAverage, grades.FirstOrDefault(g => sophiaAverage >= g.Item1 && sophiaAverage <= g.Item2).Item3),
-    ("Nicolas", nicolasAverage, grades.FirstOrDefault(g => nicolasAverage >= g.Item1 && nicolasAverage <= g.Item2).Item3),
-    ("Zahirah", zahirahAverage, grades.FirstOrDefault(g => zahirahAverage >= g.Item1 && zahirahAverage <= g.Item2).Item3),
-    ("Jeong", jeongAverage, grades.FirstOrDefault(g => jeongAverage >= g.Item1 && jeongAverage <= g.Item2).Item3),
-};
+    // Execution.
+    public static void Main(string[] args)
+    {
+        // Grades to convert.
+        List<(string, int[])> grades = new List<(string, int[])>()
+        {
+            ("Sophia", new int[] { 93, 87, 98, 95, 100 }),
+            ("Nicolas", new int[] { 80, 83, 82, 88, 85 }),
+            ("Zahirah", new int[] { 84, 96, 73, 85, 79 }),
+            ("Jeong", new int[] { 90, 92, 98, 100, 97 })
+        };
 
-Console.WriteLine(string.Join("\n", results));
+        Console.WriteLine($"Student\t\tAverage\t\tGrade\n");
+
+        foreach (var grade in grades)
+        {
+            var result = new AverageCalculator(grade.Item2);
+            Console.WriteLine($"{grade.Item1}\t\t{result.Average}\t\t{result.LetterGrade}");
+        }
+    }
+}
 ```
 
 ```terminal
-(Sophia, 94.6, A)
-(Nicolas, 83.6, B)
-(Zahirah, 83.4, B)
-(Jeong, 95.4, A)
+Student         Average         Grade
+
+Sophia          94,6            A
+Nicolas         83,6            B
+Zahirah         83,4            B
+Jeong           95,4            A
 ```
 
-## Project 2 : calculate GPA
+## Project 2 : GPA calculator
 
 ```c#
-List<(string, int, int)> finalGrades = new List<(string, int, int)> {
-("English 101", 4, 3),
-("Algebra 101", 3, 3),
-("Biology 101", 3, 4),
-("Computer Science 101", 3, 4),
-("Pyschology 101", 4, 3)
-};
+public class GpaCalculator
+{   
+    // Properties.
+    public float? Gpa { get; private set; }
 
-var credits = finalGrades.Select(g => g.Item2).ToArray();
-var grades = finalGrades.Select(g => g.Item3).ToArray();
+    // Constructor.
+    public GpaCalculator(List<(string, Course)> input)
+    {
+        var credits = input.Select(e => e.Item2.Credit).ToArray();
+        var grades = input.Select(e => e.Item2.Grade).ToArray();
 
-int[] results = new int[credits.Length];
-for (int i = 0; i < results.Length; i++) {
-    results[i] = credits[i] * grades[i];
+        int[] results = new int[credits.Length];
+
+        for (int i = 0; i < results.Length; i++)
+        {
+            results[i] = credits[i] * grades[i];
+        }
+
+        Gpa = results.Sum() / (float) credits.Sum();
+    }
+
+    // Support class.
+    public class Course
+    {
+        public int Credit { get; private set; }
+        public int Grade { get; private set; }
+
+        public Course(int credit, int grade)
+        {
+            Credit = credit;
+            Grade = grade;
+        }
+    }
+
+    // Execution.
+    public static void Main(string[] args)
+    {
+        // Grades to convert.
+        List<(string, Course)> finalGrades = new List<(string, Course)>
+        {
+            ("English 101", new Course(4, 3)),
+            ("Algebra 101", new Course(3, 3)),
+            ("Biology 101", new Course(3, 4)),
+            ("Computer Science 101", new Course(3, 4)),
+            ("Pyschology 101", new Course(4, 3))
+        };
+
+        float? result = new GpaCalculator(finalGrades).Gpa;
+        Console.WriteLine($"{result:F2}");
+    }
 }
+```
 
-float gpa = (results.Sum() / (float) credits.Sum());
-gpa = (float)Math.Round(gpa, 2);
+```terminal
+3,35
+```
 
-Console.Write(gpa);
+## Run simple C# applications
+
+An `IDE` (integrated development environment) is the developer's work toolkit.
+
+It supports the development process or `lifecycle`: 
+
+writing, testing, debugging, publishing and versioning code.
+
+Some IDEs support certain languages by default and others via extensions.
+
+### Runtime
+
+To run C# programs in an IDE, the .NET `runtime` is required.
+
+A runtime is a layer between a program and the operating system of the computer.
+
+It serves pre-built services, like a library, relieving the program from lower-level machine tasks like memory management, input/output (I/O) operations, etc.
+
+The program can then focus its resources on higher-level logic.
+
+A parallel can be drawn with APIs, which also serve pre-built code to programs, in this case routines or modules unrelated to execution.
+
+```mermaid
+graph LR
+
+Program -->|Runtime| 1[Operating system]
+Program -->|API| Library
+
+```
+
+### .NET
+
+`.NET` is a Microsoft general-purpose framework.
+
+### Create a console application
+
+```terminal
+dotnet new console -o ./CsharpProjects/TestProject
 ```
 
 # Exercism
@@ -822,6 +871,39 @@ v1.GetDescription();
 // => Runabout
 v2.GetDescription();
 // => Big Rig
+```
+
+## Collections
+
+```c#
+public static class Strain
+{
+    // Method Keep() can be used as an extension with keyword this: numbers.Keep().
+    // It takes in a function as an argument: number.Keep(e => e > 2).
+    // IEnumerable is an interface allowing to iterate over the input collection.
+    // <T> means any type is considered.
+    // predicate is a test run of the input function.
+    
+    // So, for each item of any type in the collection, if the result of the input function is true, then, include the item in the output collection.
+
+    public static IEnumerable<T> Keep<T>(this IEnumerable<T> collection, Func<T, bool> predicate)
+    {
+        foreach (T item in collection) {
+            if (predicate(item)) {
+                yield return item;
+            }
+        }
+    }
+
+    public static IEnumerable<T> Discard<T>(this IEnumerable<T> collection, Func<T, bool> predicate)
+    {
+        foreach (T item in collection) {
+            if (!predicate(item)) {
+                yield return item;
+            }
+        }
+    }
+}
 ```
 
 # Software craft
@@ -1620,6 +1702,64 @@ void logError(string message, string stackTrace) {
     }
 }
 ```
+
+## Multi-threading
+
+A thread is like an instance of a computer processor.
+
+Historically, computers ran programs using a single instance.
+
+Applications were single-threaded: instructions had to queue and were run sequentially.
+
+With time, multi-threads were introduced: multiple instances of the processor could now be created to run instructions concurrently.
+
+This improved performance, but added complexity, especially in scenarios where data is shared between instructions.
+
+``` mermaid
+graph TB
+
+subgraph multi-thread
+direction TB
+
+subgraph thread1
+direction TB
+4[instruction1] --> 5[instruction2]
+end
+
+subgraph thread2
+direction TB
+6[instruction3] --> 7[instruction4]
+end
+end
+
+subgraph single-thread
+direction TB
+0[instruction1] --> 1[instruction2]
+1 --> 2[instruction3]
+2 --> 3[instruction4]
+end
+```
+
+### Task
+
+Within this context, Task is a multi-threading handler used mainly for I/O (input/output) operations:
+
+- reading from the keyboard or a file
+- writing to the screen or a file
+- sending and receiving network packets
+
+It creates a new thread were a given action is set to run asynchronously.
+
+The action can be awaited if needed to ensure synchronicity.
+
+```c#
+public Task Dispose()
+{
+    Task.Run(() => File.Delete(FilePath));
+}
+```
+
+### Parallel
 
 ## Namespaces
 
