@@ -1,2 +1,14 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello C#!");
+﻿using Linq;
+
+public class Program
+{
+    public static string Reverse(string input)
+    {
+        return input;
+    }
+
+    public static void Main(args[])
+    {
+        Program.Reverse("test");
+    }
+}

@@ -2,6 +2,8 @@
 
 Source: [Microsoft Learn](https://learn.microsoft.com/en-gb/training/)
 
+Resource: [Microsoft documentation](https://learn.microsoft.com/en-us/dotnet/api/system)
+
 ## Table of contents
 
 
@@ -199,7 +201,7 @@ The temperature is 34.4 Celsius.
 
 ### Console application
 
-A `console application` is the simplest form of a C# program.
+A `console` application is the simplest form of a C# program.
 
 It takes input and displays output at the console only.
 
@@ -374,6 +376,14 @@ Program -->|API| Library
 
 `.NET` is a Microsoft general-purpose framework.
 
+```mermaid
+graph LR
+
+Create -->|Compile| Build
+Build -->|Just-in-time| Run
+
+```
+
 ### Create a console application (higher-level)
 
 ```terminal
@@ -522,6 +532,127 @@ dotnet run
 ```
 Hello C#!
 ```
+
+### .NET Class Library
+
+Following the computer science principle of `modularity`, C# offers libraries of functionality.
+
+These are prewritten collections of code.
+
+Collections are organized in classes, which contain invokable methods.
+
+```csharp
+System.Console.WriteLine("Hello World");
+
+// System: namespace.
+// Console: class.
+// WriteLine(): method.
+```
+
+In C#, data types are actually classes made available via the .NET library, with built-in methods.
+
+### Methods
+
+#### Stateful vs stateless
+
+`state` is "the collection of all values stored in memory at a specific moment in time".
+
+Stateless or `static` methods are independent of values stored in memory.
+
+Stateful or `instance` methods are dependent on values stored in memory.
+
+Stateful methods use fields (variables) to track state.
+
+```csharp
+Random dice = new Random(); // Stateful method.
+int roll = dice.Next(1, 7);
+Console.WriteLine(roll); // Stateless method.
+```
+
+Classes can contain both stateless and stateful methods.
+
+However, invoking stateful methods requires object `instantiation`.
+
+#### Object instantiation
+
+```csharp
+Random dice = new Random();
+
+// new: creates a new instance of the Random class.
+```
+
+Instantiation is related to memory (statefulness).
+
+The `new` keyword stores the object in memory at a large enough address.
+
+Whenever a stateful method is invoked without object instantiation, compilation fails:
+
+```csharp
+int result = Random.Next();
+```
+
+```terminal
+(1,14): error CS0120: An object reference is required for the non-static field, method, or property 'Random.Next()'
+```
+
+#### Void vs non-void
+
+`void` methods end "quietly".
+
+Non-void methods return a value that can be stored in a variable.
+
+```csharp
+int roll = dice.Next(1, 7); // Return value stored in roll.
+```
+
+```csharp
+public static string Reverse(string input) // Parameters.
+{
+    return new string(input.ToCharArray().Reverse().ToArray());
+}
+
+public static void Main(string[] args)
+{
+    string result = Reverse("Hello World"); // Arguments.
+    Console.WriteLine(result);
+}
+```
+
+```terminal
+dlroW olleH
+```
+
+#### Signature vs overloaded
+
+The `signature` of a method is the number and data types of the parameters it accepts as input.
+
+A same method can be `overloaded` to hold several signatures (implementations).
+
+This provides more granular control:
+
+```csharp
+Random dice = new Random();
+Console.WriteLine(dice.Next()); // 662_251_688; a value up to 2_147_483_647.
+Console.WriteLine(dice.Next(101)); // 66; a value up to 100.
+Console.WriteLine(dice.Next(4, 11)); // 6; a value between 4 and 10.
+```
+
+#### Challenge 4: Math class method call
+
+```csharp
+public static void Main(string[] args)
+{
+    int firstValue = 500;
+    int secondValue = 600;
+    int largerValue = Math.Max(firstValue, secondValue);
+
+    Console.WriteLine(largerValue);
+}
+```
+
+### Decision logic
+
+
 
 # Exercism
 
