@@ -31,7 +31,7 @@ Computers can't understand it directly.
 
 As a result, a compiler translates its syntax at build time into Intermediate Language (IL).
 
-This Intermediate Language is then translated at runtime into machine code.
+This Intermediate Language is then translated at run time into machine code.
 
 Compilers don't like errors and act as a safeguard.
 
@@ -652,7 +652,152 @@ public static void Main(string[] args)
 
 ### Decision logic
 
+#### Code branching
 
+```csharp
+if (condition)
+{
+    // Code executed by runtime.
+}
+
+if (condition || condition && condition) // Compound condition.
+{
+    // Code executed by runtime.
+}
+```
+
+```csharp
+if (condition)
+{
+    if (condition || condition && condition) // Nested compound condition.
+    {
+        // Code executed by runtime.
+    }
+}
+```
+
+```csharp
+if (condition)
+{
+    // Code.
+}
+else if (condition) // Improved branching options.
+{
+    // Code.
+}
+else if (condition)
+{
+    // Code.
+}
+else
+{
+    // Code.
+}
+```
+
+#### Challenge 5: renewal rate of subscriptions
+
+```csharp
+public static void Main(string[] args)
+{
+    Random random = new Random();
+    int daysUntilExpiration = random.Next(12);
+    int discountPercentage = 0;
+
+    if (daysUntilExpiration == 0)
+    {
+        Console.WriteLine("Your subscription has expired.");
+    }
+    else if (daysUntilExpiration == 1)
+    {
+        Console.WriteLine("Your subscription expires within a day!");
+        discountPercentage = 20;
+    }
+    else if (daysUntilExpiration <= 5)
+    {
+        Console.WriteLine($"Your subscription expires in {daysUntilExpiration} days.");
+        discountPercentage = 10;
+    }
+    else if (daysUntilExpiration <= 10)
+    {
+        Console.WriteLine("Your subscription will expire soon. Renew now!");
+    }
+
+    if (discountPercentage > 0)
+    {
+        Console.WriteLine($"Renew now and save {discountPercentage}%!");
+    }
+}
+```
+
+### Arrays
+
+A single variable that can hold many related values.
+
+It uses a zero-based index to access elements.
+
+```csharp
+string[] array = new string[3]; // New array declaration (address in memory).
+
+array[0] = "hello"; // Value assignment.
+array[1] = "world";
+array[2] = "hello";
+
+Console.WriteLine($"First: {array[0]}"); // Value retrieval.
+
+array[0] = "haha"; // Value reassignment.
+
+string[] array = { "hello", "world", "hello" }; // Assignment at declaration.
+
+array.Length; // 3
+```
+
+#### Iteration using foreach
+
+```csharp
+int[] inventory = { 200, 450, 700, 175, 250 };
+int sum = 0;
+foreach (int entry in inventory)
+{
+    sum += entry;
+}
+Console.Write(sum); // 1775
+```
+
+```csharp
+int[] inventory = { 200, 450, 700, 175, 250 };
+int sum = 0;
+int bin = 0;
+foreach (int entry in inventory)
+{
+    sum += entry;
+    bin++;
+    Console.WriteLine($"Bin {bin} = {entry} items (Running total: {sum})");
+}
+Console.WriteLine($"We have {sum} items in inventory.");
+```
+
+```terminal
+Bin 1 = 200 items (Running total: 200)
+Bin 2 = 450 items (Running total: 650)
+Bin 3 = 700 items (Running total: 1350)
+Bin 4 = 175 items (Running total: 1525)
+Bin 5 = 250 items (Running total: 1775)
+We have 1775 items in inventory.
+```
+
+#### Challenge 6: fraudulent orders
+
+```csharp
+string[] array = { "B123", "C234", "A345", "C15", "B177", "G3003", "C235", "B179" };
+foreach (string entry in array)
+{
+    if (entry.StartsWith("B"))
+    {
+        Console.WriteLine(entry);
+    }
+}
+```
 
 # Exercism
 
