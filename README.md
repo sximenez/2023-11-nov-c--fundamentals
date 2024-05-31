@@ -799,6 +799,278 @@ foreach (string entry in array)
 }
 ```
 
+### Naming conventions
+
+[C# conventions reference](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/identifier-names)
+
+```csharp
+string myString // camelCase; no need to include the data type in the name (strMyString).
+bool processComplete // Descriptive (kind of data the variable will hold).
+int orderAmount // Avoid contractions like int ordAmt.
+```
+
+### Commenting
+
+Three main uses: adding notes, temporarily removing code for testing purposes, and identifying tasks ("TODO").
+
+```csharp
+// Typical comment.
+
+// int myNumber = 0;
+
+// Comment three or more lines.
+
+/*
+string firstName = "Bob";
+int widgetsPurchased = 7;
+Console.WriteLine($"{firstName} purchased {widgetsPurchased} widgets.");
+*/
+```
+
+Commenting should be reserved for high-level concepts, not operational descriptions of a code snippet.
+
+```csharp
+// Example of low-quality comments.
+// Difficult to read.
+
+Random random = new Random();
+string[] orderIDs = new string[5];
+// Loop through each blank orderID
+for (int i = 0; i < orderIDs.Length; i++)
+{
+    // Get a random value that equates to ASCII letters A through E
+    int prefixValue = random.Next(65, 70);
+    // Convert the random value into a char, then a string
+    string prefix = Convert.ToChar(prefixValue).ToString();
+    // Create a random number, pad with zeroes
+    string suffix = random.Next(1, 1000).ToString("000");
+    // Combine the prefix and suffix together, then assign to current OrderID
+    orderIDs[i] = prefix + suffix;
+}
+// Print out each orderID
+foreach (var orderID in orderIDs)
+{
+    Console.WriteLine(orderID);
+}
+```
+
+```csharp
+// Example of high-level comment.
+
+/*
+  The following code creates five random OrderIDs
+  to test the fraud detection process. OrderIDs 
+  consist of a letter from A to E, and a three
+  digit number. Ex. A123.
+*/
+
+Random random = new Random();
+string[] orderIDs = new string[5];
+
+for (int i = 0; i < orderIDs.Length; i++)
+{
+    int prefixValue = random.Next(65, 70);
+    string prefix = Convert.ToChar(prefixValue).ToString();
+    string suffix = random.Next(1, 1000).ToString("000");
+
+    orderIDs[i] = prefix + suffix;
+}
+
+foreach (var orderID in orderIDs)
+{
+    Console.WriteLine(orderID);
+}
+```
+
+Comments are subjective; the most important thing is to write clear and easy to read code.
+
+Never trust comments as they could be outdated.
+
+### Whitespacing
+
+Also subjective; the most important thing is code clarity.
+
+Finding a style and sticking to it.
+
+```csharp
+// Whitespace example.
+
+Random dice = new Random(); // Space after a class declaration.
+
+int roll1 = dice.Next(1, 7); // Variable grouping.
+int roll2 = dice.Next(1, 7);
+int roll3 = dice.Next(1, 7);
+
+int total = roll1 + roll2 + roll3; // Different variable.
+Console.WriteLine($"Dice roll: {roll1} + {roll2} + {roll3} = {total}");
+
+if ((roll1 == roll2) || (roll2 == roll3) || (roll1 == roll3)) // if-else block.
+{
+    if ((roll1 == roll2) && (roll2 == roll3)) 
+    {
+        Console.WriteLine("You rolled triples!  +6 bonus to total!");
+        total += 6; 
+    } 
+    else 
+    {
+        Console.WriteLine("You rolled doubles!  +2 bonus to total!");
+        total += 2;
+    }
+}
+```
+
+#### Challenge 7: code readability
+
+```csharp
+public static void Main()
+{
+    /*
+    The purpose of this code is
+    to reverse a string and 
+    count the number of times 
+    a particular character appears. 
+    */
+
+    string input = "The quick brown fox jumps over the lazy dog.";
+
+    char[] inputSplit = str.ToCharArray();
+    Array.Reverse(inputSplit);
+
+    int letterCount = 0;
+    foreach (char letter in inputSplit)
+    {
+        if (letter == 'o')
+        {
+            letterCount++;
+        }
+    }
+
+    string output = new String(inputSplit);
+
+    Console.WriteLine(output);
+    Console.WriteLine($"'o' appears {letterCount} times.");
+}
+```
+
+```terminal
+.god yzal eht revo spmuj xof nworb kciuq ehT
+'o' appears 4 times.
+```
+
+### Guided project: arrays iteration
+
+```csharp
+public class Program
+{
+    private class Student
+    {
+        public string Name { get; set; }
+        public int[] Grades { get; set; }
+        public decimal Result { get; set; }
+        public string LetterGrade { get; set; }
+        public List<(string, int, int)> GradesReference { get; private set; }
+
+        public Student(string name, int[] grades)
+        {
+            Name = name;
+            Grades = grades;
+            Result = 0;
+            LetterGrade = string.Empty;
+            GradesReference = new List<(string, int, int)>()
+            {
+                ("A",93,96),
+                ("A-",90,92),
+                ("A+",97,100),
+                ("B",83,86),
+                ("B-",80,82),
+                ("B+",87,89),
+                ("C",73,76),
+                ("C-",70,72),
+                ("C+",77,79),
+                ("D",63,66),
+                ("D-",60,62),
+                ("D+",67,69),
+                ("F",0,59)
+            };
+        }
+    }
+
+    public static void Main(string[] args)
+    {
+        List<Student> students = new List<Student>
+        {
+            new Student("Sophia", new int[] { 90, 86, 87, 98, 100, 94, 90 }),
+            new Student("Andrew", new int[] { 92, 89, 81, 96, 90, 89 }),
+            new Student("Emma", new int[] { 90, 85, 87, 98, 68, 89, 89, 89 }),
+            new Student("Logan", new int[] { 90, 95, 87, 88, 96, 96 }),
+            new Student("Becky", new int[] { 92, 91, 90, 91, 92, 92, 92 }),
+            new Student("Chris", new int[] { 84, 86, 88, 90, 92, 94, 96, 98 }),
+            new Student("Eric", new int[] { 80, 90, 100, 80, 90, 100, 80, 90 }),
+            new Student("Gregor", new int[] { 91, 91, 91, 91, 91, 91, 91 })
+    };
+
+        Console.WriteLine("Student\t\tGrade\n");
+
+        int counter = 0;
+        foreach (var student in students)
+        {
+            foreach (int grade in student.Grades)
+            {
+                if (counter < 5)
+                {
+                    student.Result += grade;
+                    counter++;
+                }
+                else
+                {
+                    student.Result += grade / 10;
+                    counter++;
+                }
+            }
+
+
+            student.Result /= 5;
+            decimal roundedResult = Math.Round(student.Result, 0);
+
+            foreach (var entry in student.GradesReference)
+            {
+                if (roundedResult >= entry.Item2 && roundedResult <= entry.Item3)
+                {
+                    student.LetterGrade = entry.Item1;
+                    break;
+                }
+            }
+
+            Console.WriteLine($"{student.Name}:\t\t{student.Result}\t{student.LetterGrade}");
+            counter = 0;
+        }
+
+        Console.WriteLine();
+        Console.WriteLine("Press the Enter key to continue");
+        Console.ReadLine();
+    }
+}
+```
+
+```terminal
+Student         Grade
+
+Sophia:         95,8    A
+Andrew:         91,2    A-
+Emma:           90,4    A-
+Logan:          93      A
+Becky:          94,8    A
+Chris:          93,4    A
+Eric:           93,4    A
+Gregor:         94,6    A
+
+Press the Enter key to continue
+```
+
+### Updating existing code
+
+
+
 # Exercism
 
 ## Basics
