@@ -7,7 +7,8 @@ Resource: [Microsoft documentation](https://learn.microsoft.com/en-us/dotnet/api
 ## Table of contents
 
 <!--TOC-->
-    - [s don't like error](#s-dont-like-error)
+  - [## First C# c](#-first-c-c)
+    - [don't like errors](#dont-like-errors)
 <!--/TOC-->
 
 ## First C# code
@@ -1216,7 +1217,156 @@ Set contains 42
 Total: 108
 ```
 
+### Booleans
 
+True or false decision logic (pathways the code takes in a program).
+
+#### Expression vs statement
+
+"An `expression` is any combination of values (literal or variable), operators and methods that return a single value".
+
+"A `statement` is a complete instruction in C#, composed of one or more expressions".
+
+```csharp
+if (input == "hello")
+
+// if: statement.
+// (input == "hello"): expression.
+```
+
+#### Evaluation operators
+
+| Operator | Description |
+| --- | --- |
+| `>` | greater than |
+| `<` | less than |
+| `>=` | greater than or equal to |
+| `<=` | less than or equal to |
+| `==` | equal to |
+| `!=` | not equal to |
+
+Some built-in classes like `String` contain methods evaluating booleans: `Contains()`, `StartsWith()`, `EndsWith()`.
+
+### Inequality operator vs logical negation
+
+```csharp
+x != y // Operands are not equal.
+!(x == y) // Expression is not true.
+```
+
+### Conditional (ternary) operator
+
+"[R]eturn a value that's based on a binary condition".
+
+```csharp
+<evaluate this condition> ? <if condition is true, return this value> : <if condition is false, return this value>
+```
+
+```csharp
+int saleAmount = 1001;
+int discount = saleAmount > 1000 ? 100 : 50;
+Console.WriteLine($"Discount: {discount}");
+```
+
+```csharp
+int saleAmount = 1001;
+// int discount = saleAmount > 1000 ? 100 : 50;
+
+Console.WriteLine($"Discount: {(saleAmount > 1000 ? 100 : 50)}"); // Inline.
+```
+
+#### Challenge 10: Ternary
+
+```csharp
+Random random = new Random();
+int result = random.Next(0, 2);
+Console.WriteLine(result == 0 ? "heads" : "tails");
+```
+
+### Challenge 11: Decision logic
+
+```csharp
+public class User
+{
+    public string Permission { get; set; }
+    public int Level { get; set; }
+
+    public User(string permission, int level)
+    {
+        Permission = permission;
+        Level = level;
+    }
+}
+
+public static void GetAccess(User user)
+{
+    if (user.Permission == "Admin" && user.Level > 55)
+    {
+        Console.WriteLine("Welcome, Super Admin user.");
+    }
+    else if (user.Permission == "Admin" && user.Level <= 55)
+    {
+        Console.WriteLine("Welcome, Admin user.");
+    }
+    else if (user.Permission == "Manager" && user.Level >= 20)
+    {
+        Console.WriteLine("Contact an Admin for access.");
+    }
+    else if (user.Permission == "Manager" && user.Level < 20)
+    {
+        Console.WriteLine("You do not have sufficient privileges.");
+    }
+    else if (user.Permission != "Manager" || user.Permission != "Admin")
+    {
+        Console.WriteLine("You do not have sufficient privileges.");
+    }
+}
+
+public static void Main()
+{
+    Console.WriteLine($"User permission\t\tUser level\t\tMessage\n");
+    for (int i = 0; i < 10; i++)
+    {
+        Random permission = new Random();
+        string permissionString = (permission.Next(0, 3) == 0 ? "Admin" : permission.Next(0, 3) == 1 ? "Manager" : "Other");
+
+        Random level = new Random();
+
+        User user = new User(permissionString, level.Next(0, 101));
+        Console.Write($"{user.Permission}\t\t\t{user.Level}\t\t\t");
+        GetAccess(user);
+    }
+}
+```
+
+```terminal
+User permission         User level              Message
+
+Admin                   90                      Welcome, Super Admin user.
+Other                   97                      You do not have sufficient privileges.
+Admin                   53                      Welcome, Admin user.
+Other                   58                      You do not have sufficient privileges.
+Admin                   98                      Welcome, Super Admin user.
+Manager                 51                      Contact an Admin for access.
+Manager                 1                       You do not have sufficient privileges.
+Other                   60                      You do not have sufficient privileges.
+Other                   10                      You do not have sufficient privileges.
+Manager                 51                      Contact an Admin for access.
+```
+
+### Switch
+
+An alternative to `if-else` branching logic.
+
+A value (switch expression) is evaluated against a list of possible outcomes (case patterns), from top to bottom.
+
+Case patterns are boolean expressions.
+
+A switch is best suited for simple evaluation against simple cases (two lines of code at most).
+
+```csharp
+
+```
 
 # Exercism
 
