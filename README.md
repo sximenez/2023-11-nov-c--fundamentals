@@ -7,11 +7,11 @@ Resource: [Microsoft documentation](https://learn.microsoft.com/en-us/dotnet/api
 ## Table of contents
 
 <!--TOC-->
-  - [## First C# c](#-first-c-c)
-    - [don't like errors](#dont-like-errors)
+  - [## Module 1: B](#-module-1-b)
+    - [Compilers don't li](#compilers-dont-li)
 <!--/TOC-->
 
-## First C# code
+## Module 1: Basic C# code
 
 ### Introduction
 
@@ -60,18 +60,6 @@ graph LR
 | method | Each method has one job; they are invoked using parenthesis. | `WriteLine()` |
 | literal string | Data is output literally. | `"hello world"` |
 
-#### Challenge 1: Printing on console
-
-```c#
-Console.WriteLine("This is the first line.");
-Console.Write("This is the second line.");
-Console.Write("This is the third line.");
-```
-```terminal
-This is the first line.
-This is the second line.This is the third line.
-```
-
 ### Variables
 
 #### Data types
@@ -108,22 +96,6 @@ However, it's best practice to always type your variables explicitly.
 
 `/!\` C# always attributes a data type to a variable, even if implicit.
 
-#### Challenge 2: Typed variables
-
-```c#
-string userName = "Bob";
-int messageNumber = 3;
-float temperature = 34.4f;
-
-Console.WriteLine($"Hello, {userName}!");
-Console.Write($"You have {messageNumber} messages in your inbox. The temperature is {temperature} celsius.");
-```
-
-```terminal
-Hello, Bob!
-You have 3 messages in your inbox. The temperature is 34.4 celsius.
-```
-
 ### Character escape sequences
 
 | Sequence | Description |
@@ -155,6 +127,46 @@ Console.Write($@"C:\Output\{projectName}\Data");
 C:\Output\helloWorld\Data
 ```
 
+### Type casting
+
+Make a variable **pretend** to be a different type (within a sort of computed calculation):
+
+```c#
+int a = 10;
+int b = 4;
+double c = a / (double) b;
+```
+
+### Practice
+
+#### Challenge 1: Printing on console
+
+```c#
+Console.WriteLine("This is the first line.");
+Console.Write("This is the second line.");
+Console.Write("This is the third line.");
+```
+```terminal
+This is the first line.
+This is the second line.This is the third line.
+```
+
+#### Challenge 2: Typed variables
+
+```c#
+string userName = "Bob";
+int messageNumber = 3;
+float temperature = 34.4f;
+
+Console.WriteLine($"Hello, {userName}!");
+Console.Write($"You have {messageNumber} messages in your inbox. The temperature is {temperature} celsius.");
+```
+
+```terminal
+Hello, Bob!
+You have 3 messages in your inbox. The temperature is 34.4 celsius.
+```
+
 #### Challenge 3: String interpolation
 
 ```c#
@@ -178,16 +190,6 @@ View English output:
 	c:\Exercise\ACME\ru-RU\data.txt
 ```
 
-### Type casting
-
-Make a variable **pretend** to be a different type (within a sort of computed calculation):
-
-```c#
-int a = 10;
-int b = 4;
-double c = a / (double) b;
-```
-
 #### Challenge 4: Operations
 
 ```c#
@@ -200,9 +202,9 @@ Console.Write($"The temperature is {Math.Round(celsius, 1)} Celsius.");
 The temperature is 34.4 Celsius.
 ```
 
-## Project 1 : Average calculator
+#### Project 1 : Average calculator
 
-### Console application
+##### Console application
 
 A `console` application is the simplest form of a C# program.
 
@@ -274,7 +276,7 @@ Zahirah         83,4            B
 Jeong           95,4            A
 ```
 
-## Project 2 : GPA calculator
+#### Project 2 : GPA calculator
 
 ```c#
 public class GpaCalculator
@@ -334,7 +336,7 @@ public class GpaCalculator
 3,35
 ```
 
-## Simple console applications
+## Module 2: Simple console applications
 
 An `IDE` (integrated development environment) is the developer's work toolkit.
 
@@ -640,19 +642,6 @@ Console.WriteLine(dice.Next(101)); // 66; a value up to 100.
 Console.WriteLine(dice.Next(4, 11)); // 6; a value between 4 and 10.
 ```
 
-#### Challenge 5: Method call
-
-```csharp
-public static void Main(string[] args)
-{
-    int firstValue = 500;
-    int secondValue = 600;
-    int largerValue = Math.Max(firstValue, secondValue);
-
-    Console.WriteLine(largerValue);
-}
-```
-
 ### Decision logic
 
 #### Code branching
@@ -695,41 +684,6 @@ else if (condition)
 else
 {
     // Code.
-}
-```
-
-#### Challenge 6: if-else block
-
-```csharp
-public static void Main(string[] args)
-{
-    Random random = new Random();
-    int daysUntilExpiration = random.Next(12);
-    int discountPercentage = 0;
-
-    if (daysUntilExpiration == 0)
-    {
-        Console.WriteLine("Your subscription has expired.");
-    }
-    else if (daysUntilExpiration == 1)
-    {
-        Console.WriteLine("Your subscription expires within a day!");
-        discountPercentage = 20;
-    }
-    else if (daysUntilExpiration <= 5)
-    {
-        Console.WriteLine($"Your subscription expires in {daysUntilExpiration} days.");
-        discountPercentage = 10;
-    }
-    else if (daysUntilExpiration <= 10)
-    {
-        Console.WriteLine("Your subscription will expire soon. Renew now!");
-    }
-
-    if (discountPercentage > 0)
-    {
-        Console.WriteLine($"Renew now and save {discountPercentage}%!");
-    }
 }
 ```
 
@@ -787,19 +741,6 @@ Bin 3 = 700 items (Running total: 1350)
 Bin 4 = 175 items (Running total: 1525)
 Bin 5 = 250 items (Running total: 1775)
 We have 1775 items in inventory.
-```
-
-#### Challenge 7: foreach  loop
-
-```csharp
-string[] array = { "B123", "C234", "A345", "C15", "B177", "G3003", "C235", "B179" };
-foreach (string entry in array)
-{
-    if (entry.StartsWith("B"))
-    {
-        Console.WriteLine(entry);
-    }
-}
 ```
 
 ### Naming conventions
@@ -922,6 +863,69 @@ if ((roll1 == roll2) || (roll2 == roll3) || (roll1 == roll3)) // if-else block.
 }
 ```
 
+### Practice
+
+#### Challenge 5: Method call
+
+```csharp
+public static void Main(string[] args)
+{
+    int firstValue = 500;
+    int secondValue = 600;
+    int largerValue = Math.Max(firstValue, secondValue);
+
+    Console.WriteLine(largerValue);
+}
+```
+
+#### Challenge 6: if-else block
+
+```csharp
+public static void Main(string[] args)
+{
+    Random random = new Random();
+    int daysUntilExpiration = random.Next(12);
+    int discountPercentage = 0;
+
+    if (daysUntilExpiration == 0)
+    {
+        Console.WriteLine("Your subscription has expired.");
+    }
+    else if (daysUntilExpiration == 1)
+    {
+        Console.WriteLine("Your subscription expires within a day!");
+        discountPercentage = 20;
+    }
+    else if (daysUntilExpiration <= 5)
+    {
+        Console.WriteLine($"Your subscription expires in {daysUntilExpiration} days.");
+        discountPercentage = 10;
+    }
+    else if (daysUntilExpiration <= 10)
+    {
+        Console.WriteLine("Your subscription will expire soon. Renew now!");
+    }
+
+    if (discountPercentage > 0)
+    {
+        Console.WriteLine($"Renew now and save {discountPercentage}%!");
+    }
+}
+```
+
+#### Challenge 7: foreach  loop
+
+```csharp
+string[] array = { "B123", "C234", "A345", "C15", "B177", "G3003", "C235", "B179" };
+foreach (string entry in array)
+{
+    if (entry.StartsWith("B"))
+    {
+        Console.WriteLine(entry);
+    }
+}
+```
+
 #### Challenge 8: Code readability
 
 ```csharp
@@ -960,7 +964,7 @@ Hello World
 'l' appears 3 times.
 ```
 
-## Project 3: Student grade calculator
+#### Project 3: Student grade calculator
 
 ```csharp
 public class Program
@@ -1079,7 +1083,7 @@ Logan:          91,2            93,12   A       96 (1,92pts)
 Press the Enter key to continue
 ```
 
-## Console application logic
+## Module 3: Console application logic
 
 ### Variable scope
 
@@ -1365,7 +1369,350 @@ Case patterns are boolean expressions.
 A switch is best suited for simple evaluation against simple cases (two lines of code at most).
 
 ```csharp
+public static string[] GetTitle(int level)
+{
+    Random random = new Random();
+    string[] employees = { "John Smith", "John Doe", "Hello World" };
 
+    int index = random.Next(employees.Length);
+    string employee = employees[index];
+
+    string title = string.Empty;
+
+    switch (level)
+    {
+        case 10:
+            title = "Senior Associate";
+            break; // Avoid checking other cases.
+
+        case 9: // Multiple labeling.
+        case 8:
+        case 7:
+            title = "Manager";
+            break;
+
+        case 6:
+            title = "Senior Manager";
+            break;
+
+        default: // Choice when no other condition is met.
+            title = "Associate";
+            break;
+    }
+
+    return new string[] { employee, title };
+}
+
+public static void Main()
+{
+    Console.WriteLine($"Employee name\t\tUser title\n");
+    for (int i = 0; i < 10; i++)
+    {
+        Random level = new Random();
+        string[] result = GetTitle(level.Next(0, 11));
+        Console.WriteLine($"{result[0]}\t\t{result[1]}");
+    }
+}
+```
+
+```terminal
+Employee name           User title
+
+John Smith              Manager
+John Smith              Associate
+Hello World             Senior Manager
+John Smith              Associate
+John Smith              Associate
+John Smith              Associate
+Hello World             Associate
+Hello World             Senior Manager
+John Doe                Associate
+Hello World             Associate
+```
+
+#### Challenge 11: rewrite if-else-if into switch construct
+
+```csharp
+public static string[] IfElseIfIntoSwitch()
+{
+    // SKU = Stock Keeping Unit. 
+    // SKU value format: <product #>-<2-letter color code>-<size code>
+    string sku = "01-MN-L";
+
+    string[] product = sku.Split('-');
+
+    string type = string.Empty;
+    string color = string.Empty;
+    string size = string.Empty;
+
+    switch (product[0])
+    {
+        case "01":
+            type = "Sweat shirt";
+            break;
+        case "02":
+            type = "T-Shirt";
+            break;
+        case "03":
+            type = "Sweat pants";
+            break;
+        default:
+            type = "Other";
+            break;
+    }
+
+    switch (product[1])
+    {
+        case "BL":
+            color = "Black";
+            break;
+        case "MN":
+            color = "Maroon";
+            break;
+        default:
+            color = "White";
+            break;
+    }
+
+    switch (product[2])
+    {
+        case "S":
+            size = "Small";
+            break;
+        case "M":
+            size = "Medium";
+            break;
+        case "L":
+            size = "Large";
+            break;
+        default:
+            size = "One Size Fits All";
+            break;
+    }
+
+    return new string[] { sku, type, color, size };
+}
+```
+
+```terminal
+01-MN-L, Sweat shirt, Maroon, Large
+```
+
+### Iteration using for
+
+A `foreach` loop iterates once over each item in a sequence of data (array, collection).
+
+A `while` loop iterates over a block of code until a condition is met.
+
+A `for` loop provides more granular control:
+
+```csharp
+for (int i = 0; i < 10; i++)
+{
+    Console.WriteLine(i);
+}
+
+// for: keyword.
+// int i = 0: initializer.
+// i < 10: completion condition.
+// i++: action after each iteration.
+/*
+{
+    Console.WriteLine(i); // Code block.
+}
+*/
+```
+
+```csharp
+string[] names = { "Alex", "Eddie", "David", "Michael" };
+foreach (var name in names)
+{
+    // Can't reassign value using foreach:
+    if (name == "David")
+    { 
+        name = "Sammy";
+    }
+}
+```
+
+```csharp
+string[] names = { "Alex", "Eddie", "David", "Michael" };
+for (int i = 0; i < names.Length; i++)
+{
+    if (names[i] == "David")
+    {
+        names[i] = "Sammy";
+    }
+}
+```
+
+#### Challenge 12: FizzBuzz
+
+```csharp
+string output = string.Empty;
+
+for (int i = 1; i < 101; i++)
+{
+    bool isDivisibleBy3 = i % 3 == 0;
+    bool isDivisibleBy5 = i % 5 == 0;
+
+    if (isDivisibleBy3 && isDivisibleBy5)
+    {
+        output = $"{i} - FizzBuzz";
+    }
+    else if (isDivisibleBy5)
+    {
+        output = $"{i} - Buzz";
+    }
+    else if (isDivisibleBy3)
+    {
+        output = $"{i} - Fizz";
+    }
+    else
+    {
+        output = $"{i}";
+    }
+
+    Console.WriteLine(output);
+}
+```
+
+```terminal
+1
+2
+3 - Fizz
+4
+5 - Buzz
+6 - Fizz
+7
+8
+9 - Fizz
+10 - Buzz
+11
+12 - Fizz
+13
+14
+15 - FizzBuzz
+...
+```
+
+### Iteration using do-while and while
+
+A `do-while` statement executes at least once, 
+
+whereas a `while` statement executes only if the condition is met:
+
+```csharp
+do
+{
+    // Code here executes at least once.
+} while (true);
+```
+
+```csharp
+Random random = new Random();
+int number = 0;
+
+do
+{
+    number = random.Next(0, 11);
+    Console.WriteLine(number);
+} while (number != 7);
+```
+
+Think of it as an iterative statement with an exit condition.
+
+Without an exit condition, `while` can get into an infinite loop.
+
+```csharp
+Random random = new Random();
+int number = 0;
+
+while (number != 9)
+{
+    Console.WriteLine(number);
+    number = random.Next(0, 11);
+}
+Console.WriteLine($"Last number: {number}");
+```
+
+```terminal
+0
+6
+8
+10
+8
+6
+Last number: 9
+```
+
+`continue` allows more granular control within the loop:
+
+```csharp
+Random random = new Random();
+int current = 0;
+
+do
+{
+    current = random.Next(1, 11);
+
+    if (current >= 8)
+    {
+        continue; // Values greater than 7 will never be output.
+    }
+
+    Console.WriteLine(current);
+} while (current != 7); // Exit condition.
+```
+
+#### Challenge 14: Role playing game
+
+```csharp
+public class Player
+{
+    public string Name { get; private set; }
+    public int Health { get; set; }
+
+    public Player(string name, int health)
+    {
+        Name = name;
+        Health = health;
+    }
+}
+
+public static void RolePlayingGame()
+{
+    Player hero = new Player("Hero", 20);
+    Player monster = new Player("Monster", 20);
+    int attack;
+
+    do
+    {
+        attack = new Random().Next(1, 11);
+        monster.Health -= attack;
+        Console.WriteLine($"{hero.Name} has attacked {monster.Name} by {attack}: {monster.Name}'s health is {(monster.Health <= 0 ? 0 : monster.Health)}");
+
+        if (monster.Health <= 0 || hero.Health <= 0)
+        {
+            break;
+        }
+
+        attack = new Random().Next(1, 11);
+        hero.Health -= attack;
+        Console.WriteLine($"{monster.Name} has attacked {hero.Name} by {attack}: {hero.Name}'s health is {(hero.Health <= 0 ? 0 : hero.Health)}");
+
+    } while (hero.Health > 0 && monster.Health > 0);
+    Console.WriteLine(hero.Health > monster.Health ? $"{hero.Name} wins!" : $"{monster.Name} wins!");
+}
+```
+
+```terminal
+Hero has attacked Monster by 3: Monster's health is 17
+Monster has attacked Hero by 8: Hero's health is 12
+Hero has attacked Monster by 9: Monster's health is 8
+Monster has attacked Hero by 10: Hero's health is 2
+Hero has attacked Monster by 10: Monster's health is 0
+Hero wins!
 ```
 
 # Exercism
