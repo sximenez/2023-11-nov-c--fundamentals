@@ -1,4 +1,7 @@
-﻿public class Program
+﻿using System.Reflection;
+using System.Text;
+
+public class Program
 {
     public static void GetNumberOfTimesALetterAppearsInText(string input, char lookUpLetter)
     {
@@ -356,35 +359,163 @@
     public static void IntegerInput()
     {
         string? input;
-        bool validEntry = false;
+        bool validEntry = false; // Exit condition.
 
-        Console.WriteLine("Please enter a number between 5 and 10:");
+        Console.WriteLine("Enter an integer value between 5 and 10:");
 
         do
         {
             input = Console.ReadLine();
 
-            if (!string.IsNullOrEmpty(input))
+            if (int.TryParse(input, out int output))
             {
-
-                if (int.TryParse(input, out (int)input)) {
-                    Console.WriteLine(input);
+                if (output >= 5 && output <= 10)
+                {
+                    validEntry = true;
+                    Console.WriteLine($"Your input value ({output}) has been accepted.");
                 }
-
-                //if (output >= 5 && output <= 10)
-                //{
-                //    Console.WriteLine($"Your input is valid: {output}");
-                //}
-                //else
-                //{
-                //    Console.WriteLine("Your input is a number, but not between 5 and 10. Try again:");
-                //}
+                else
+                {
+                    Console.WriteLine($"You entered {output}. Please enter a number between 5 and 10:");
+                }
             }
             else
             {
-                Console.WriteLine("Please enter a number between 5 and 10:"); ;
+                Console.WriteLine("Sorry, you entered an invalid number, please try again:");
             }
         } while (!validEntry);
+    }
+
+    public static void StringInput()
+    {
+        string? input;
+        bool validEntry = false; // Exit condition.
+
+        string[] roles = ["Administrator", "Manager", "User"];
+        string validRole = string.Empty;
+
+        do
+        {
+            Console.WriteLine("Enter your role name (Administrator, Manager, or User):");
+            input = Console.ReadLine();
+
+            foreach (string role in roles)
+            {
+                if (!string.IsNullOrEmpty(input) && input.Equals(role, StringComparison.OrdinalIgnoreCase))
+                {
+                    validRole = role;
+                    break;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(validRole))
+            {
+                validEntry = true;
+                Console.WriteLine($"Your input value({validRole}) has been accepted.");
+            }
+            else
+            {
+                Console.WriteLine($"The role name that you entered, \"{input}\" is not valid.");
+            }
+
+        } while (!validEntry);
+    }
+
+    public static void StringArray()
+    {
+        string[] myStrings = ["I like pizza. I like roast chicken. I like salad", "I like all three of the menu choices"];
+        int periodLocation = -1;
+
+        for (int i = 0; i < myStrings.Length; i++)
+        {
+            do
+            {
+                periodLocation = myStrings[i].Contains('.') ? myStrings[i].IndexOf('.') : periodLocation;
+
+                if (periodLocation > 0)
+                {
+                    string tempString = myStrings[i][..periodLocation];
+                    Console.WriteLine(tempString);
+                    myStrings[i] = myStrings[i].Remove(0, tempString.Length + 1).Trim();
+                    periodLocation = -1;
+                }
+                else
+                {
+                    Console.WriteLine(myStrings[i]);
+                    break;
+                }
+            } while (periodLocation < 0);
+        }
+    }
+
+    public class Animal
+    {
+        public int Id { get; set; }
+        public string Species { get; set; }
+        public string Nickname { get; set; }
+        public int Age { get; set; }
+        public string Characteristics { get; set; }
+        public string Personality { get; set; }
+
+        public Animal(int id, string species, int age, string characteristics, string personality, string nickname)
+        {
+            Id = id;
+            Species = species;
+            Age = age;
+            Characteristics = characteristics;
+            Personality = personality;
+            Nickname = nickname;
+        }
+    }
+
+    public static void ContosoPets()
+    {
+        int idCounter = 1;
+        string? input;
+
+        List<Animal> ourAnimals = new List<Animal>
+        {
+        new Animal(idCounter++, "dog", 4, "Golden retriever, long golden fur, enjoys swimming", "Friendly, devoted, intelligent", "Buddy"),
+        new Animal(idCounter++, "dog", 2, "Beagle, tricolor coat, excellent sense of smell", "Curious, loving, determined", "Hunter"),
+        new Animal(idCounter++, "cat", 3, "Siamese, cream coat with dark brown points, blue almond - shaped eyes", "Vocal, social, intelligent", "Mocha"),
+        new Animal(idCounter++, "cat", 1, "Maine Coon, large size, tufted ears, bushy tail", "Gentle, playful, friendly", "Leo"),
+        };
+
+        Dictionary<string, string> commands = new Dictionary<string, string>
+        {
+            { "list" , "List current animals." }
+        };
+
+        Console.WriteLine("COMMANDS");
+
+        foreach (KeyValuePair<string, string> command in commands)
+        {
+            Console.WriteLine($"{command.Key,-20}{command.Value}");
+        }
+
+        Console.WriteLine("\nEnter desired command:");
+
+        do
+        {
+            input = Console.ReadLine();
+            if (input == "list")
+            {
+                PropertyInfo[] properties = typeof(Animal).GetProperties();
+
+                foreach (Animal animal in ourAnimals)
+                {
+                    Console.Write("\n");
+                    foreach (PropertyInfo property in properties)
+                    {
+                        Console.WriteLine($"{property.Name,-20}{property.GetValue(animal)}");
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("Sorry, this command is not available. Please try again:");
+            }
+        } while (input != null);
     }
 
     public static void Main()
@@ -423,6 +554,9 @@
         //While();
         //WhileContinue();
         //RolePlayingGame();
-        IntegerInput();
+        //IntegerInput();
+        //StringInput();
+        //StringArray();
+        ContosoPets();
     }
 }

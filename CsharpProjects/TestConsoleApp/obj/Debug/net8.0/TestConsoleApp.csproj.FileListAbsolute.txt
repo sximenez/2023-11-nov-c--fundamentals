@@ -1,0 +1,15 @@
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestConsoleApp\bin\Debug\net8.0\TestConsoleApp.exe
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestConsoleApp\bin\Debug\net8.0\TestConsoleApp.deps.json
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestConsoleApp\bin\Debug\net8.0\TestConsoleApp.runtimeconfig.json
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestConsoleApp\bin\Debug\net8.0\TestConsoleApp.dll
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestConsoleApp\bin\Debug\net8.0\TestConsoleApp.pdb
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestConsoleApp\obj\Debug\net8.0\TestConsoleApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestConsoleApp\obj\Debug\net8.0\TestConsoleApp.AssemblyInfoInputs.cache
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestConsoleApp\obj\Debug\net8.0\TestConsoleApp.AssemblyInfo.cs
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestConsoleApp\obj\Debug\net8.0\TestConsoleApp.csproj.CoreCompileInputs.cache
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestConsoleApp\obj\Debug\net8.0\TestConsoleApp.sourcelink.json
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestConsoleApp\obj\Debug\net8.0\TestConsoleApp.dll
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestConsoleApp\obj\Debug\net8.0\refint\TestConsoleApp.dll
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestConsoleApp\obj\Debug\net8.0\TestConsoleApp.pdb
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestConsoleApp\obj\Debug\net8.0\TestConsoleApp.genruntimeconfig.cache
+C:\Users\steven.jimenez\source\repos\2023-11-nov-csharp-fundamentals\CsharpProjects\TestConsoleApp\obj\Debug\net8.0\ref\TestConsoleApp.dll

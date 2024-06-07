@@ -7,8 +7,125 @@ Resource: [Microsoft documentation](https://learn.microsoft.com/en-us/dotnet/api
 ## Table of contents
 
 <!--TOC-->
-  - [## Module 1: B](#-module-1-b)
-    - [Compilers don't li](#compilers-dont-li)
+  - [Module 1: Basic C# code](#module-1-basic-c-code)
+    - [Introduction](#introduction)
+    - [Variables](#variables)
+      - [Data types](#data-types)
+      - [Implicitly typed variables](#implicitly-typed-variables)
+    - [Character escape sequences](#character-escape-sequences)
+    - [String interpolation](#string-interpolation)
+    - [Type casting](#type-casting)
+    - [Practice](#practice)
+      - [Challenge 1: Printing on console](#challenge-1-printing-on-console)
+      - [Challenge 2: Typed variables](#challenge-2-typed-variables)
+      - [Challenge 3: String interpolation](#challenge-3-string-interpolation)
+      - [Challenge 4: Operations](#challenge-4-operations)
+      - [Project 1 : Average calculator](#project-1-average-calculator)
+        - [Console application](#console-application)
+      - [Project 2 : GPA calculator](#project-2-gpa-calculator)
+  - [Module 2: Simple console applications](#module-2-simple-console-applications)
+    - [Runtime](#runtime)
+    - [.NET](#.net)
+    - [Create a console application (higher-level)](#create-a-console-application-higher-level)
+    - [Build a console application (intermediate level)](#build-a-console-application-intermediate-level)
+    - [Run a console application (lower level)](#run-a-console-application-lower-level)
+    - [.NET Class Library](#.net-class-library)
+    - [Methods](#methods)
+      - [Stateful vs stateless](#stateful-vs-stateless)
+      - [Object instantiation](#object-instantiation)
+      - [Void vs non-void](#void-vs-non-void)
+      - [Signature vs overloaded](#signature-vs-overloaded)
+    - [Decision logic](#decision-logic)
+      - [Code branching](#code-branching)
+    - [Arrays](#arrays)
+      - [Iteration using foreach](#iteration-using-foreach)
+    - [Naming conventions](#naming-conventions)
+    - [Commenting](#commenting)
+    - [Whitespacing](#whitespacing)
+    - [Practice](#practice)
+      - [Challenge 5: Method call](#challenge-5-method-call)
+      - [Challenge 6: if-else block](#challenge-6-if-else-block)
+      - [Challenge 7: foreach  loop](#challenge-7-foreach-loop)
+      - [Challenge 8: Code readability](#challenge-8-code-readability)
+      - [Project 3: Student grade calculator](#project-3-student-grade-calculator)
+  - [Module 3: Console application logic](#module-3-console-application-logic)
+    - [Variable scope](#variable-scope)
+    - [Less is more](#less-is-more)
+    - [Challenge 9: Problematic code](#challenge-9-problematic-code)
+    - [Booleans](#booleans)
+      - [Expression vs statement](#expression-vs-statement)
+      - [Evaluation operators](#evaluation-operators)
+    - [Inequality operator vs logical negation](#inequality-operator-vs-logical-negation)
+    - [Conditional (ternary) operator](#conditional-ternary-operator)
+      - [Challenge 10: Ternary](#challenge-10-ternary)
+    - [Challenge 11: Decision logic](#challenge-11-decision-logic)
+    - [Switch](#switch)
+      - [Challenge 11: rewrite if-else-if into switch construct](#challenge-11-rewrite-if-else-if-into-switch-construct)
+    - [Iteration using for](#iteration-using-for)
+      - [Challenge 12: FizzBuzz](#challenge-12-fizzbuzz)
+    - [Iteration using do-while and while](#iteration-using-do-while-and-while)
+      - [Challenge 14: Role playing game](#challenge-14-role-playing-game)
+      - [Challenge 15: Do-while vs while](#challenge-15-do-while-vs-while)
+        - [Integer input](#integer-input)
+        - [String input](#string-input)
+        - [String array](#string-array)
+      - [Project ?: stray animals app](#project-stray-animals-app)
+- [Exercism](#exercism)
+  - [Basics](#basics)
+  - [Booleans](#booleans)
+  - [Strings](#strings)
+    - [Substring](#substring)
+    - [Regex](#regex)
+  - [Numbers](#numbers)
+  - [Extended methods](#extended-methods)
+  - [Tuples](#tuples)
+    - [Dictionary](#dictionary)
+  - [Nullability](#nullability)
+  - [While](#while)
+    - [Do While](#do-while)
+  - [Class](#class)
+    - [Encapsulation](#encapsulation)
+  - [Collections](#collections)
+    - [For and foreach loop](#for-and-foreach-loop)
+    - [Lists](#lists)
+  - [Inheritance](#inheritance)
+    - [Polymorphism](#polymorphism)
+  - [Collections](#collections)
+- [Software craft](#software-craft)
+  - [Intro](#intro)
+  - [Historique](#historique)
+    - [V-model](#v-model)
+    - [Méthode agile](#methode-agile)
+    - [Scrum](#scrum)
+    - [XP (Extreme programming)](#xp-extreme-programming)
+    - [Agile hangover](#agile-hangover)
+    - [Craft](#craft)
+  - [Test-driven development (TDD)](#test-driven-development-tdd)
+    - [Nommage](#nommage)
+    - [Arrange Act Assert](#arrange-act-assert)
+    - [Exemple FizzBuzz](#exemple-fizzbuzz)
+    - [Red phase](#red-phase)
+    - [Green phase](#green-phase)
+    - [Final code](#final-code)
+- [General knowledge](#general-knowledge)
+  - [Extract, Transform, Load (ETL)](#extract-transform-load-etl)
+  - [Git](#git)
+  - [32-bit (x86), 64-bit (x64)](#32-bit-x86-64-bit-x64)
+  - [Data and data accessing](#data-and-data-accessing)
+    - [OLEDB](#oledb)
+  - [Exception handling](#exception-handling)
+    - [Understanding stack tracing](#understanding-stack-tracing)
+    - [Three error handling strategies](#three-error-handling-strategies)
+  - [Multi-threading](#multi-threading)
+    - [Task](#task)
+    - [Parallel](#parallel)
+  - [Namespaces](#namespaces)
+  - [Glossary](#glossary)
+  - [Variables](#variables)
+    - [Primitive types: numeric](#primitive-types-numeric)
+    - [Type casting](#type-casting)
+    - [Primitive types: strings](#primitive-types-strings)
+    - [Constants](#constants)
 <!--/TOC-->
 
 ## Module 1: Basic C# code
@@ -1714,6 +1831,142 @@ Monster has attacked Hero by 10: Hero's health is 2
 Hero has attacked Monster by 10: Monster's health is 0
 Hero wins!
 ```
+
+#### Challenge 15: Do-while vs while
+
+##### Integer input
+
+```csharp
+public static void IntegerInput()
+{
+    string? input;
+    bool validEntry = false; // Exit condition.
+
+    Console.WriteLine("Enter an integer value between 5 and 10:");
+
+    do
+    {
+        input = Console.ReadLine();
+
+        if (int.TryParse(input, out int output))
+        {
+            if (output >= 5 && output <= 10)
+            {
+                validEntry = true;
+                Console.WriteLine($"Your input value ({output}) has been accepted.");
+            }
+            else
+            {
+                Console.WriteLine($"You entered {output}. Please enter a number between 5 and 10:");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Sorry, you entered an invalid number, please try again:");
+        }
+    } while (!validEntry);
+}
+```
+
+```terminal
+Enter an integer value between 5 and 10:
+two
+Sorry, you entered an invalid number, please try again:
+2
+You entered 2. Please enter a number between 5 and 10:
+5
+Your input value (5) has been accepted.
+```
+
+##### String input
+
+```csharp
+public static void StringInput()
+{
+    string? input;
+    bool validEntry = false; // Exit condition.
+
+    string[] roles = ["Administrator", "Manager", "User"];
+    string validRole = string.Empty;
+
+    do
+    {
+        Console.WriteLine("Enter your role name (Administrator, Manager, or User):");
+        input = Console.ReadLine();
+
+        foreach (string role in roles)
+        {
+            if (!string.IsNullOrEmpty(input) && input.Equals(role, StringComparison.OrdinalIgnoreCase))
+            {
+                validRole = role;
+                break;
+            }
+        }
+
+        if (!string.IsNullOrEmpty(validRole))
+        {
+            validEntry = true;
+            Console.WriteLine($"Your input value({validRole}) has been accepted.");
+        }
+        else
+        {
+            Console.WriteLine($"The role name that you entered, \"{input}\" is not valid.");
+        }
+
+    } while (!validEntry);
+}
+```
+
+```terminal
+Enter your role name (Administrator, Manager, or User):
+hello
+The role name that you entered, "hello" is not valid.
+Enter your role name (Administrator, Manager, or User):
+manager
+Your input value(Manager) has been accepted.
+```
+
+##### String array
+
+```csharp
+public static void StringArray()
+{
+    string[] myStrings = ["I like pizza. I like roast chicken. I like salad", "I like all three of the menu choices"];
+    int periodLocation = -1;
+
+    for (int i = 0; i < myStrings.Length; i++)
+    {
+        do
+        {
+            periodLocation = myStrings[i].Contains('.') ? myStrings[i].IndexOf('.') : periodLocation;
+
+            if (periodLocation > 0)
+            {
+                string tempString = myStrings[i][..periodLocation];
+                Console.WriteLine(tempString);
+                myStrings[i] = myStrings[i].Remove(0, tempString.Length + 1).Trim();
+                periodLocation = -1;
+            }
+            else
+            {
+                Console.WriteLine(myStrings[i]);
+                break;
+            }
+        } while (periodLocation < 0);
+    }
+}
+```
+
+```terminal
+I like pizza
+I like roast chicken
+I like salad
+I like all three of the menu choices
+```
+
+#### Project ?: stray animals app
+
+
 
 # Exercism
 
