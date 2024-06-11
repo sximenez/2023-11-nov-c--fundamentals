@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using System.Text;
+using System.Xml.Xsl;
 
 public class Program
 {
@@ -448,74 +448,326 @@ public class Program
         }
     }
 
+    private List<Animal> ourAnimals = new List<Animal>();
+    private HashSet<string> acceptedSpecies = new HashSet<string>() { "cat", "dog" };
+    private int idCounter = 1;
+
     public class Animal
     {
-        public int Id { get; set; }
+        public int Id { get; }
         public string Species { get; set; }
         public string Nickname { get; set; }
-        public int Age { get; set; }
-        public string Characteristics { get; set; }
-        public string Personality { get; set; }
+        public int? Age { get; set; }
+        public string? Characteristics { get; set; }
+        public string? Personality { get; set; }
 
-        public Animal(int id, string species, int age, string characteristics, string personality, string nickname)
+        public Animal(int id, string species, string? age, string? characteristics, string? personality, string nickname)
         {
             Id = id;
             Species = species;
-            Age = age;
+            Age = (!string.IsNullOrEmpty(age)) ? int.Parse(age) : 0;
             Characteristics = characteristics;
             Personality = personality;
             Nickname = nickname;
         }
     }
 
-    public static void ContosoPets()
+    public static void ShowCommands()
     {
-        int idCounter = 1;
-        string? input;
-
-        List<Animal> ourAnimals = new List<Animal>
-        {
-        new Animal(idCounter++, "dog", 4, "Golden retriever, long golden fur, enjoys swimming", "Friendly, devoted, intelligent", "Buddy"),
-        new Animal(idCounter++, "dog", 2, "Beagle, tricolor coat, excellent sense of smell", "Curious, loving, determined", "Hunter"),
-        new Animal(idCounter++, "cat", 3, "Siamese, cream coat with dark brown points, blue almond - shaped eyes", "Vocal, social, intelligent", "Mocha"),
-        new Animal(idCounter++, "cat", 1, "Maine Coon, large size, tufted ears, bushy tail", "Gentle, playful, friendly", "Leo"),
-        };
-
         Dictionary<string, string> commands = new Dictionary<string, string>
         {
-            { "list" , "List current animals." }
+            { "all" , "List all current animals." },
+            { "cats" , "List current cats." },
+            { "dogs" , "List current dogs." },
+            { "add" , "Add a new animal." },
+            { "edit" , "Edit an animal." },
+            { "search" , "Search an animal by keyword." },
+            { "commands", "Show commands." },
+            { "quit" , "Exit the program." }
         };
 
-        Console.WriteLine("COMMANDS");
+        Console.WriteLine("\nCOMMANDS");
 
         foreach (KeyValuePair<string, string> command in commands)
         {
             Console.WriteLine($"{command.Key,-20}{command.Value}");
         }
+    }
 
-        Console.WriteLine("\nEnter desired command:");
+    public bool ListAnimals(string? searchSpecies = null, string? searchOtherData = null, int? searchId = null)
+    {
+        PropertyInfo[] properties = typeof(Animal).GetProperties();
+        List<Animal> targets = new List<Animal>();
 
+        if (!string.IsNullOrEmpty(searchSpecies))
+        {
+            targets = ourAnimals.Where(e => e.Species == searchSpecies).ToList();
+        }
+        else if (!string.IsNullOrEmpty(searchOtherData))
+        {
+            bool IsValid(string? str)
+            {
+                return !string.IsNullOrEmpty(str) && str.Contains(searchOtherData, StringComparison.OrdinalIgnoreCase);
+            }
+
+            targets = ourAnimals.Where(e => IsValid(e.Characteristics) || IsValid(e.Personality)).ToList();
+
+            if (targets.Count > 0)
+            {
+                Console.Write($"\n============================ SEARCH RESULTS: {targets.Count} ============================\n");
+            }
+        }
+        else if (searchId != null)
+        {
+            targets = ourAnimals.Where(e => e.Id == searchId).ToList();
+        }
+        else
+        {
+            targets = ourAnimals;
+        }
+
+        if (searchOtherData is null && targets.Count > 1)
+        {
+            Console.Write($"\n============================ ALL {(!string.IsNullOrEmpty(searchSpecies) ? (searchSpecies + "s").ToUpper() : "ANIMALS")} ============================\n");
+        }
+
+        foreach (Animal animal in targets)
+        {
+            Console.Write("\n");
+            foreach (PropertyInfo property in properties)
+            {
+                Console.WriteLine($"{property.Name,-20}{property.GetValue(animal)}");
+            }
+        }
+
+        return targets.Count > 0;
+    }
+
+    public void AddNewAnimal()
+    {
+        Console.Write("\n");
+
+        string? species;
         do
         {
-            input = Console.ReadLine();
-            if (input == "list")
-            {
-                PropertyInfo[] properties = typeof(Animal).GetProperties();
+            Console.Write($"{string.Join(" or ", acceptedSpecies)[..1].ToUpper()}{string.Join(" or ", acceptedSpecies)[1..]}\t");
+            species = Console.ReadLine();
+        } while (string.IsNullOrEmpty(species) || !acceptedSpecies.Contains(species.ToLower()));
 
-                foreach (Animal animal in ourAnimals)
+        string? nickname;
+        do
+        {
+            Console.Write("Nickname?\t");
+            nickname = Console.ReadLine();
+
+        } while (string.IsNullOrEmpty(nickname) || nickname.Length < 2);
+
+        nickname = $"{nickname[..1].ToUpper()}{nickname[1..]}";
+
+        string? age;
+        bool isValid = false;
+        do
+        {
+            Console.Write($"Age? (Press 'Enter' to complete later).\t");
+            age = Console.ReadLine();
+
+            if (!string.IsNullOrEmpty(age))
+            {
+                if (int.TryParse(age, out int output) && output < 20)
                 {
-                    Console.Write("\n");
-                    foreach (PropertyInfo property in properties)
-                    {
-                        Console.WriteLine($"{property.Name,-20}{property.GetValue(animal)}");
-                    }
+                    isValid = true;
                 }
             }
             else
             {
-                Console.WriteLine("Sorry, this command is not available. Please try again:");
+                isValid = true;
             }
-        } while (input != null);
+
+        } while (!isValid);
+
+        string? characteristics;
+
+        Console.Write("Characteristics? (This can be completed later).\t");
+        characteristics = Console.ReadLine();
+
+        string? personality;
+
+        Console.Write("Personality? (This can be completed later).\t");
+        personality = Console.ReadLine();
+
+        try
+        {
+            Animal newAnimal = new Animal(idCounter++, species.ToLower(), age, characteristics, personality, nickname);
+            ourAnimals.Add(newAnimal);
+            Console.WriteLine($"\n{nickname} has been successfully added to the database.\n");
+
+            Console.Write($"\n============================ NEW ENTRY ============================\n");
+            ListAnimals(searchId: newAnimal.Id);
+        }
+        catch
+        {
+            throw new Exception("An error occurred, please try again.");
+        }
+    }
+
+    public void EditAnimal()
+    {
+        ListAnimals();
+
+        string? input;
+        do
+        {
+            Console.Write("\nWhich animal would you like to edit (id)?\t");
+            input = Console.ReadLine();
+
+            bool isValid = int.TryParse(input, out int output);
+            if (!isValid)
+            {
+                input = null;
+                continue;
+            }
+
+            Animal? target = ourAnimals.Select(e => e).Where(e => e.Id == output).FirstOrDefault();
+
+            if (target is null)
+            {
+                input = null;
+                continue;
+            }
+
+            Console.Write($"\n============================ EDIT START ============================\n");
+            ListAnimals(searchId: target?.Id);
+
+            bool propertyExists = false;
+            PropertyInfo[] properties = typeof(Animal).GetProperties();
+            PropertyInfo? selection = null;
+
+            do
+            {
+                Console.Write("\nWhich property?\t");
+                input = Console.ReadLine();
+
+                if (!string.IsNullOrEmpty(input))
+                {
+                    if (input.Equals("id", StringComparison.OrdinalIgnoreCase))
+                    {
+                        Console.WriteLine("You cannot change this property.");
+                    }
+                    else if (input.Equals("age", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (!int.TryParse(input, out int age))
+                        {
+                            Console.WriteLine("Please enter a number.");
+                        }
+                    }
+                    else
+                    {
+                        foreach (PropertyInfo property in properties)
+                        {
+                            if (property.Name.Equals(input, StringComparison.OrdinalIgnoreCase))
+                            {
+                                selection = property;
+                                propertyExists = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            while (string.IsNullOrEmpty(input) || !propertyExists);
+
+            var newData = string.Empty;
+
+            do
+            {
+                if (selection?.Name == "Species")
+                {
+                    do
+                    {
+                        Console.Write($"\nYou can only select between: {string.Join(", ", acceptedSpecies)} \t");
+                        newData = Console.ReadLine();
+                    } while (string.IsNullOrEmpty(newData) || !acceptedSpecies.Contains(newData.ToLower()));
+                }
+                else
+                {
+                    Console.Write("\nEnter new information:\t");
+                    newData = Console.ReadLine();
+                }
+
+                if (!string.IsNullOrEmpty(newData))
+                {
+                    if (selection?.PropertyType == typeof(int?))
+                    {
+                        selection?.SetValue(target, int.Parse(newData));
+                    }
+                    else
+                    {
+                        selection?.SetValue(target, $"{newData[..1].ToUpper()}{newData[1..]}");
+                    }
+                }
+            }
+            while (string.IsNullOrEmpty(input));
+
+            Console.Write($"\n============================ EDIT END ============================\n");
+            ListAnimals(searchId: target?.Id);
+        }
+        while (string.IsNullOrEmpty(input));
+    }
+
+    public void SearchAnimal()
+    {
+        Console.Write("\nPlease enter a keyword:\t");
+        string? input;
+        bool IsFound;
+
+        do
+        {
+            input = Console.ReadLine();
+            IsFound = ListAnimals(searchOtherData: input);
+
+            if (!IsFound)
+            {
+                Console.Write("\nThe keyword entered was not found. Try again:\t");
+            }
+        }
+        while (string.IsNullOrEmpty(input) || !IsFound);
+
+    }
+
+    public void ContosoPets()
+    {
+        string? input;
+
+        ourAnimals = new List<Animal>
+        {
+            new Animal(idCounter++, "dog", "4", "Golden retriever, long golden fur, enjoys swimming", "Friendly, devoted, intelligent", "Buddy"),
+            new Animal(idCounter++, "dog", "2", "Beagle, tricolor coat, excellent sense of smell", "Curious, loving, determined", "Hunter"),
+            new Animal(idCounter++, "cat", "3", "Siamese, cream coat with dark brown points, blue almond - shaped eyes", "Vocal, social, intelligent", "Mocha"),
+            new Animal(idCounter++, "cat", "1", "Maine Coon, large size, tufted ears, bushy tail", "Gentle, playful, friendly", "Leo"),
+        };
+
+        ShowCommands();
+
+        do
+        {
+            Console.WriteLine("\nEnter desired command:");
+            input = Console.ReadLine();
+
+            switch (input)
+            {
+                case "all": ListAnimals(); break;
+                case "dogs": ListAnimals("dog"); break;
+                case "cats": ListAnimals("cat"); break;
+                case "add": AddNewAnimal(); break;
+                case "edit": EditAnimal(); break;
+                case "search": SearchAnimal(); break;
+                case "commands": ShowCommands(); break;
+                case "clear": Console.Clear(); break;
+                case "quit": Environment.Exit(0); break;
+                default: Console.WriteLine("\nSorry, this command is not available. Please try again."); break;
+            }
+
+        } while (!string.IsNullOrEmpty(input));
     }
 
     public static void Main()
@@ -557,6 +809,7 @@ public class Program
         //IntegerInput();
         //StringInput();
         //StringArray();
-        ContosoPets();
+        var instance = new Program();
+        instance.ContosoPets();
     }
 }
