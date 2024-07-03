@@ -1,5 +1,9 @@
-﻿using System.Reflection;
-using System.Xml.Xsl;
+﻿using System;
+using System.Drawing;
+using System.Globalization;
+using System.Net.Http.Headers;
+using System.Reflection;
+using System.Text;
 
 public class Program
 {
@@ -451,6 +455,8 @@ public class Program
     private List<Animal> ourAnimals = new List<Animal>();
     private HashSet<string> acceptedSpecies = new HashSet<string>() { "cat", "dog" };
     private int idCounter = 1;
+    private int maxAnimals = 6;
+    bool isFull;
 
     public class Animal
     {
@@ -481,6 +487,7 @@ public class Program
             { "dogs" , "List current dogs." },
             { "add" , "Add a new animal." },
             { "edit" , "Edit an animal." },
+            { "delete" , "Delete an animal." },
             { "search" , "Search an animal by keyword." },
             { "commands", "Show commands." },
             { "quit" , "Exit the program." }
@@ -503,6 +510,10 @@ public class Program
         {
             targets = ourAnimals.Where(e => e.Species == searchSpecies).ToList();
         }
+        else if (searchId != null)
+        {
+            targets = ourAnimals.Where(e => e.Id == searchId).ToList();
+        }
         else if (!string.IsNullOrEmpty(searchOtherData))
         {
             bool IsValid(string? str)
@@ -511,15 +522,6 @@ public class Program
             }
 
             targets = ourAnimals.Where(e => IsValid(e.Characteristics) || IsValid(e.Personality)).ToList();
-
-            if (targets.Count > 0)
-            {
-                Console.Write($"\n============================ SEARCH RESULTS: {targets.Count} ============================\n");
-            }
-        }
-        else if (searchId != null)
-        {
-            targets = ourAnimals.Where(e => e.Id == searchId).ToList();
         }
         else
         {
@@ -529,6 +531,10 @@ public class Program
         if (searchOtherData is null && targets.Count > 1)
         {
             Console.Write($"\n============================ ALL {(!string.IsNullOrEmpty(searchSpecies) ? (searchSpecies + "s").ToUpper() : "ANIMALS")} ============================\n");
+        }
+        else if (searchOtherData is not null && targets.Count > 0)
+        {
+            Console.Write($"\n============================ SEARCH RESULTS: {targets.Count} ============================\n");
         }
 
         foreach (Animal animal in targets)
@@ -545,12 +551,19 @@ public class Program
 
     public void AddNewAnimal()
     {
+        CheckIfFull();
+        if (isFull)
+        {
+            Console.WriteLine("\n/!\\ Our shelter is currently full.");
+            return;
+        }
+
         Console.Write("\n");
 
         string? species;
         do
         {
-            Console.Write($"{string.Join(" or ", acceptedSpecies)[..1].ToUpper()}{string.Join(" or ", acceptedSpecies)[1..]}\t");
+            Console.Write($"{string.Join(" or ", acceptedSpecies)[..1].ToUpper()}{string.Join(" or ", acceptedSpecies)[1..]}?\t");
             species = Console.ReadLine();
         } while (string.IsNullOrEmpty(species) || !acceptedSpecies.Contains(species.ToLower()));
 
@@ -587,12 +600,12 @@ public class Program
 
         string? characteristics;
 
-        Console.Write("Characteristics? (This can be completed later).\t");
+        Console.Write("Characteristics? (Press 'Enter' to complete later).\t");
         characteristics = Console.ReadLine();
 
         string? personality;
 
-        Console.Write("Personality? (This can be completed later).\t");
+        Console.Write("Personality? (Press 'Enter' to complete later).\t");
         personality = Console.ReadLine();
 
         try
@@ -601,13 +614,103 @@ public class Program
             ourAnimals.Add(newAnimal);
             Console.WriteLine($"\n{nickname} has been successfully added to the database.\n");
 
-            Console.Write($"\n============================ NEW ENTRY ============================\n");
+            Console.Write($"\n============================ NEW ENTRY START ============================\n");
             ListAnimals(searchId: newAnimal.Id);
+
+            Console.WriteLine($"\nWe can shelter {maxAnimals - ourAnimals.Count} more.");
+            Console.Write($"\n============================ NEW ENTRY END ============================\n");
         }
         catch
         {
             throw new Exception("An error occurred, please try again.");
         }
+    }
+
+    public PropertyInfo? SelectProperty(Animal? target)
+    {
+        string? input;
+        PropertyInfo? selection = null;
+
+        ListAnimals(searchId: target?.Id);
+
+        bool propertyExists = false;
+        PropertyInfo[] properties = typeof(Animal).GetProperties();
+
+        do
+        {
+            Console.Write("\nWhich property?\t");
+            input = Console.ReadLine();
+
+            if (!string.IsNullOrEmpty(input))
+            {
+                if (input.Equals("id", StringComparison.OrdinalIgnoreCase))
+                {
+                    Console.WriteLine("You cannot change this property.");
+                }
+                else
+                {
+                    foreach (PropertyInfo property in properties)
+                    {
+                        if (property.Name.Equals(input, StringComparison.OrdinalIgnoreCase))
+                        {
+                            selection = property;
+                            propertyExists = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        while (string.IsNullOrEmpty(input) || !propertyExists);
+
+        return selection;
+    }
+
+    public void UpdateProperty(Animal? target, PropertyInfo? selection)
+    {
+        string? input;
+
+        do
+        {
+            if (selection?.Name == "Species")
+            {
+                do
+                {
+                    Console.Write($"\nYou can only select between: {string.Join(", ", acceptedSpecies)} \t");
+                    input = Console.ReadLine();
+                } while (string.IsNullOrEmpty(input) || !acceptedSpecies.Contains(input.ToLower()));
+            }
+            else if (selection?.Name == "Age")
+            {
+                int age;
+                bool isValid;
+                do
+                {
+                    Console.Write("Please enter a number.\t");
+
+                    input = Console.ReadLine();
+                    isValid = int.TryParse(input, out age);
+                } while (string.IsNullOrEmpty(input) || !isValid || age > 20);
+            }
+            else
+            {
+                Console.Write("\nEnter new information:\t");
+                input = Console.ReadLine();
+            }
+
+            if (!string.IsNullOrEmpty(input))
+            {
+                if (selection?.PropertyType == typeof(int?))
+                {
+                    selection?.SetValue(target, int.Parse(input));
+                }
+                else
+                {
+                    selection?.SetValue(target, $"{input[..1].ToUpper()}{input[1..]}");
+                }
+            }
+        }
+        while (string.IsNullOrEmpty(input));
     }
 
     public void EditAnimal()
@@ -636,80 +739,48 @@ public class Program
             }
 
             Console.Write($"\n============================ EDIT START ============================\n");
-            ListAnimals(searchId: target?.Id);
 
-            bool propertyExists = false;
-            PropertyInfo[] properties = typeof(Animal).GetProperties();
-            PropertyInfo? selection = null;
-
-            do
-            {
-                Console.Write("\nWhich property?\t");
-                input = Console.ReadLine();
-
-                if (!string.IsNullOrEmpty(input))
-                {
-                    if (input.Equals("id", StringComparison.OrdinalIgnoreCase))
-                    {
-                        Console.WriteLine("You cannot change this property.");
-                    }
-                    else if (input.Equals("age", StringComparison.OrdinalIgnoreCase))
-                    {
-                        if (!int.TryParse(input, out int age))
-                        {
-                            Console.WriteLine("Please enter a number.");
-                        }
-                    }
-                    else
-                    {
-                        foreach (PropertyInfo property in properties)
-                        {
-                            if (property.Name.Equals(input, StringComparison.OrdinalIgnoreCase))
-                            {
-                                selection = property;
-                                propertyExists = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-            while (string.IsNullOrEmpty(input) || !propertyExists);
-
-            var newData = string.Empty;
-
-            do
-            {
-                if (selection?.Name == "Species")
-                {
-                    do
-                    {
-                        Console.Write($"\nYou can only select between: {string.Join(", ", acceptedSpecies)} \t");
-                        newData = Console.ReadLine();
-                    } while (string.IsNullOrEmpty(newData) || !acceptedSpecies.Contains(newData.ToLower()));
-                }
-                else
-                {
-                    Console.Write("\nEnter new information:\t");
-                    newData = Console.ReadLine();
-                }
-
-                if (!string.IsNullOrEmpty(newData))
-                {
-                    if (selection?.PropertyType == typeof(int?))
-                    {
-                        selection?.SetValue(target, int.Parse(newData));
-                    }
-                    else
-                    {
-                        selection?.SetValue(target, $"{newData[..1].ToUpper()}{newData[1..]}");
-                    }
-                }
-            }
-            while (string.IsNullOrEmpty(input));
+            PropertyInfo? selection = SelectProperty(target);
+            UpdateProperty(target, selection);
 
             Console.Write($"\n============================ EDIT END ============================\n");
             ListAnimals(searchId: target?.Id);
+
+        }
+        while (string.IsNullOrEmpty(input));
+    }
+
+    public void DeleteAnimal()
+    {
+        ListAnimals();
+
+        string? input;
+        do
+        {
+            Console.Write("\nWhich animal would you like to delete (id)?\t");
+            input = Console.ReadLine();
+
+            bool isValid = int.TryParse(input, out int output);
+            if (!isValid)
+            {
+                input = null;
+                continue;
+            }
+
+            Animal? target = ourAnimals.Select(e => e).Where(e => e.Id == output).FirstOrDefault();
+
+            if (target is null)
+            {
+                input = null;
+                continue;
+            }
+
+            ourAnimals.Remove(target);
+            Console.Write($"\n============================ DELETE START ============================\n");
+
+            Console.Write($"\nEntry {input} successfully deleted.\n");
+            ListAnimals(searchOtherData: "");
+            Console.Write($"\n============================ DELETE END ============================\n");
         }
         while (string.IsNullOrEmpty(input));
     }
@@ -731,7 +802,11 @@ public class Program
             }
         }
         while (string.IsNullOrEmpty(input) || !IsFound);
+    }
 
+    public void CheckIfFull()
+    {
+        isFull = ourAnimals.Count == maxAnimals;
     }
 
     public void ContosoPets()
@@ -745,6 +820,20 @@ public class Program
             new Animal(idCounter++, "cat", "3", "Siamese, cream coat with dark brown points, blue almond - shaped eyes", "Vocal, social, intelligent", "Mocha"),
             new Animal(idCounter++, "cat", "1", "Maine Coon, large size, tufted ears, bushy tail", "Gentle, playful, friendly", "Leo"),
         };
+
+        Console.WriteLine("Welcome to the ContosoPets app.");
+        Console.WriteLine($"We currently have {ourAnimals.Count} animals in search of a new home.");
+
+        CheckIfFull();
+
+        if (!isFull)
+        {
+            Console.WriteLine($"We can shelter {maxAnimals - ourAnimals.Count} more.");
+        }
+        else
+        {
+            Console.WriteLine($"Our shelter is full.");
+        }
 
         ShowCommands();
 
@@ -760,6 +849,7 @@ public class Program
                 case "cats": ListAnimals("cat"); break;
                 case "add": AddNewAnimal(); break;
                 case "edit": EditAnimal(); break;
+                case "delete": DeleteAnimal(); break;
                 case "search": SearchAnimal(); break;
                 case "commands": ShowCommands(); break;
                 case "clear": Console.Clear(); break;
@@ -768,6 +858,49 @@ public class Program
             }
 
         } while (!string.IsNullOrEmpty(input));
+    }
+
+    public static void IntToString(int input)
+    {
+        string output = "4";
+        Console.WriteLine(output += input);
+    }
+
+    public static void StringAndInt(string[] values)
+    {
+        StringBuilder sb = new StringBuilder();
+        decimal sum = 0;
+
+        foreach (string value in values)
+        {
+            if (decimal.TryParse(value, CultureInfo.InvariantCulture, out decimal result))
+            {
+                sum += result;
+            }
+            else
+            {
+                sb.Append(value);
+            }
+        }
+
+        Console.WriteLine($"Message: {sb}");
+        Console.WriteLine($"Total: {sum}");
+    }
+
+    public static void NumberTypes()
+    {
+        int value1 = 11;
+        decimal value2 = 6.2m;
+        float value3 = 4.3f;
+
+        int result1 = Convert.ToInt32(value1 / value2);
+        Console.WriteLine($"Divide value1 by value2, display the result as an int: {result1}");
+
+        decimal result2 = value2 / (decimal) value3;
+        Console.WriteLine($"Divide value2 by value3, display the result as a decimal: {result2}");
+
+        float result3 = value3 / value1;
+        Console.WriteLine($"Divide value3 by value1, display the result as a float: {result3}");
     }
 
     public static void Main()
@@ -809,7 +942,9 @@ public class Program
         //IntegerInput();
         //StringInput();
         //StringArray();
-        var instance = new Program();
-        instance.ContosoPets();
+        //var instance = new Program();
+        //instance.ContosoPets();
+        //StringAndInt(["12.3", "45", "ABC", "11", "DEF"]);
+        NumberTypes();
     }
 }

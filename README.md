@@ -7,7 +7,7 @@ Resource: [Microsoft documentation](https://learn.microsoft.com/en-us/dotnet/api
 ## Table of contents
 
 <!--TOC-->
-  - [Module 1: Basic C# code](#module-1-basic-c-code)
+  - [MODULE 1: BASIC C# CODE](#module-1-basic-c-code)
     - [Introduction](#introduction)
     - [Variables](#variables)
       - [Data types](#data-types)
@@ -23,7 +23,7 @@ Resource: [Microsoft documentation](https://learn.microsoft.com/en-us/dotnet/api
       - [Project 1 : Average calculator](#project-1-average-calculator)
         - [Console application](#console-application)
       - [Project 2 : GPA calculator](#project-2-gpa-calculator)
-  - [Module 2: Simple console applications](#module-2-simple-console-applications)
+  - [MODULE 2: SIMPLE CONSOLE APPLICATIONS](#module-2-simple-console-applications)
     - [Runtime](#runtime)
     - [.NET](#.net)
     - [Create a console application (higher-level)](#create-a-console-application-higher-level)
@@ -48,28 +48,41 @@ Resource: [Microsoft documentation](https://learn.microsoft.com/en-us/dotnet/api
       - [Challenge 7: foreach  loop](#challenge-7-foreach-loop)
       - [Challenge 8: Code readability](#challenge-8-code-readability)
       - [Project 3: Student grade calculator](#project-3-student-grade-calculator)
-  - [Module 3: Console application logic](#module-3-console-application-logic)
+  - [MODULE 3: CONSOLE APPLICATIONS LOGIC](#module-3-console-applications-logic)
     - [Variable scope](#variable-scope)
     - [Less is more](#less-is-more)
-    - [Challenge 9: Problematic code](#challenge-9-problematic-code)
     - [Booleans](#booleans)
       - [Expression vs statement](#expression-vs-statement)
       - [Evaluation operators](#evaluation-operators)
     - [Inequality operator vs logical negation](#inequality-operator-vs-logical-negation)
     - [Conditional (ternary) operator](#conditional-ternary-operator)
-      - [Challenge 10: Ternary](#challenge-10-ternary)
-    - [Challenge 11: Decision logic](#challenge-11-decision-logic)
     - [Switch](#switch)
-      - [Challenge 11: rewrite if-else-if into switch construct](#challenge-11-rewrite-if-else-if-into-switch-construct)
     - [Iteration using for](#iteration-using-for)
-      - [Challenge 12: FizzBuzz](#challenge-12-fizzbuzz)
     - [Iteration using do-while and while](#iteration-using-do-while-and-while)
+    - [Practice](#practice)
+      - [Challenge 9: Problematic code](#challenge-9-problematic-code)
+      - [Challenge 10: Ternary](#challenge-10-ternary)
+      - [Challenge 11: Decision logic](#challenge-11-decision-logic)
+      - [Challenge 12: rewrite if-else-if into switch construct](#challenge-12-rewrite-if-else-if-into-switch-construct)
+      - [Challenge 13: FizzBuzz](#challenge-13-fizzbuzz)
       - [Challenge 14: Role playing game](#challenge-14-role-playing-game)
       - [Challenge 15: Do-while vs while](#challenge-15-do-while-vs-while)
         - [Integer input](#integer-input)
         - [String input](#string-input)
         - [String array](#string-array)
-      - [Project ?: stray animals app](#project-stray-animals-app)
+      - [Project 4: CRUD stray animals app](#project-4-crud-stray-animals-app)
+  - [MODULE 4: VARIABLE DATA](#module-4-variable-data)
+    - [Data type casting](#data-type-casting)
+      - [Implicit casting (safe conversion)](#implicit-casting-safe-conversion)
+      - [Explicit casting](#explicit-casting)
+    - [Casting methods](#casting-methods)
+      - [Helper method on variable](#helper-method-on-variable)
+      - [Helper method on data type](#helper-method-on-data-type)
+        - [With exception handling](#with-exception-handling)
+      - [Convert class methods](#convert-class-methods)
+    - [Practice](#practice)
+      - [Challenge 16: String arrays and int](#challenge-16-string-arrays-and-int)
+      - [Challenge 17: Output specific number types](#challenge-17-output-specific-number-types)
 - [Exercism](#exercism)
   - [Basics](#basics)
   - [Booleans](#booleans)
@@ -128,7 +141,7 @@ Resource: [Microsoft documentation](https://learn.microsoft.com/en-us/dotnet/api
     - [Constants](#constants)
 <!--/TOC-->
 
-## Module 1: Basic C# code
+## MODULE 1: BASIC C# CODE
 
 ### Introduction
 
@@ -453,7 +466,7 @@ public class GpaCalculator
 3,35
 ```
 
-## Module 2: Simple console applications
+## MODULE 2: SIMPLE CONSOLE APPLICATIONS
 
 An `IDE` (integrated development environment) is the developer's work toolkit.
 
@@ -1200,7 +1213,7 @@ Logan:          91,2            93,12   A       96 (1,92pts)
 Press the Enter key to continue
 ```
 
-## Module 3: Console application logic
+## MODULE 3: CONSOLE APPLICATIONS LOGIC
 
 ### Variable scope
 
@@ -1308,36 +1321,6 @@ else if (name == "steve") Console.WriteLine("Found Steve");
 else Console.WriteLine("Found Chuck");
 ```
 
-### Challenge 9: Problematic code
-
-```csharp
-bool found = false;
-int total = 0;
-int[] numbers = { 4, 8, 15, 16, 23, 42 };
-
-foreach (int number in numbers)
-{
-    total += number;
-
-    if (number == 42)
-    {
-        found = true;
-    }
-}
-
-if (found)
-{
-    Console.WriteLine("Set contains 42");
-}
-
-Console.WriteLine($"Total: {total}");
-```
-
-```terminal
-Set contains 42
-Total: 108
-```
-
 ### Booleans
 
 True or false decision logic (pathways the code takes in a program).
@@ -1394,85 +1377,6 @@ int saleAmount = 1001;
 // int discount = saleAmount > 1000 ? 100 : 50;
 
 Console.WriteLine($"Discount: {(saleAmount > 1000 ? 100 : 50)}"); // Inline.
-```
-
-#### Challenge 10: Ternary
-
-```csharp
-Random random = new Random();
-int result = random.Next(0, 2);
-Console.WriteLine(result == 0 ? "heads" : "tails");
-```
-
-### Challenge 11: Decision logic
-
-```csharp
-public class User
-{
-    public string Permission { get; set; }
-    public int Level { get; set; }
-
-    public User(string permission, int level)
-    {
-        Permission = permission;
-        Level = level;
-    }
-}
-
-public static void GetAccess(User user)
-{
-    if (user.Permission == "Admin" && user.Level > 55)
-    {
-        Console.WriteLine("Welcome, Super Admin user.");
-    }
-    else if (user.Permission == "Admin" && user.Level <= 55)
-    {
-        Console.WriteLine("Welcome, Admin user.");
-    }
-    else if (user.Permission == "Manager" && user.Level >= 20)
-    {
-        Console.WriteLine("Contact an Admin for access.");
-    }
-    else if (user.Permission == "Manager" && user.Level < 20)
-    {
-        Console.WriteLine("You do not have sufficient privileges.");
-    }
-    else if (user.Permission != "Manager" || user.Permission != "Admin")
-    {
-        Console.WriteLine("You do not have sufficient privileges.");
-    }
-}
-
-public static void Main()
-{
-    Console.WriteLine($"User permission\t\tUser level\t\tMessage\n");
-    for (int i = 0; i < 10; i++)
-    {
-        Random permission = new Random();
-        string permissionString = (permission.Next(0, 3) == 0 ? "Admin" : permission.Next(0, 3) == 1 ? "Manager" : "Other");
-
-        Random level = new Random();
-
-        User user = new User(permissionString, level.Next(0, 101));
-        Console.Write($"{user.Permission}\t\t\t{user.Level}\t\t\t");
-        GetAccess(user);
-    }
-}
-```
-
-```terminal
-User permission         User level              Message
-
-Admin                   90                      Welcome, Super Admin user.
-Other                   97                      You do not have sufficient privileges.
-Admin                   53                      Welcome, Admin user.
-Other                   58                      You do not have sufficient privileges.
-Admin                   98                      Welcome, Super Admin user.
-Manager                 51                      Contact an Admin for access.
-Manager                 1                       You do not have sufficient privileges.
-Other                   60                      You do not have sufficient privileges.
-Other                   10                      You do not have sufficient privileges.
-Manager                 51                      Contact an Admin for access.
 ```
 
 ### Switch
@@ -1547,74 +1451,6 @@ John Doe                Associate
 Hello World             Associate
 ```
 
-#### Challenge 11: rewrite if-else-if into switch construct
-
-```csharp
-public static string[] IfElseIfIntoSwitch()
-{
-    // SKU = Stock Keeping Unit. 
-    // SKU value format: <product #>-<2-letter color code>-<size code>
-    string sku = "01-MN-L";
-
-    string[] product = sku.Split('-');
-
-    string type = string.Empty;
-    string color = string.Empty;
-    string size = string.Empty;
-
-    switch (product[0])
-    {
-        case "01":
-            type = "Sweat shirt";
-            break;
-        case "02":
-            type = "T-Shirt";
-            break;
-        case "03":
-            type = "Sweat pants";
-            break;
-        default:
-            type = "Other";
-            break;
-    }
-
-    switch (product[1])
-    {
-        case "BL":
-            color = "Black";
-            break;
-        case "MN":
-            color = "Maroon";
-            break;
-        default:
-            color = "White";
-            break;
-    }
-
-    switch (product[2])
-    {
-        case "S":
-            size = "Small";
-            break;
-        case "M":
-            size = "Medium";
-            break;
-        case "L":
-            size = "Large";
-            break;
-        default:
-            size = "One Size Fits All";
-            break;
-    }
-
-    return new string[] { sku, type, color, size };
-}
-```
-
-```terminal
-01-MN-L, Sweat shirt, Maroon, Large
-```
-
 ### Iteration using for
 
 A `foreach` loop iterates once over each item in a sequence of data (array, collection).
@@ -1661,56 +1497,6 @@ for (int i = 0; i < names.Length; i++)
         names[i] = "Sammy";
     }
 }
-```
-
-#### Challenge 12: FizzBuzz
-
-```csharp
-string output = string.Empty;
-
-for (int i = 1; i < 101; i++)
-{
-    bool isDivisibleBy3 = i % 3 == 0;
-    bool isDivisibleBy5 = i % 5 == 0;
-
-    if (isDivisibleBy3 && isDivisibleBy5)
-    {
-        output = $"{i} - FizzBuzz";
-    }
-    else if (isDivisibleBy5)
-    {
-        output = $"{i} - Buzz";
-    }
-    else if (isDivisibleBy3)
-    {
-        output = $"{i} - Fizz";
-    }
-    else
-    {
-        output = $"{i}";
-    }
-
-    Console.WriteLine(output);
-}
-```
-
-```terminal
-1
-2
-3 - Fizz
-4
-5 - Buzz
-6 - Fizz
-7
-8
-9 - Fizz
-10 - Buzz
-11
-12 - Fizz
-13
-14
-15 - FizzBuzz
-...
 ```
 
 ### Iteration using do-while and while
@@ -1780,6 +1566,235 @@ do
 
     Console.WriteLine(current);
 } while (current != 7); // Exit condition.
+```
+
+### Practice
+
+#### Challenge 9: Problematic code
+
+```csharp
+bool found = false;
+int total = 0;
+int[] numbers = { 4, 8, 15, 16, 23, 42 };
+
+foreach (int number in numbers)
+{
+    total += number;
+
+    if (number == 42)
+    {
+        found = true;
+    }
+}
+
+if (found)
+{
+    Console.WriteLine("Set contains 42");
+}
+
+Console.WriteLine($"Total: {total}");
+```
+
+```terminal
+Set contains 42
+Total: 108
+```
+
+#### Challenge 10: Ternary
+
+```csharp
+Random random = new Random();
+int result = random.Next(0, 2);
+Console.WriteLine(result == 0 ? "heads" : "tails");
+```
+
+#### Challenge 11: Decision logic
+
+```csharp
+public class User
+{
+    public string Permission { get; set; }
+    public int Level { get; set; }
+
+    public User(string permission, int level)
+    {
+        Permission = permission;
+        Level = level;
+    }
+}
+
+public static void GetAccess(User user)
+{
+    if (user.Permission == "Admin" && user.Level > 55)
+    {
+        Console.WriteLine("Welcome, Super Admin user.");
+    }
+    else if (user.Permission == "Admin" && user.Level <= 55)
+    {
+        Console.WriteLine("Welcome, Admin user.");
+    }
+    else if (user.Permission == "Manager" && user.Level >= 20)
+    {
+        Console.WriteLine("Contact an Admin for access.");
+    }
+    else if (user.Permission == "Manager" && user.Level < 20)
+    {
+        Console.WriteLine("You do not have sufficient privileges.");
+    }
+    else if (user.Permission != "Manager" || user.Permission != "Admin")
+    {
+        Console.WriteLine("You do not have sufficient privileges.");
+    }
+}
+
+public static void Main()
+{
+    Console.WriteLine($"User permission\t\tUser level\t\tMessage\n");
+    for (int i = 0; i < 10; i++)
+    {
+        Random permission = new Random();
+        string permissionString = (permission.Next(0, 3) == 0 ? "Admin" : permission.Next(0, 3) == 1 ? "Manager" : "Other");
+
+        Random level = new Random();
+
+        User user = new User(permissionString, level.Next(0, 101));
+        Console.Write($"{user.Permission}\t\t\t{user.Level}\t\t\t");
+        GetAccess(user);
+    }
+}
+```
+
+```terminal
+User permission         User level              Message
+
+Admin                   90                      Welcome, Super Admin user.
+Other                   97                      You do not have sufficient privileges.
+Admin                   53                      Welcome, Admin user.
+Other                   58                      You do not have sufficient privileges.
+Admin                   98                      Welcome, Super Admin user.
+Manager                 51                      Contact an Admin for access.
+Manager                 1                       You do not have sufficient privileges.
+Other                   60                      You do not have sufficient privileges.
+Other                   10                      You do not have sufficient privileges.
+Manager                 51                      Contact an Admin for access.
+```
+
+#### Challenge 12: rewrite if-else-if into switch construct
+
+```csharp
+public static string[] IfElseIfIntoSwitch()
+{
+    // SKU = Stock Keeping Unit. 
+    // SKU value format: <product #>-<2-letter color code>-<size code>
+    string sku = "01-MN-L";
+
+    string[] product = sku.Split('-');
+
+    string type = string.Empty;
+    string color = string.Empty;
+    string size = string.Empty;
+
+    switch (product[0])
+    {
+        case "01":
+            type = "Sweat shirt";
+            break;
+        case "02":
+            type = "T-Shirt";
+            break;
+        case "03":
+            type = "Sweat pants";
+            break;
+        default:
+            type = "Other";
+            break;
+    }
+
+    switch (product[1])
+    {
+        case "BL":
+            color = "Black";
+            break;
+        case "MN":
+            color = "Maroon";
+            break;
+        default:
+            color = "White";
+            break;
+    }
+
+    switch (product[2])
+    {
+        case "S":
+            size = "Small";
+            break;
+        case "M":
+            size = "Medium";
+            break;
+        case "L":
+            size = "Large";
+            break;
+        default:
+            size = "One Size Fits All";
+            break;
+    }
+
+    return new string[] { sku, type, color, size };
+}
+```
+
+```terminal
+01-MN-L, Sweat shirt, Maroon, Large
+```
+
+#### Challenge 13: FizzBuzz
+
+```csharp
+string output = string.Empty;
+
+for (int i = 1; i < 101; i++)
+{
+    bool isDivisibleBy3 = i % 3 == 0;
+    bool isDivisibleBy5 = i % 5 == 0;
+
+    if (isDivisibleBy3 && isDivisibleBy5)
+    {
+        output = $"{i} - FizzBuzz";
+    }
+    else if (isDivisibleBy5)
+    {
+        output = $"{i} - Buzz";
+    }
+    else if (isDivisibleBy3)
+    {
+        output = $"{i} - Fizz";
+    }
+    else
+    {
+        output = $"{i}";
+    }
+
+    Console.WriteLine(output);
+}
+```
+
+```terminal
+1
+2
+3 - Fizz
+4
+5 - Buzz
+6 - Fizz
+7
+8
+9 - Fizz
+10 - Buzz
+11
+12 - Fizz
+13
+14
+15 - FizzBuzz
+...
 ```
 
 #### Challenge 14: Role playing game
@@ -1964,9 +1979,854 @@ I like salad
 I like all three of the menu choices
 ```
 
-#### Project ?: stray animals app
+#### Project 4: CRUD stray animals app
+
+This app basically involves implementing CRUD functionality with do-while blocks (create, read, update, delete).
+
+For this project, I developed my own version of the app based on the given instructions.
+
+```csharp
+// Fields (variables).
+private List<Animal> ourAnimals = new List<Animal>();
+private HashSet<string> acceptedSpecies = new HashSet<string>() { "cat", "dog" };
+private int idCounter = 1;
+private int maxAnimals = 6;
+bool isFull;
+
+// Class.
+public class Animal
+{
+    public int Id { get; }
+    public string Species { get; set; }
+    public string Nickname { get; set; }
+    public int? Age { get; set; }
+    public string? Characteristics { get; set; }
+    public string? Personality { get; set; }
+
+    public Animal(int id, string species, string? age, string? characteristics, string? personality, string nickname)
+    {
+        Id = id;
+        Species = species;
+        Age = (!string.IsNullOrEmpty(age)) ? int.Parse(age) : 0;
+        Characteristics = characteristics;
+        Personality = personality;
+        Nickname = nickname;
+    }
+}
+```
+
+```csharp
+// 1. Create a static test database, show commands to the user and await input.
+public void ContosoPets()
+{
+    string? input;
+
+    ourAnimals = new List<Animal>
+    {
+        new Animal(idCounter++, "dog", "4", "Golden retriever, long golden fur, enjoys swimming", "Friendly, devoted, intelligent", "Buddy"),
+        new Animal(idCounter++, "dog", "2", "Beagle, tricolor coat, excellent sense of smell", "Curious, loving, determined", "Hunter"),
+        new Animal(idCounter++, "cat", "3", "Siamese, cream coat with dark brown points, blue almond - shaped eyes", "Vocal, social, intelligent", "Mocha"),
+        new Animal(idCounter++, "cat", "1", "Maine Coon, large size, tufted ears, bushy tail", "Gentle, playful, friendly", "Leo"),
+    };
+
+    Console.WriteLine("Welcome to the ContosoPets app.");
+    Console.WriteLine($"We currently have {ourAnimals.Count} animals in search of a new home.");
+
+    CheckIfFull();
+
+    if (!isFull)
+    {
+        Console.WriteLine($"We can shelter {maxAnimals - ourAnimals.Count} more.");
+    }
+    else
+    {
+        Console.WriteLine($"Our shelter is full.");
+    }
+
+    ShowCommands();
+
+    do
+    {
+        Console.WriteLine("\nEnter desired command:");
+        input = Console.ReadLine();
+
+        switch (input)
+        {
+            case "all": ListAnimals(); break;
+            case "dogs": ListAnimals("dog"); break;
+            case "cats": ListAnimals("cat"); break;
+            case "add": AddNewAnimal(); break;
+            case "edit": EditAnimal(); break;
+            case "delete": DeleteAnimal(); break;
+            case "search": SearchAnimal(); break;
+            case "commands": ShowCommands(); break;
+            case "clear": Console.Clear(); break;
+            case "quit": Environment.Exit(0); break;
+            default: Console.WriteLine("\nSorry, this command is not available. Please try again."); break;
+        }
+
+    } while (!string.IsNullOrEmpty(input));
+}
+```
+
+```csharp
+public void CheckIfFull()
+{
+    isFull = ourAnimals.Count == maxAnimals;
+}
+```
+
+```csharp
+public static void ShowCommands()
+{
+    Dictionary<string, string> commands = new Dictionary<string, string>
+    {
+        { "all" , "List all current animals." },
+        { "cats" , "List current cats." },
+        { "dogs" , "List current dogs." },
+        { "add" , "Add a new animal." },
+        { "edit" , "Edit an animal." },
+        { "delete" , "Delete an animal." },
+        { "search" , "Search an animal by keyword." },
+        { "commands", "Show commands." },
+        { "quit" , "Exit the program." }
+    };
+
+    Console.WriteLine("\nCOMMANDS");
+
+    foreach (KeyValuePair<string, string> command in commands)
+    {
+        Console.WriteLine($"{command.Key,-20}{command.Value}");
+    }
+}
+```
+
+```terminal
+Welcome to the ContosoPets app.
+We currently have 4 animals in search of a new home.
+We can shelter 2 more.
+
+COMMANDS
+all                 List all current animals.
+cats                List current cats.
+dogs                List current dogs.
+add                 Add a new animal.
+edit                Edit an animal.
+delete              Delete an animal.
+search              Search an animal by keyword.
+commands            Show commands.
+quit                Exit the program.
+
+Enter desired command:
+
+```
+
+```csharp
+// 2. List (read) current animals, or filter between cats and dogs.
+public bool ListAnimals(string? searchSpecies = null, string? searchOtherData = null, int? searchId = null)
+{
+    PropertyInfo[] properties = typeof(Animal).GetProperties();
+    List<Animal> targets = new List<Animal>();
+
+    if (!string.IsNullOrEmpty(searchSpecies)) // Filter by species.
+    {
+        targets = ourAnimals.Where(e => e.Species == searchSpecies).ToList();
+    }
+    else if (searchId != null) // Filter by id.
+    {
+        targets = ourAnimals.Where(e => e.Id == searchId).ToList();
+    }
+    else if (!string.IsNullOrEmpty(searchOtherData)) // Filter by text in characteristics or personality.
+    {
+        bool IsValid(string? str)
+        {
+            return !string.IsNullOrEmpty(str) && str.Contains(searchOtherData, StringComparison.OrdinalIgnoreCase);
+        }
+
+        targets = ourAnimals.Where(e => IsValid(e.Characteristics) || IsValid(e.Personality)).ToList();
+    }
+    else // List all.
+    {
+        targets = ourAnimals;
+    }
+
+    if (searchOtherData is null && targets.Count > 1)
+    {
+        Console.Write($"\n============================ ALL {(!string.IsNullOrEmpty(searchSpecies) ? (searchSpecies + "s").ToUpper() : "ANIMALS")} ============================\n");
+    }
+    else if (searchOtherData is not null && targets.Count > 0)
+    {
+        Console.Write($"\n============================ SEARCH RESULTS: {targets.Count} ============================\n");
+    }
+
+    foreach (Animal animal in targets)
+    {
+        Console.Write("\n");
+        foreach (PropertyInfo property in properties)
+        {
+            Console.WriteLine($"{property.Name,-20}{property.GetValue(animal)}");
+        }
+    }
+
+    return targets.Count > 0;
+}
+```
+
+```terminal
+Enter desired command:
+all
+
+============================ ALL ANIMALS ============================
+
+Id                  1
+Species             dog
+Nickname            Buddy
+Age                 4
+Characteristics     Golden retriever, long golden fur, enjoys swimming
+Personality         Friendly, devoted, intelligent
+
+Id                  2
+Species             dog
+Nickname            Hunter
+Age                 2
+Characteristics     Beagle, tricolor coat, excellent sense of smell
+Personality         Curious, loving, determined
+
+Id                  3
+Species             cat
+Nickname            Mocha
+Age                 3
+Characteristics     Siamese, cream coat with dark brown points, blue almond - shaped eyes
+Personality         Vocal, social, intelligent
+
+Id                  4
+Species             cat
+Nickname            Leo
+Age                 1
+Characteristics     Maine Coon, large size, tufted ears, bushy tail
+Personality         Gentle, playful, friendly
+
+Enter desired command:
+
+```
+
+```terminal
+Enter desired command:
+cats
+
+============================ ALL CATS ============================
+
+Id                  3
+Species             cat
+Nickname            Mocha
+Age                 3
+Characteristics     Siamese, cream coat with dark brown points, blue almond - shaped eyes
+Personality         Vocal, social, intelligent
+
+Id                  4
+Species             cat
+Nickname            Leo
+Age                 1
+Characteristics     Maine Coon, large size, tufted ears, bushy tail
+Personality         Gentle, playful, friendly
+
+Enter desired command:
+
+```
+
+```csharp
+// 3. Create a new entry.
+// The app checks if the species entered is valid (cat or dog),
+// and if the age is a number less than 20.
+public void AddNewAnimal()
+{
+    CheckIfFull();
+    if (isFull)
+    {
+        Console.WriteLine("\n/!\\ Our shelter is currently full.");
+        return;
+    }
+    
+    Console.Write("\n");
+
+    string? species;
+    do
+    {
+        Console.Write($"{string.Join(" or ", acceptedSpecies)[..1].ToUpper()}{string.Join(" or ", acceptedSpecies)[1..]}?\t");
+        species = Console.ReadLine();
+    } while (string.IsNullOrEmpty(species) || !acceptedSpecies.Contains(species.ToLower()));
+
+    string? nickname;
+    do
+    {
+        Console.Write("Nickname?\t");
+        nickname = Console.ReadLine();
+
+    } while (string.IsNullOrEmpty(nickname) || nickname.Length < 2);
+
+    nickname = $"{nickname[..1].ToUpper()}{nickname[1..]}";
+
+    string? age;
+    bool isValid = false;
+    do
+    {
+        Console.Write($"Age? (Press 'Enter' to complete later).\t");
+        age = Console.ReadLine();
+
+        if (!string.IsNullOrEmpty(age))
+        {
+            if (int.TryParse(age, out int output) && output < 20)
+            {
+                isValid = true;
+            }
+        }
+        else
+        {
+            isValid = true;
+        }
+
+    } while (!isValid);
+
+    string? characteristics;
+
+    Console.Write("Characteristics? (Press 'Enter' to complete later).\t");
+    characteristics = Console.ReadLine();
+
+    string? personality;
+
+    Console.Write("Personality? (Press 'Enter' to complete later).\t");
+    personality = Console.ReadLine();
+
+    try
+    {
+        Animal newAnimal = new Animal(idCounter++, species.ToLower(), age, characteristics, personality, nickname);
+        ourAnimals.Add(newAnimal);
+        Console.WriteLine($"\n{nickname} has been successfully added to the database.\n");
+
+        Console.Write($"\n============================ NEW ENTRY START ============================\n");
+        ListAnimals(searchId: newAnimal.Id);
+            
+        Console.WriteLine($"\nWe can shelter {maxAnimals - ourAnimals.Count} more.");
+        Console.Write($"\n============================ NEW ENTRY END ============================\n");
+    }
+    catch
+    {
+        throw new Exception("An error occurred, please try again.");
+    }
+}
+```
+
+```terminal
+Enter desired command:
+add
+
+Cat or dog?     fish
+Cat or dog?     dog
+Nickname?       waldo
+Age? (Press 'Enter' to complete later). 50
+Age? (Press 'Enter' to complete later). 5
+Characteristics? (Press 'Enter' to complete later). brown
+Personality? (Press 'Enter' to complete later).
+
+Waldo has been successfully added to the database.
 
 
+============================ NEW ENTRY START ============================
+
+Id                  5
+Species             dog
+Nickname            Waldo
+Age                 5
+Characteristics     Brown
+Personality
+
+We can shelter 1 more.
+
+============================ NEW ENTRY END ============================
+
+Enter desired command:
+
+```
+
+```csharp
+// 4. Edit (update) an entry.
+// The app checks if the id entered is valid.
+// The app doesn't allow to modify the id and checks if the species is valid,
+// and if age is a number less than 20.
+public void EditAnimal()
+{
+    ListAnimals();
+
+    string? input;
+    do
+    {
+        Console.Write("\nWhich animal would you like to edit (id)?\t");
+        input = Console.ReadLine();
+
+        bool isValid = int.TryParse(input, out int output);
+        if (!isValid)
+        {
+            input = null;
+            continue;
+        }
+
+        Animal? target = ourAnimals.Select(e => e).Where(e => e.Id == output).FirstOrDefault();
+
+        if (target is null)
+        {
+            input = null;
+            continue;
+        }
+            
+        Console.Write($"\n============================ EDIT START ============================\n");
+
+        PropertyInfo? selection = SelectProperty(target);
+        UpdateProperty(target, selection);
+
+        Console.Write($"\n============================ EDIT END ============================\n");
+        ListAnimals(searchId: target?.Id);
+
+    }
+    while (string.IsNullOrEmpty(input));
+}
+```
+
+```csharp
+public PropertyInfo? SelectProperty(Animal? target)
+{
+    string? input;
+    PropertyInfo? selection = null;
+
+    ListAnimals(searchId: target?.Id);
+
+    bool propertyExists = false;
+    PropertyInfo[] properties = typeof(Animal).GetProperties();
+
+    do
+    {
+        Console.Write("\nWhich property?\t");
+        input = Console.ReadLine();
+
+        if (!string.IsNullOrEmpty(input))
+        {
+            if (input.Equals("id", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine("You cannot change this property.");
+            }
+            else
+            {
+                foreach (PropertyInfo property in properties)
+                {
+                    if (property.Name.Equals(input, StringComparison.OrdinalIgnoreCase))
+                    {
+                        selection = property;
+                        propertyExists = true;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    while (string.IsNullOrEmpty(input) || !propertyExists);
+
+    return selection;
+}
+```
+
+```csharp
+public void UpdateProperty(Animal? target, PropertyInfo? selection)
+{
+    string? input;
+
+    do
+    {
+        if (selection?.Name == "Species")
+        {
+            do
+            {
+                Console.Write($"\nYou can only select between: {string.Join(", ", acceptedSpecies)} \t");
+                input = Console.ReadLine();
+            } while (string.IsNullOrEmpty(input) || !acceptedSpecies.Contains(input.ToLower()));
+        }
+        else if (selection?.Name == "Age")
+        {
+            int age;
+            bool isValid;
+            do
+            {
+                Console.Write("Please enter a number.\t");
+
+                input = Console.ReadLine();
+                isValid = int.TryParse(input, out age);
+            } while (string.IsNullOrEmpty(input) || !isValid || age > 20);
+        }
+        else
+        {
+            Console.Write("\nEnter new information:\t");
+            input = Console.ReadLine();
+        }
+
+        if (!string.IsNullOrEmpty(input))
+        {
+            if (selection?.PropertyType == typeof(int?))
+            {
+                selection?.SetValue(target, int.Parse(input));
+            }
+            else
+            {
+                selection?.SetValue(target, $"{input[..1].ToUpper()}{input[1..]}");
+            }
+        }
+    }
+    while (string.IsNullOrEmpty(input));
+}
+```
+
+```terminal
+Enter desired command:
+edit
+
+Which animal would you like to edit (id)?       5
+
+============================ EDIT START ============================
+
+Id                  5
+Species             dog
+Nickname            Waldo
+Age                 5
+Characteristics     Brown
+Personality
+
+Which property? id
+You cannot change this property.
+
+Which property? age
+Please enter a number.  50
+Please enter a number.  10
+
+============================ EDIT END ============================
+
+Id                  5
+Species             dog
+Nickname            Waldo
+Age                 10
+Characteristics     Brown
+Personality
+
+Enter desired command:
+
+```
+
+```csharp
+// 5. Delete an entry.
+public void DeleteAnimal()
+{
+    ListAnimals();
+
+    string? input;
+    do
+    {
+        Console.Write("\nWhich animal would you like to delete (id)?\t");
+        input = Console.ReadLine();
+
+        bool isValid = int.TryParse(input, out int output);
+        if (!isValid)
+        {
+            input = null;
+            continue;
+        }
+
+        Animal? target = ourAnimals.Select(e => e).Where(e => e.Id == output).FirstOrDefault();
+
+        if (target is null)
+        {
+            input = null;
+            continue;
+        }
+
+        ourAnimals.Remove(target);
+        Console.Write($"\n============================ DELETE START ============================\n");
+
+        Console.Write($"\nEntry {input} successfully deleted.\n");
+        ListAnimals(searchOtherData: "");
+        Console.Write($"\n============================ DELETE END ============================\n");
+    }
+    while (string.IsNullOrEmpty(input));
+}
+```
+
+```terminal
+Enter desired command:
+delete
+
+...
+
+Which animal would you like to delete (id)?     1
+
+============================ DELETE START ============================
+
+Entry 1 successfully deleted.
+
+============================ SEARCH RESULTS: 3 ============================
+
+Id                  2
+Species             dog
+Nickname            Hunter
+Age                 2
+Characteristics     Beagle, tricolor coat, excellent sense of smell
+Personality         Curious, loving, determined
+
+Id                  3
+Species             cat
+Nickname            Mocha
+Age                 3
+Characteristics     Siamese, cream coat with dark brown points, blue almond - shaped eyes
+Personality         Vocal, social, intelligent
+
+Id                  4
+Species             cat
+Nickname            Hello
+Age                 1
+Characteristics     Maine Coon, large size, tufted ears, bushy tail
+Personality         Gentle, playful, friendly
+
+============================ DELETE END ============================
+
+Enter desired command:
+
+```
+
+```csharp
+// 6. Search by text (characteristic or personality).
+public void SearchAnimal()
+{
+    Console.Write("\nPlease enter a keyword:\t");
+    string? input;
+    bool IsFound;
+
+    do
+    {
+        input = Console.ReadLine();
+        IsFound = ListAnimals(searchOtherData: input);
+
+        if (!IsFound)
+        {
+            Console.Write("\nThe keyword entered was not found. Try again:\t");
+        }
+    }
+    while (string.IsNullOrEmpty(input) || !IsFound);
+}
+```
+
+```terminal
+Enter desired command:
+search
+
+Please enter a keyword: hello
+
+The keyword entered was not found. Try again:   gentle
+
+============================ SEARCH RESULTS: 1 ============================
+
+Id                  4
+Species             cat
+Nickname            Hello
+Age                 1
+Characteristics     Maine Coon, large size, tufted ears, bushy tail
+Personality         Gentle, playful, friendly
+
+Enter desired command:
+
+```
+
+## MODULE 4: VARIABLE DATA
+
+### Data type casting
+
+Since C# is a typed language, it provides a system to convert values to different types (casting).
+
+When casting, the compiler checks for two things at build time: 
+
+Depending..
+
+#### Implicit casting (safe conversion)
+
+1. When no exceptions are thrown:
+
+```csharp
+int first = 2;
+string second = "4";
+string result = first + second; // An int can be converted to a string and concatenated.
+Console.WriteLine(result);
+```
+
+```terminal
+24
+```
+
+2. When no data is lost (widening conversions):
+
+```csharp
+int myInt = 1;
+decimal myDecimal = myInt; // Converting from a data type that holds less information to one that holds more.
+Console.Write(myDecimal);
+```
+
+```terminal
+1
+```
+
+If these conditions are met, the compiler considers the conversion as safe.
+
+When a conversion is unsafe, the compiler stops:
+
+```csharp
+int first = 2;
+string second = "4";
+int result = first + second;
+Console.WriteLine(result);
+```
+
+```terminal
+C:\Users\someuser\Desktop\csharpprojects\TestProject\Program.cs(3,14): error CS0029: Cannot implicitly convert type 'string' to 'int'
+```
+
+#### Explicit casting
+
+When exceptions and data loss can arise, explicit conversions are requested by the compiler:
+
+1. Narrowing conversion:
+
+```csharp
+decimal myDecimal = 1.23; 
+int myInt = (int) myDecimal; // Converting from a data type that holds more information to one that holds less.
+Console.Write(myDecimal);
+```
+
+```terminal
+1
+```
+
+### Casting methods
+
+#### Helper method on variable
+
+```csharp
+int first = 2;
+int second = 4;
+string result = first.ToString() + second.ToString(); // Can be obtained implicitly since safe, but a way of saying it's intentional.
+Console.WriteLine(result);
+```
+
+```terminal
+24
+```
+
+#### Helper method on data type
+
+```csharp
+string first = "2";
+string second = "4";
+int result = int.Parse(first) + int.Parse(second);
+Console.WriteLine(result);
+```
+
+```terminal
+6
+```
+
+##### With exception handling
+
+```csharp
+string first = "hello";
+string second = "4";
+int result = int.Parse(first) + int.Parse(second); // Format exception.
+Console.WriteLine(result);
+```
+
+```csharp
+string first = "hello";
+string second = "4";
+int.TryParse(first, out int intFirst);
+int.TryParse(second, out int intSecond);
+int result = intFirst + intSecond;
+Console.WriteLine(result);
+```
+
+```terminal
+4
+```
+
+#### Convert class methods
+
+```csharp
+string first = "2";
+string second = "4";
+int result = Convert.ToInt32(first) + Convert.ToInt32(second); // Best for converting fractions into whole numbers.
+Console.WriteLine(result);
+```
+
+```terminal
+6
+```
+
+### Practice
+
+#### Challenge 16: String arrays and int
+
+```csharp
+public static void StringAndInt(string[] values)
+{
+    StringBuilder sb = new StringBuilder();
+    decimal sum = 0;
+
+    foreach (string value in values)
+    {
+        if (decimal.TryParse(value, CultureInfo.InvariantCulture, out decimal result))
+        {
+            sum += result;
+        }
+        else
+        {
+            sb.Append(value);
+        }
+    }
+
+    Console.WriteLine($"Message: {sb}");
+    Console.WriteLine($"Total: {sum}");
+}
+```
+
+```terminal
+Message: ABCDEF
+Total: 68,3
+```
+
+#### Challenge 17: Output specific number types
+
+```csharp
+public static void NumberTypes()
+{
+    int value1 = 11;
+    decimal value2 = 6.2m;
+    float value3 = 4.3f;
+
+    int result1 = Convert.ToInt32(value1 / value2);
+    Console.WriteLine($"Divide value1 by value2, display the result as an int: {result1}");
+
+    decimal result2 = value2 / (decimal) value3;
+    Console.WriteLine($"Divide value2 by value3, display the result as a decimal: {result2}");
+
+    float result3 = value3 / value1;
+    Console.WriteLine($"Divide value3 by value1, display the result as a float: {result3}");
+}
+```
+
+```terminal
+Divide value1 by value2, display the result as an int: 2
+Divide value2 by value3, display the result as a decimal: 1,4418604651162790697674418605
+Divide value3 by value1, display the result as a float: 0,3909091
+```
 
 # Exercism
 
