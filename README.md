@@ -72,9 +72,22 @@ Resource: [Microsoft documentation](https://learn.microsoft.com/en-us/dotnet/api
         - [String array](#string-array)
       - [Project 4: CRUD stray animals app](#project-4-crud-stray-animals-app)
   - [MODULE 4: VARIABLE DATA](#module-4-variable-data)
+    - [Data types](#data-types)
+      - [Bits and bytes](#bits-and-bytes)
+      - [Values (stack) vs references (heap)](#values-stack-vs-references-heap)
+      - [Value types](#value-types)
+        - [Integral](#integral)
+          - [Signed vs unsigned](#signed-vs-unsigned)
+        - [Floating](#floating)
+      - [Reference types](#reference-types)
+      - [Stack vs heap](#stack-vs-heap)
+      - [Choosing the right type](#choosing-the-right-type)
+    - [Array helper methods](#array-helper-methods)
+      - [ref keyword](#ref-keyword)
+      - [Removing empty elements from an array](#removing-empty-elements-from-an-array)
     - [Data type casting](#data-type-casting)
       - [Implicit casting (safe conversion)](#implicit-casting-safe-conversion)
-      - [Explicit casting](#explicit-casting)
+      - [Explicit casting (unsafe conversion)](#explicit-casting-unsafe-conversion)
     - [Casting methods](#casting-methods)
       - [Helper method on variable](#helper-method-on-variable)
       - [Helper method on data type](#helper-method-on-data-type)
@@ -2641,17 +2654,262 @@ Enter desired command:
 
 ## MODULE 4: VARIABLE DATA
 
+### Data types
+
+The objective of using data types is producing error-free code.
+
+#### Bits and bytes
+
+Data is basically values stored in the computer's memory as bits.
+
+A bit is a binary switch between 0 and 1.
+
+In themselves bits are useless; they are meaningful when combined into sequences.
+
+A sequence of 8 bits is a byte.
+
+```terminal
+2(0 and 1)^8 = 256 possible combinations
+2^16 = 65_536
+2^32 = 4_294_967_296
+2^64 = 18_446_744_073_709_551_616
+```
+
+Possibilities are quite endless when using 64-bit bytes.
+
+#### Values (stack) vs references (heap)
+
+When using a data type, the computer knows exactly how much space to allocate in memory for a given value.
+
+There a two main memory storages: `stack` and `heap`.
+
+Value types can hold smaller values directly (the data itself), and are stored in the stack.
+
+Stack memory is CPU-level and scoped (related to execution).
+
+Reference types can hold large values indirectly (an address to the data), and are stored in the heap.
+
+Heap memory is operating-system level and global (unrelated to execution).
+
+```mermaid
+graph TB
+
+subgraph Operating system
+
+subgraph Program
+c[Value-typed variable]
+
+d[Reference-typed variable]
+end
+
+b[Heap memory]
+
+subgraph CPU
+a[Stack memory]
+end
+
+end
+
+c <-->|data| a
+d <-->|address| b
+```
+
+#### Value types
+
+##### Integral
+
+Predefined types (keywords) representing whole numbers, no fractions:
+
+`int` (alias for `System.Int32` class), the most popular.
+
+###### Signed vs unsigned
+
+Signed values can hold negative numbers.
+
+Unsigned cannot, but can hold a larger positive number.
+
+```terminal
+Signed integral types:
+sbyte  : -128 to 127                                                (8-bit)
+short  : -32_768 to 32_767                                          (16-bit)
+int    : -2_147_483_648 to 2_147_483_647                            (32-bit)
+long   : -9_223_372_036_854_775_808 to 9_223_372_036_854_775_807    (64-bit)
+```
+
+```terminal
+Unsigned integral types:
+byte   : 0 to 255                                                   (8-bit)
+ushort : 0 to 65_535                                                (16-bit)
+uint   : 0 to 4_294_967_295                                         (32-bit)
+ulong  : 0 to 18_446_744_073_709_551_615                            (64-bit)
+```
+
+##### Floating
+
+Predefined types (keywords) representing fractions:
+
+`float`, `double`: stored in binary (base 2), which is approximate, but smaller in memory.
+
+`decimal`: stored in decimal (base 10), which is accurate, but larger in memory.
+
+```terminal
+Floating point types:
+float  : -X,123456789 to X,123456789 (with ~6-9 digits of precision)
+double : -X,1234567890123456 to X,1234567890123456 (with ~15-17 digits of precision)
+decimal: -X,12345678901234567890123456789 to X,12345678901234567890123456789 (with 28-29 digits of precision)
+```
+
+#### Reference types
+
+The `new` keyword assigns value to heap memory.
+
+```csharp
+int[] data; // Reference.
+data = new int[3]; // Reference pointing to data stored in heap memory (new keyword).
+```
+
+`string` is reference type, with `new` being omitted:
+
+```csharp
+string str = "Hello World!";
+```
+
+```csharp
+public class MyClass
+{
+    public MyClass()
+    {
+        Console.WriteLine("Hello.");
+    }
+}
+
+MyClass myClass = new MyClass(); // Hello.
+```
+
+#### Stack vs heap
+
+```csharp
+int val_A = 2; // Stack 1.
+int val_B = val_A; // Stack 2.
+val_B = 5;
+
+Console.WriteLine("--Value Types--");
+Console.WriteLine($"val_A: {val_A}");
+Console.WriteLine($"val_B: {val_B}");
+```
+
+```terminal
+--Value Types--
+val_A: 2 // Stack 1.
+val_B: 5 // Stack 2.
+```
+
+```csharp
+int[] ref_A = new int[1]; // Heap 1.
+ref_A[0] = 2;
+int[] ref_B = ref_A;
+ref_B[0] = 5;
+
+Console.WriteLine("--Reference Types--");
+Console.WriteLine($"ref_A[0]: {ref_A[0]}");
+Console.WriteLine($"ref_B[0]: {ref_B[0]}");
+```
+
+```terminal
+--Reference Types--
+ref_A[0]: 5 // Heap 1.
+ref_B[0]: 5 // Heap 1.
+```
+
+#### Choosing the right type
+
+1. Consider data types that fit target data (over fewest bits for performance).
+2. Consider the functions using the variables (what types they consume most).
+3. When in doubt, stick to basic types:
+
+```csharp
+int     // for most whole numbers
+decimal // for numbers representing money
+bool    // for true or false values
+string  // for alphanumeric value
+```
+
+4. Don't reinvent data types if one or more data type already exists for a given purpose:
+
+```csharp
+byte            // working with encoded data that comes from other computer systems or using different character sets.
+double          // working with geometric or scientific purposes. double is used frequently when building games involving motion.
+System.DateTime // for a specific date and time value.
+System.TimeSpan // for a span of years / months / days / hours / minutes / seconds / milliseconds.
+```
+
+### Array helper methods
+
+```csharp
+string[] pallets = { "B14", "A11", "B12", "A13" };
+
+Array.Sort(pallets);            // A11 A13 B12 B14
+Array.Reverse(pallets);         // B14 B12 A13 A11 
+Array.Clear(pallets, 0, 2);     // B12 A13; cleared elements are compiled as null.
+```
+
+#### ref keyword
+
+`ref` allows to reuse an address to the heap:
+
+```csharp
+string[] pallets = { "B14", "A11", "B12", "A13" };
+Array.Resize(ref pallets, 6); // Without ref, a new array would be created and pallets would remain unchanged.
+pallets[4] = "C01";
+pallets[5] = "C02";
+Console.Write(string.Join(" ", pallets); // B14 A11 B12 A13 C01 C02
+
+Array.Resize(ref pallets, 3);
+Console.Write(string.Join(" ", pallets); // B14 A11 B12
+```
+
+#### Removing empty elements from an array
+
+```csharp
+string[] arr = { "B14", "A11", "B12", "A13" };
+
+Array.Resize(ref arr, 8);
+
+arr[4] = "a";
+arr[6] = "b";
+
+int index = 0;
+string[] newArr = new string[index];
+
+for (int i = 0; i < arr.Length; i++)
+{
+    if (arr[i] is null)
+    {
+        continue;
+    }
+
+    Array.Resize(ref newArr, index + 1);
+    newArr[index] = arr[i];
+    index++;
+}
+```
+
+```terminal
+B14 | A11 | B12 | A13
+B14 | A11 | B12 | A13 |   |   |   |
+B14 | A11 | B12 | A13 | a |   | b |
+B14 | A11 | B12 | A13 | a | b
+```
+
 ### Data type casting
 
 Since C# is a typed language, it provides a system to convert values to different types (casting).
 
-When casting, the compiler checks for two things at build time: 
-
-Depending..
+When casting, the compiler checks if conversions are safe or unsafe.
 
 #### Implicit casting (safe conversion)
 
-1. When no exceptions are thrown:
+1. Executed when no exceptions are thrown:
 
 ```csharp
 int first = 2;
@@ -2664,7 +2922,7 @@ Console.WriteLine(result);
 24
 ```
 
-2. When no data is lost (widening conversions):
+2. And when no data is lost (widening conversions):
 
 ```csharp
 int myInt = 1;
@@ -2675,8 +2933,6 @@ Console.Write(myDecimal);
 ```terminal
 1
 ```
-
-If these conditions are met, the compiler considers the conversion as safe.
 
 When a conversion is unsafe, the compiler stops:
 
@@ -2691,13 +2947,13 @@ Console.WriteLine(result);
 C:\Users\someuser\Desktop\csharpprojects\TestProject\Program.cs(3,14): error CS0029: Cannot implicitly convert type 'string' to 'int'
 ```
 
-#### Explicit casting
+#### Explicit casting (unsafe conversion)
 
 When exceptions and data loss can arise, explicit conversions are requested by the compiler:
 
-1. Narrowing conversion:
-
 ```csharp
+// Narrowing conversion.
+
 decimal myDecimal = 1.23; 
 int myInt = (int) myDecimal; // Converting from a data type that holds more information to one that holds less.
 Console.Write(myDecimal);
@@ -2740,7 +2996,7 @@ Console.WriteLine(result);
 ```csharp
 string first = "hello";
 string second = "4";
-int result = int.Parse(first) + int.Parse(second); // Format exception.
+int result = int.Parse(first) + int.Parse(second); // Format exception thrown.
 Console.WriteLine(result);
 ```
 
@@ -2827,6 +3083,8 @@ Divide value1 by value2, display the result as an int: 2
 Divide value2 by value3, display the result as a decimal: 1,4418604651162790697674418605
 Divide value3 by value1, display the result as a float: 0,3909091
 ```
+
+
 
 # Exercism
 
