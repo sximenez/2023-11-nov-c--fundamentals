@@ -85,6 +85,8 @@ Resource: [Microsoft documentation](https://learn.microsoft.com/en-us/dotnet/api
     - [Array helper methods](#array-helper-methods)
       - [ref keyword](#ref-keyword)
       - [Removing empty elements from an array](#removing-empty-elements-from-an-array)
+      - [Reversing an array](#reversing-an-array)
+      - [Splitting an array](#splitting-an-array)
     - [Data type casting](#data-type-casting)
       - [Implicit casting (safe conversion)](#implicit-casting-safe-conversion)
       - [Explicit casting (unsafe conversion)](#explicit-casting-unsafe-conversion)
@@ -93,10 +95,16 @@ Resource: [Microsoft documentation](https://learn.microsoft.com/en-us/dotnet/api
       - [Helper method on data type](#helper-method-on-data-type)
         - [With exception handling](#with-exception-handling)
       - [Convert class methods](#convert-class-methods)
+    - [String formatting](#string-formatting)
+      - [Specifiers](#specifiers)
+      - [Padding](#padding)
+    - [String helper methods](#string-helper-methods)
     - [Practice](#practice)
       - [Challenge 16: String arrays and int](#challenge-16-string-arrays-and-int)
       - [Challenge 17: Output specific number types](#challenge-17-output-specific-number-types)
-- [Exercism](#exercism)
+      - [Challenge 18: Reversing words in a sentence](#challenge-18-reversing-words-in-a-sentence)
+      - [Challenge 19: Parsing and sorting an array](#challenge-19-parsing-and-sorting-an-array)
+- [-](#-)
   - [Basics](#basics)
   - [Booleans](#booleans)
   - [Strings](#strings)
@@ -2901,6 +2909,42 @@ B14 | A11 | B12 | A13 | a |   | b |
 B14 | A11 | B12 | A13 | a | b
 ```
 
+#### Reversing an array
+
+```csharp
+string input = "abc123";
+
+char[] arr = input.ToCharArray();
+Console.WriteLine(arr); // abc123.
+
+Array.Reverse(arr); // Arrays are reference-type; so changes are made to the original array.
+Console.WriteLine(arr); // 321cba.
+
+string output = string.Join(", ", arr);
+Console.WriteLine(output); // 3, 2, 1, c, b, a.
+```
+
+#### Splitting an array
+
+```csharp
+string input = "3, 2, 1, c, b, a";
+string[] items = output.Split(", ");
+
+foreach (string item in items)
+{ 
+    Console.WriteLine(item); 
+}
+```
+
+```terminal
+3
+2
+1
+c
+b
+a
+```
+
 ### Data type casting
 
 Since C# is a typed language, it provides a system to convert values to different types (casting).
@@ -3026,6 +3070,121 @@ Console.WriteLine(result);
 6
 ```
 
+### String formatting
+
+```csharp
+// Composite formatting (using placeholders within strings).
+
+string first = "Hello";
+string second = "World";
+string result = string.Format("{0} {1}!", first, second);
+Console.WriteLine(result); // Hello World!
+```
+
+```csharp
+// String interpolation (simplifies composite formatting).
+string first = "Hello";
+string second = "World";
+Console.WriteLine($"{first} {second}!"); // Hello World!
+```
+
+#### Specifiers
+
+```csharp
+decimal input = 123.31654m;
+Console.WriteLine($"{input:c}"); // 123,32 €
+Console.WriteLine($"{input:n}"); // 123,32
+Console.WriteLine($"{input:n3}"); // 123,317
+Console.WriteLine($"{input:p2}"); // 123 31,65 %
+```
+
+#### Padding
+
+```csharp
+string input = "hello";
+Console.WriteLine(input.PadLeft(20, '-'));
+Console.WriteLine(input.PadRight(20, '-'));
+```
+
+```terminal
+---------------hello
+hello---------------
+```
+
+### String helper methods
+
+```csharp
+string message = "What is the value <span>between the tags</span>?";
+
+string openingTag = "<span>";
+string closingTag = "</span>";
+
+int openingPosition = message.IndexOf(openingTag) + openingTag.Length;
+int closingPosition = message.IndexOf(closingTag);
+
+// openingPosition += 6; // Avoid hardcoding magic values.
+int length = closingPosition - openingPosition;
+Console.WriteLine(message.Substring(openingPosition, length));
+```
+
+```terminal
+between the tags
+```
+
+```csharp
+string message = "(What if) I am (only interested) in the last (set of parentheses)?";
+
+string openingTag = "(";
+string closingTag = ")";
+
+int openingPosition = message.LastIndexOf(openingTag);
+int closingPosition = message.LastIndexOf(closingTag);
+        
+openingPosition += openingTag.Length;
+
+int length = closingPosition - openingPosition;
+Console.WriteLine(message.Substring(openingPosition, length));
+```
+
+```terminal
+set of parentheses
+```
+
+```csharp
+string message = "(What if) I am (only interested) in the last (set of parentheses)?";
+
+string openingTag = "(";
+string closingTag = ")";
+
+while (true)
+{
+    int openingPosition = message.IndexOf(openingTag);
+    int closingPosition = message.IndexOf(closingTag);
+
+    if (openingPosition < 0)
+    {
+        break;
+    }
+
+    openingPosition += openingTag.Length;
+
+    int length = closingPosition - openingPosition;
+
+    Console.WriteLine(message.Substring(openingPosition, length));
+    message = message.Substring(closingPosition + 1);
+}
+```
+
+```terminal
+What if
+only interested
+set of parentheses
+```
+
+```csharp
+
+```
+
 ### Practice
 
 #### Challenge 16: String arrays and int
@@ -3084,9 +3243,64 @@ Divide value2 by value3, display the result as a decimal: 1,44186046511627906976
 Divide value3 by value1, display the result as a float: 0,3909091
 ```
 
+#### Challenge 18: Reversing words in a sentence
 
+```csharp
+public static void Pangram(string input)
+{
+    StringBuilder sb = new StringBuilder();
 
-# Exercism
+    string[] items = input.Split(" ");
+    foreach (string item in items)
+    {
+        char[] arr = item.ToCharArray();
+        Array.Reverse(arr);
+        sb.Append(arr);
+        sb.Append(' ');
+    }
+        
+    Console.WriteLine(string.Join(" ", sb).Trim());
+}
+```
+
+```terminal
+ehT kciuq nworb xof spmuj revo eht yzal god
+```
+
+#### Challenge 19: Parsing and sorting an array
+
+```csharp
+public static void OrderIds(string input)
+{
+    string[] items = input.Split(",");
+    Array.Sort(items);
+
+    foreach (string item in items)
+    {
+        if (item.Length == 4)
+        {
+            Console.WriteLine(item);
+        }
+        else
+        {
+            Console.WriteLine($"{item}\t- Error");
+        }
+    }
+}
+```
+
+```terminal
+A345
+B123
+B177
+B179
+C15     - Error
+C234
+C235
+G3003   - Error
+```
+
+# -
 
 ## Basics
 

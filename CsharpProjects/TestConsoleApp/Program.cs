@@ -991,6 +991,135 @@ public class Program
         Console.WriteLine(string.Join(" | ", newArr));
     }
 
+    public static void ReverseString(string input)
+    {
+        char[] arr = input.ToCharArray();
+        Console.WriteLine(arr); // abc123.
+
+        Array.Reverse(arr); // Arrays are reference-type; so changes are made to the original array.
+        Console.WriteLine(arr); // 321cba.
+
+        string output = string.Join(", ", arr);
+        Console.WriteLine(output); //3, 2, 1, c, b, a.
+
+        string[] items = output.Split(", ");
+        foreach (string item in items) { Console.WriteLine(item); }
+    }
+
+    public static void Pangram(string input)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        string[] items = input.Split(" ");
+        foreach (string item in items)
+        {
+            char[] arr = item.ToCharArray();
+            Array.Reverse(arr);
+            sb.Append(arr);
+            sb.Append(' ');
+        }
+
+        Console.WriteLine(string.Join(" ", sb).Trim());
+    }
+
+    public static void OrderIds(string input)
+    {
+        string[] items = input.Split(",");
+        Array.Sort(items);
+
+        foreach (string item in items)
+        {
+            if (item.Length == 4)
+            {
+                Console.WriteLine(item);
+            }
+            else
+            {
+                Console.WriteLine($"{item}\t- Error");
+            }
+        }
+    }
+
+    public static void Formatting()
+    {
+        decimal input = 123.31654m;
+        Console.WriteLine($"{input:c}"); // 123,32 €
+        Console.WriteLine($"{input:n}"); // 123,32
+        Console.WriteLine($"{input:n3}"); // 123,317
+        Console.WriteLine($"{input:p2}"); // 123 31,65 %
+
+        string input2 = "hello";
+        Console.WriteLine(input2.PadLeft(20, '-'));
+        Console.WriteLine(input2.PadRight(20, '-'));
+    }
+
+    public static void MagicValues()
+    {
+        string message = "What is the value <span>between the tags</span>?";
+
+        string openingTag = "<span>";
+        string closingTag = "</span>";
+
+        int openingPosition = message.IndexOf(openingTag) + openingTag.Length;
+        int closingPosition = message.IndexOf(closingTag);
+
+        // openingPosition += 6; // Avoid hardcoding magic values.
+        int length = closingPosition - openingPosition;
+        Console.WriteLine(message.Substring(openingPosition, length));
+    }
+
+    public static void Indexes()
+    {
+        string message = "(What if) I am (only interested) in the last (set of parentheses)?";
+
+        string openingTag = "(";
+        string closingTag = ")";
+
+        while (true)
+        {
+            int openingPosition = message.IndexOf(openingTag);
+            int closingPosition = message.IndexOf(closingTag);
+
+            if (openingPosition < 0)
+            {
+                break;
+            }
+
+            openingPosition += openingTag.Length;
+
+            int length = closingPosition - openingPosition;
+
+            Console.WriteLine(message.Substring(openingPosition, length));
+            message = message.Substring(closingPosition + 1);
+        }
+    }
+
+    public static void Indexes2()
+    {
+        string message = "(What if) I have [different symbols] but every {open symbol} needs a [matching closing symbol]?";
+
+        char[] tags = ['(', '[', '{'];
+
+        while (true)
+        {
+            int openingPosition = message.IndexOfAny(tags);
+            string openingTag = message.Substring(openingPosition, 1);
+            string closingTag;
+
+        }
+        //    if (openingPosition < 0)
+        //    {
+        //        break;
+        //    }
+
+        //    openingPosition += 1;
+
+        //    int length = closingPosition - openingPosition;
+
+        //    Console.WriteLine(message.Substring(openingPosition, length));
+        //    message = message.Substring(closingPosition + 1);
+        //}
+    }
 
     public static void Main()
     {
@@ -1040,6 +1169,12 @@ public class Program
         //FloatingTypes();
         //ReferenceTypes();
         //MyClass myClass = new MyClass();
-        RemoveEmptyElements();
+        //RemoveEmptyElements();
+        //ReverseString("abc123");
+        //Pangram("The quick brown fox jumps over the lazy dog");
+        //OrderIds("B123,C234,A345,C15,B177,G3003,C235,B179");
+        //Formatting();
+        //MagicValues();
+        Indexes2();
     }
 }
