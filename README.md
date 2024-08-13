@@ -87,6 +87,15 @@ Resource: [Microsoft documentation](https://learn.microsoft.com/en-us/dotnet/api
       - [Removing empty elements from an array](#removing-empty-elements-from-an-array)
       - [Reversing an array](#reversing-an-array)
       - [Splitting an array](#splitting-an-array)
+    - [String formatting](#string-formatting)
+      - [Specifiers](#specifiers)
+      - [Padding](#padding)
+    - [String helper methods](#string-helper-methods)
+      - [IndexOf](#indexof)
+      - [LastIndexOf](#lastindexof)
+      - [IndexOfAny](#indexofany)
+      - [Remove](#remove)
+      - [Replace](#replace)
     - [Data type casting](#data-type-casting)
       - [Implicit casting (safe conversion)](#implicit-casting-safe-conversion)
       - [Explicit casting (unsafe conversion)](#explicit-casting-unsafe-conversion)
@@ -95,15 +104,13 @@ Resource: [Microsoft documentation](https://learn.microsoft.com/en-us/dotnet/api
       - [Helper method on data type](#helper-method-on-data-type)
         - [With exception handling](#with-exception-handling)
       - [Convert class methods](#convert-class-methods)
-    - [String formatting](#string-formatting)
-      - [Specifiers](#specifiers)
-      - [Padding](#padding)
-    - [String helper methods](#string-helper-methods)
     - [Practice](#practice)
       - [Challenge 16: String arrays and int](#challenge-16-string-arrays-and-int)
       - [Challenge 17: Output specific number types](#challenge-17-output-specific-number-types)
       - [Challenge 18: Reversing words in a sentence](#challenge-18-reversing-words-in-a-sentence)
       - [Challenge 19: Parsing and sorting an array](#challenge-19-parsing-and-sorting-an-array)
+      - [Challenge 20: Format string data](#challenge-20-format-string-data)
+      - [Project 5:](#project-5)
 - [-](#-)
   - [Basics](#basics)
   - [Booleans](#booleans)
@@ -2945,6 +2952,177 @@ b
 a
 ```
 
+### String formatting
+
+```csharp
+// Composite formatting (using placeholders within strings).
+
+string first = "Hello";
+string second = "World";
+string result = string.Format("{0} {1}!", first, second);
+Console.WriteLine(result); // Hello World!
+```
+
+```csharp
+// String interpolation (simplifies composite formatting).
+string first = "Hello";
+string second = "World";
+Console.WriteLine($"{first} {second}!"); // Hello World!
+```
+
+#### Specifiers
+
+```csharp
+decimal input = 123.31654m;
+Console.WriteLine($"{input:c}"); // 123,32 €
+Console.WriteLine($"{input:n}"); // 123,32
+Console.WriteLine($"{input:n3}"); // 123,317
+Console.WriteLine($"{input:p2}"); // 123 31,65 %
+```
+
+#### Padding
+
+```csharp
+string input = "hello";
+Console.WriteLine(input.PadLeft(20, '-'));
+Console.WriteLine(input.PadRight(20, '-'));
+```
+
+```terminal
+---------------hello
+hello---------------
+```
+
+### String helper methods
+
+#### IndexOf
+
+```csharp
+string message = "What is the value <span>between the tags</span>?";
+
+string openingTag = "<span>";
+string closingTag = "</span>";
+
+int openingPosition = message.IndexOf(openingTag);
+int closingPosition = message.IndexOf(closingTag);
+
+// openingPosition += 6; // Avoid hardcoding magic values.
+openingPosition += openingTag.Length;
+
+int length = closingPosition - openingPosition;
+Console.WriteLine(message.Substring(openingPosition, length));
+```
+
+```terminal
+between the tags
+```
+
+#### LastIndexOf
+
+```csharp
+string message = "(What if) I am (only interested) in the last (set of parentheses)?";
+
+string openingTag = "(";
+string closingTag = ")";
+
+int openingPosition = message.LastIndexOf(openingTag);
+int closingPosition = message.LastIndexOf(closingTag);
+        
+openingPosition += openingTag.Length;
+
+int length = closingPosition - openingPosition;
+Console.WriteLine(message.Substring(openingPosition, length));
+```
+
+```terminal
+set of parentheses
+```
+
+```csharp
+string message = "(What if) I am (only interested) in the last (set of parentheses)?";
+
+string openingTag = "(";
+string closingTag = ")";
+
+while (true)
+{
+    int openingPosition = message.IndexOf(openingTag);
+    int closingPosition = message.IndexOf(closingTag);
+
+    if (openingPosition < 0)
+    {
+        break;
+    }
+
+    openingPosition += openingTag.Length;
+
+    int length = closingPosition - openingPosition;
+
+    Console.WriteLine(message.Substring(openingPosition, length));
+    message = message.Substring(closingPosition + 1);
+}
+```
+
+```terminal
+What if
+only interested
+set of parentheses
+```
+
+#### IndexOfAny
+
+```csharp
+string message = "(What if) I have [different symbols] but every {open symbol} needs a [matching closing symbol]?";
+
+char[] openingTags = ['(', '[', '{'];
+char[] closingTags = [')', ']', '}'];
+
+while (true)
+{
+    int openingPosition = message.IndexOfAny(openingTags);
+    if (openingPosition < 0)
+    {
+        break;
+    }
+
+    char openingTag = message[openingPosition]; // Access char within string as if it were an array.
+    openingPosition += 1;
+
+    int index = Array.IndexOf(openingTags, openingTag);
+    int closingPosition = message.IndexOf(closingTags[index]);
+
+    int length = closingPosition - openingPosition;
+
+    Console.WriteLine(message.Substring(openingPosition, length));
+    message = message.Substring(closingPosition + 1);
+}
+```
+
+```terminal
+What if
+different symbols
+open symbol
+matching closing symbol
+```
+
+#### Remove
+
+```csharp
+string input = "helloworld";
+string output1 = input.Remove(5);
+string output2 = input.Remove(0, output1.Length);
+Console.WriteLine(output1); // hello
+Console.WriteLine(output2); // world
+```
+
+#### Replace
+
+```csharp
+string input = "helloworld";
+string output = input.Replace("hello", "world");
+Console.WriteLine(output); //worldworld
+```
+
 ### Data type casting
 
 Since C# is a typed language, it provides a system to convert values to different types (casting).
@@ -3070,121 +3248,6 @@ Console.WriteLine(result);
 6
 ```
 
-### String formatting
-
-```csharp
-// Composite formatting (using placeholders within strings).
-
-string first = "Hello";
-string second = "World";
-string result = string.Format("{0} {1}!", first, second);
-Console.WriteLine(result); // Hello World!
-```
-
-```csharp
-// String interpolation (simplifies composite formatting).
-string first = "Hello";
-string second = "World";
-Console.WriteLine($"{first} {second}!"); // Hello World!
-```
-
-#### Specifiers
-
-```csharp
-decimal input = 123.31654m;
-Console.WriteLine($"{input:c}"); // 123,32 €
-Console.WriteLine($"{input:n}"); // 123,32
-Console.WriteLine($"{input:n3}"); // 123,317
-Console.WriteLine($"{input:p2}"); // 123 31,65 %
-```
-
-#### Padding
-
-```csharp
-string input = "hello";
-Console.WriteLine(input.PadLeft(20, '-'));
-Console.WriteLine(input.PadRight(20, '-'));
-```
-
-```terminal
----------------hello
-hello---------------
-```
-
-### String helper methods
-
-```csharp
-string message = "What is the value <span>between the tags</span>?";
-
-string openingTag = "<span>";
-string closingTag = "</span>";
-
-int openingPosition = message.IndexOf(openingTag) + openingTag.Length;
-int closingPosition = message.IndexOf(closingTag);
-
-// openingPosition += 6; // Avoid hardcoding magic values.
-int length = closingPosition - openingPosition;
-Console.WriteLine(message.Substring(openingPosition, length));
-```
-
-```terminal
-between the tags
-```
-
-```csharp
-string message = "(What if) I am (only interested) in the last (set of parentheses)?";
-
-string openingTag = "(";
-string closingTag = ")";
-
-int openingPosition = message.LastIndexOf(openingTag);
-int closingPosition = message.LastIndexOf(closingTag);
-        
-openingPosition += openingTag.Length;
-
-int length = closingPosition - openingPosition;
-Console.WriteLine(message.Substring(openingPosition, length));
-```
-
-```terminal
-set of parentheses
-```
-
-```csharp
-string message = "(What if) I am (only interested) in the last (set of parentheses)?";
-
-string openingTag = "(";
-string closingTag = ")";
-
-while (true)
-{
-    int openingPosition = message.IndexOf(openingTag);
-    int closingPosition = message.IndexOf(closingTag);
-
-    if (openingPosition < 0)
-    {
-        break;
-    }
-
-    openingPosition += openingTag.Length;
-
-    int length = closingPosition - openingPosition;
-
-    Console.WriteLine(message.Substring(openingPosition, length));
-    message = message.Substring(closingPosition + 1);
-}
-```
-
-```terminal
-What if
-only interested
-set of parentheses
-```
-
-```csharp
-
-```
-
 ### Practice
 
 #### Challenge 16: String arrays and int
@@ -3299,6 +3362,51 @@ C234
 C235
 G3003   - Error
 ```
+
+#### Challenge 20: Format string data
+
+```csharp
+public static void FormatStringData()
+{
+    const string input = "<div><h2>Widgets &trade;</h2><span>5000</span></div>";
+
+    string quantity = "";
+    string output = "";
+
+    string[] openingTags = ["<div>", "<span>"];
+
+    foreach (string tag in openingTags)
+    {
+        int openingPosition = input.IndexOf(tag);
+        openingPosition += tag.Length;
+
+        string closingTag = tag.Replace("<", "</");
+        int closingPosition = input.IndexOf(closingTag);
+
+        int length = closingPosition - openingPosition;
+
+        if (Array.IndexOf(openingTags, tag) == 0)
+        {
+            output = input.Substring(openingPosition, length);
+            output = output.Replace("&trade;", "&reg;");
+        }
+        else
+        {
+            quantity = input.Substring(openingPosition, length);
+        }
+    }
+
+    Console.WriteLine($"Quantity: {quantity}");
+    Console.WriteLine($"Output: {output}");
+}
+```
+
+```terminal
+Quantity: 5000
+Output: <h2>Widgets &reg;</h2><span>5000</span>
+```
+
+#### Project 5:  
 
 # -
 
