@@ -1,9 +1,11 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Data;
+using System.Diagnostics.Contracts;
 using System.Globalization;
-using System.Net.Http.Headers;
+using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
+using static Program;
 
 public class Program
 {
@@ -466,8 +468,9 @@ public class Program
         public int? Age { get; set; }
         public string? Characteristics { get; set; }
         public string? Personality { get; set; }
+        public string? SuggestedDonation { get; set; }
 
-        public Animal(int id, string species, string? age, string? characteristics, string? personality, string nickname)
+        public Animal(int id, string species, string? age, string? characteristics, string? personality, string nickname, string? suggestedDonation = null)
         {
             Id = id;
             Species = species;
@@ -475,6 +478,7 @@ public class Program
             Characteristics = characteristics;
             Personality = personality;
             Nickname = nickname;
+            SuggestedDonation = !string.IsNullOrEmpty(suggestedDonation) ? suggestedDonation : "45,00";
         }
     }
 
@@ -1174,6 +1178,13 @@ public class Program
 
     public static void Contoso2()
     {
+        CultureInfo.CurrentCulture = new CultureInfo("fr-FR");
+        Console.OutputEncoding = Encoding.UTF8;
+
+        string welcomeMessage = $"Welcome to the Contoso PetFriends app. Your main menu options are:" +
+            $"\n 1. List all of our current pet information" +
+            $"\n 2. Display all dogs with a specified characteristic";
+
         // #1 the ourAnimals array will store the following: 
         string animalSpecies = "";
         string animalID = "";
@@ -1181,14 +1192,16 @@ public class Program
         string animalPhysicalDescription = "";
         string animalPersonalityDescription = "";
         string animalNickname = "";
+        string suggestedDonation = "";
 
         // #2 variables that support data entry
         int maxPets = 8;
         string? readResult;
         string menuSelection = "";
+        decimal decimalDonation = 0.00m;
 
         // #3 array used to store runtime data, there is no persisted data
-        string[,] ourAnimals = new string[maxPets, 6];
+        string[,] ourAnimals = new string[maxPets, 7];
 
         // #4 create sample data ourAnimals array entries
         for (int i = 0; i < maxPets; i++)
@@ -1202,6 +1215,7 @@ public class Program
                     animalPhysicalDescription = "medium sized cream colored female golden retriever weighing about 45 pounds. housebroken.";
                     animalPersonalityDescription = "loves to have her belly rubbed and likes to chase her tail. gives lots of kisses.";
                     animalNickname = "lola";
+                    suggestedDonation = "85,00";
                     break;
 
                 case 1:
@@ -1211,6 +1225,7 @@ public class Program
                     animalPhysicalDescription = "large reddish-brown male golden retriever weighing about 85 pounds. housebroken.";
                     animalPersonalityDescription = "loves to have his ears rubbed when he greets you at the door, or at any time! loves to lean-in and give doggy hugs.";
                     animalNickname = "gus";
+                    suggestedDonation = "49,00";
                     break;
 
                 case 2:
@@ -1220,6 +1235,7 @@ public class Program
                     animalPhysicalDescription = "small white female weighing about 8 pounds. litter box trained.";
                     animalPersonalityDescription = "friendly";
                     animalNickname = "snow";
+                    suggestedDonation = "40,00";
                     break;
 
                 case 3:
@@ -1229,6 +1245,7 @@ public class Program
                     animalPhysicalDescription = "Medium sized, long hair, yellow, female, about 10 pounds. Uses litter box.";
                     animalPersonalityDescription = "A people loving cat that likes to sit on your lap.";
                     animalNickname = "Lion";
+                    suggestedDonation = "";
                     break;
 
                 default:
@@ -1238,6 +1255,7 @@ public class Program
                     animalPhysicalDescription = "";
                     animalPersonalityDescription = "";
                     animalNickname = "";
+                    suggestedDonation = "";
                     break;
 
             }
@@ -1249,6 +1267,11 @@ public class Program
             ourAnimals[i, 4] = "Physical description: " + animalPhysicalDescription;
             ourAnimals[i, 5] = "Personality: " + animalPersonalityDescription;
 
+            if (!decimal.TryParse(suggestedDonation, out decimalDonation))
+            {
+                decimalDonation = 45.00m;
+            }
+            ourAnimals[i, 6] = $"Suggested donation: {decimalDonation:c2}";
         }
 
         // #5 display the top-level menu options
@@ -1257,9 +1280,7 @@ public class Program
             // NOTE: the Console.Clear method is throwing an exception in debug sessions
             Console.Clear();
 
-            Console.WriteLine("Welcome to the Contoso PetFriends app. Your main menu options are:");
-            Console.WriteLine(" 1. List all of our current pet information");
-            Console.WriteLine(" 2. Display all dogs with a specified characteristic");
+            Console.WriteLine($"{welcomeMessage}");
             Console.WriteLine();
             Console.WriteLine("Enter your selection number (or type Exit to exit the program)");
 
@@ -1279,7 +1300,7 @@ public class Program
                         if (ourAnimals[i, 0] != "ID #: ")
                         {
                             Console.WriteLine();
-                            for (int j = 0; j < 6; j++)
+                            for (int j = 0; j < 7; j++)
                             {
                                 Console.WriteLine(ourAnimals[i, j]);
                             }
@@ -1292,7 +1313,54 @@ public class Program
 
                 case "2":
                     // Display all dogs with a specified characteristic
-                    Console.WriteLine("\nUNDER CONSTRUCTION - please check back next month to see progress.");
+                    string userInput = string.Empty;
+                    int matches = 0;
+
+                    while (string.IsNullOrEmpty(userInput))
+                    {
+                        Console.Clear();
+
+                        Console.WriteLine($"{welcomeMessage}");
+                        Console.WriteLine();
+                        Console.WriteLine("Enter your selection number (or type Exit to exit the program)");
+                        Console.WriteLine("2");
+                        Console.WriteLine();
+                        Console.WriteLine("Enter one desired dog characteristic to search for:");
+                        readResult = Console.ReadLine();
+
+                        if (!string.IsNullOrEmpty(readResult))
+                        {
+                            userInput = readResult.ToLower().Trim();
+                        }
+                    }
+
+                    for (int i = 0; i < maxPets; i++)
+                    {
+                        if (ourAnimals[i, 1].Contains("dog"))
+                        {
+                            Regex regex = new Regex(userInput);
+                            string characteristics = $"{ourAnimals[i, 4]}{ourAnimals[i, 5]}";
+
+                            if (regex.Match(characteristics).Success)
+                            {
+                                Console.WriteLine();
+                                for (int j = 0; j < 7; j++)
+                                {
+                                    Console.WriteLine(ourAnimals[i, j]);
+                                }
+
+                                matches++;
+                            }
+                        }
+                    }
+
+                    if (matches < 1)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("No matches found.");
+                    }
+
+                    Console.WriteLine();
                     Console.WriteLine("Press the Enter key to continue.");
                     readResult = Console.ReadLine();
                     break;
@@ -1302,6 +1370,385 @@ public class Program
             }
 
         } while (menuSelection != "exit");
+    }
+
+    public static void Contoso3()
+    {
+        CultureInfo.CurrentCulture = new CultureInfo("fr-FR");
+        Console.OutputEncoding = Encoding.UTF8;
+
+        string welcomeMessage = $"Welcome to the Contoso PetFriends app. Your main menu options are:" +
+            $"\n 1. List all of our current pet information." +
+            $"\n 2. Display all dogs with a specified characteristic.";
+
+        // Data entry variables -------------------------------------------
+        int id = 0;
+        string? readResult;
+        string menuSelection = "";
+
+        // Static data ----------------------------------------------------
+        List<Animal> ourAnimals = new List<Animal>() {
+        new Animal(
+            ++id,
+            "dog",
+            "2",
+            "medium sized cream colored female golden retriever weighing about 45 pounds. housebroken.",
+            "loves to have her belly rubbed and likes to chase her tail. gives lots of kisses.",
+            "lola",
+            "85,00"),
+
+        new Animal(
+            ++id,
+            "dog",
+            "9",
+            "large reddish-brown male golden retriever weighing about 85 pounds. housebroken.",
+            "loves to have his ears rubbed when he greets you at the door, or at any time! loves to lean-in and give doggy hugs.",
+            "gus",
+            "49,00"),
+
+        new Animal(
+            ++id,
+            "cat",
+            "1",
+            "small white female weighing about 8 pounds. litter box trained.",
+            "friendly",
+            "snow",
+            "40,00"),
+
+        new Animal(
+            ++id,
+            "cat",
+            "3",
+            "Medium sized, long hair, yellow, female, about 10 pounds. Uses litter box.",
+            "A people loving cat that likes to sit on your lap.",
+            "Lion")
+        };
+
+        // Menu options ---------------------------------------------------
+        do
+        {
+            Console.Clear();
+
+            Console.WriteLine($"{welcomeMessage}");
+            Console.WriteLine();
+            Console.WriteLine("Enter your selection number (or type Exit to exit the program)");
+
+            readResult = Console.ReadLine();
+            if (readResult != null)
+            {
+                menuSelection = readResult.ToLower();
+            }
+
+            // Switch case ------------------------------------------------
+            switch (menuSelection)
+            {
+                case "1":
+                    foreach (Animal animal in ourAnimals)
+                    {
+                        Console.WriteLine();
+
+                        PropertyInfo[] properties = animal.GetType().GetProperties();
+                        foreach (PropertyInfo property in properties)
+                        {
+                            Console.WriteLine($"{property.Name}: {property.GetValue(animal)}");
+                        }
+                    }
+
+                    Console.WriteLine("\n\rPress the Enter key to continue");
+                    readResult = Console.ReadLine();
+
+                    break;
+
+                case "2":
+                    // 2. Search functionality ----------------------------
+                    string[] loadingIcons = [".", "..", "..."];
+                    List<string> lookUpWords = new List<string>();
+                    List<string> lookAgainstWords = new List<string>();
+                    List<string> notFoundWords = new List<string>();
+                    Dictionary<Animal, List<string>> results = new Dictionary<Animal, List<string>>();
+
+                    readResult = string.Empty;
+
+                    // List input data ------------------------------------
+                    while (string.IsNullOrEmpty(readResult))
+                    {
+                        Console.Clear();
+
+                        Console.WriteLine($"{welcomeMessage}");
+                        Console.WriteLine();
+                        Console.WriteLine("Enter your selection number (or type Exit to exit the program)");
+                        Console.WriteLine("2");
+                        Console.WriteLine();
+                        Console.WriteLine("Enter desired dog characteristics to search for:");
+                        readResult = Console.ReadLine();
+
+                        if (!string.IsNullOrEmpty(readResult))
+                        {
+                            Regex regex = new Regex(@"\w+");
+                            foreach (Match match in regex.Matches(readResult))
+                            {
+                                lookUpWords.Add(match.Value.ToLower());
+                            }
+                        }
+                    }
+
+                    Console.WriteLine();
+
+                    // Loading icons --------------------------------------
+                    foreach (string icon in loadingIcons)
+                    {
+                        Console.Write($"\rSearching {icon}");
+                        Thread.Sleep(200);
+                    }
+
+                    Console.WriteLine();
+
+                    // Compare input against base -------------------------
+                    foreach (Animal animal in ourAnimals)
+                    {
+                        if (animal.Species != "dog")
+                        {
+                            continue;
+                        }
+
+                        foreach (string word in lookUpWords)
+                        {
+                            string lookAgainstString = $"{animal.Characteristics} {animal.Personality}";
+                            if (!string.IsNullOrEmpty(lookAgainstString))
+                            {
+                                Regex regex = new Regex(@"\w+");
+                                foreach (Match match in regex.Matches(lookAgainstString))
+                                {
+                                    lookAgainstWords.Add(match.Value.ToLower());
+                                }
+                            }
+
+                            if (lookAgainstWords.Contains(word))
+                            {
+                                if (results.ContainsKey(animal))
+                                {
+                                    results[animal].Add(word);
+                                }
+                                else
+                                {
+                                    results.Add(animal, new List<string> { word });
+                                }
+                            }
+                            lookAgainstWords.Clear();
+                        }
+                    }
+
+                    // Print found data -----------------------------------
+                    foreach (var entry in results)
+                    {
+                        Console.WriteLine();
+
+                        foreach (var word in entry.Value)
+                        {
+                            Console.WriteLine($"=> Match found for pet {entry.Key.Nickname}, word: '{word}'");
+                        }
+
+                        Console.WriteLine();
+
+                        PropertyInfo[] properties = entry.Key.GetType().GetProperties();
+                        foreach (PropertyInfo property in properties)
+                        {
+                            Console.WriteLine($"{property.Name}: {property.GetValue(entry.Key)}");
+                        }
+                    }
+
+                    // Print not found data -------------------------------
+                    foreach (string lookUpWord in lookUpWords)
+                    {
+                        if (results.Count < 1)
+                        {
+                            notFoundWords.Add(lookUpWord);
+                        }
+                        else
+                        {
+                            foreach (var entry in results)
+                            {
+                                if (!entry.Value.Contains(lookUpWord))
+                                {
+                                    notFoundWords.Add(lookUpWord);
+                                }
+                            }
+                        }
+                    }
+
+                    if (notFoundWords.Count > 0)
+                    {
+                        Console.WriteLine();
+
+                        foreach (string word in notFoundWords)
+                        {
+                            Console.WriteLine($"=> No match found for word: '{word}'");
+                        }
+                    }
+
+                    Console.WriteLine();
+                    Console.WriteLine("Press the Enter key to continue.");
+                    readResult = Console.ReadLine();
+                    break;
+
+                default:
+                    break;
+            }
+
+        } while (menuSelection != "exit");
+    }
+
+    public static void PrintMessage(string message) => Console.WriteLine(message);
+
+    public static void ValueType()
+    {
+        int x = 0;
+        Console.WriteLine(x);
+
+        ModifyValue(x);
+        Console.WriteLine(x);
+    }
+
+    public static void ModifyValue(int x)
+    {
+        x = 10;
+    }
+
+    public static void ReferenceType()
+    {
+        int[] arr = [1, 2, 3];
+        Console.WriteLine(string.Join(", ", arr));
+
+        ModifyReference(arr);
+        Console.WriteLine(string.Join(", ", arr));
+    }
+
+    public static void ModifyReference(int[] arr)
+    {
+        arr[0] = 10;
+        arr[1] = 20;
+        arr[2] = 30;
+    }
+
+    public static void StringType()
+    {
+        string original = "Hello World";
+        Console.WriteLine(original); // Hello World.
+
+        ModifyString(original);
+        Console.WriteLine(original); // Still Hello World.
+    }
+    public static void ModifyString(string str)
+    {
+        str = "World Hello";
+    }
+
+    public class Invitee
+    {
+        public string Name { get; set; }
+        public int PartySize { get; set; }
+        public string Allergies { get; set; }
+        public bool InviteOnly { get; set; }
+
+        public Invitee(string name, int partySize = 1, bool inviteOnly = true, string allergie = "none")
+        {
+            Name = name;
+            PartySize = partySize;
+            Allergies = allergie;
+            InviteOnly = inviteOnly;
+        }
+    }
+
+    public static void RSVP()
+    {
+        Invitee[] invitees =
+        [
+            new Invitee("Rebecca"),
+            new Invitee("Nadia", partySize: 2, allergie: "Nuts"),
+            new Invitee("Linh", partySize: 2, inviteOnly: false),
+            new Invitee("Tony", allergie: "Jackfruit"),
+            new Invitee("Noor", 4, inviteOnly: false),
+            new Invitee("Jonte", 2, false, "Stone fruit")
+        ];
+
+        string[] guestList = { "Rebecca", "Nadia", "Noor", "Jonte" };
+        string[] rsvps = new string[10];
+        int count = 0;
+
+        foreach (Invitee invitee in invitees)
+        {
+            bool isOnList = RSVP(invitee.Name, invitee.PartySize, invitee.Allergies, invitee.InviteOnly, guestList, rsvps, count);
+            if (isOnList)
+            {
+                count++;
+            }
+        }
+
+        ShowRSVPs(rsvps, count);
+    }
+
+    public static bool RSVP(string name, int partySize, string allergies, bool inviteOnly, string[] guestList, string[] rsvps, int count)
+    {
+        if (inviteOnly)
+        {
+            bool found = false;
+            foreach (string guest in guestList)
+            {
+                if (guest.Equals(name))
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
+            {
+                Console.WriteLine($"Sorry, {name} is not on the guest list");
+                return false;
+            }
+        }
+
+        rsvps[count] = $"Name: {name}, \tParty Size: {partySize}, \tAllergies: {allergies}";
+        return true;
+    }
+
+    public static void ShowRSVPs(string[] rsvps, int count)
+    {
+        Console.WriteLine("\nTotal RSVPs:");
+        for (int i = 0; i < count; i++)
+        {
+            Console.WriteLine(rsvps[i]);
+        }
+    }
+
+    public static void EmployeeEmails()
+    {
+        string[,] employees =
+        {
+            {"int", "Robert", "Bavin"}, {"int", "Simon", "Bright"},
+            {"int", "Kim", "Sinclair"}, {"int", "Aashrita", "Kamath"},
+            {"int", "Sarah", "Delucchi"}, {"int", "Sinan", "Ali"},
+            {"ext", "Vinnie", "Ashton"}, {"ext", "Cody", "Dysart"},
+            {"ext", "Shay", "Lawrence"}, {"ext", "Daren", "Valdes"}
+        };
+
+        string externalDomain = "hayworth.com";
+
+        for (int i = 0; i < employees.GetLength(0); i++)
+        {
+            DisplayEmail(
+                name: employees[i, 1],
+                surName: employees[i, 2],
+                domain: employees[i, 0] == "ext" ? externalDomain : "contoso.com");
+        }
+    }
+
+    public static void DisplayEmail(string name, string surName, string domain)
+    {
+        string email = $"{name.Substring(0, 2).ToLower()}";
+        email += $"{surName.ToLower()}";
+        email += $"@{domain}";
+
+        Console.WriteLine($"{email}");
     }
 
     public static void Main()
@@ -1362,6 +1809,12 @@ public class Program
         //Remove();
         //Replace();
         //FormatStringData();
-        Contoso2();
+        //Contoso3();
+        //PrintMessage("Hello world.");
+        //ValueType();
+        //ReferenceType();
+        //StringType();
+        //RSVP();
+        EmployeeEmails();
     }
 }

@@ -110,7 +110,18 @@ Resource: [Microsoft documentation](https://learn.microsoft.com/en-us/dotnet/api
       - [Challenge 18: Reversing words in a sentence](#challenge-18-reversing-words-in-a-sentence)
       - [Challenge 19: Parsing and sorting an array](#challenge-19-parsing-and-sorting-an-array)
       - [Challenge 20: Format string data](#challenge-20-format-string-data)
-      - [Project 5:](#project-5)
+      - [Project 5: CRUD stray animal app 2](#project-5-crud-stray-animal-app-2)
+      - [Project 6: CRUD stray animal app 3](#project-6-crud-stray-animal-app-3)
+  - [MODULE 5: METHODS](#module-5-methods)
+    - [Parameter vs argument](#parameter-vs-argument)
+    - [Scope](#scope)
+    - [Parameter behavior by type](#parameter-behavior-by-type)
+      - [Value type](#value-type)
+      - [Reference type](#reference-type)
+        - [String type](#string-type)
+    - [Practice](#practice)
+      - [Project 7: RVSP app](#project-7-rvsp-app)
+      - [Project 8: Employees' emails](#project-8-employees-emails)
 - [-](#-)
   - [Basics](#basics)
   - [Booleans](#booleans)
@@ -2702,9 +2713,13 @@ Value types can hold smaller values directly (the data itself), and are stored i
 
 Stack memory is CPU-level and scoped (related to execution).
 
+Examples: `int`, `float`, `double`, `char`, `bool`.
+
 Reference types can hold large values indirectly (an address to the data), and are stored in the heap.
 
 Heap memory is operating-system level and global (unrelated to execution).
+
+Examples: `string`, arrays, objects.
 
 ```mermaid
 graph TB
@@ -3406,7 +3421,656 @@ Quantity: 5000
 Output: <h2>Widgets &reg;</h2><span>5000</span>
 ```
 
-#### Project 5:  
+#### Project 5: CRUD stray animal app 2
+
+```csharp
+public static void Contoso2()
+{
+    CultureInfo.CurrentCulture = new CultureInfo("fr-FR");
+    Console.OutputEncoding = Encoding.UTF8;
+
+    string welcomeMessage = $"Welcome to the Contoso PetFriends app. Your main menu options are:" +
+        $"\n 1. List all of our current pet information" +
+        $"\n 2. Display all dogs with a specified characteristic";
+
+    // #1 the ourAnimals array will store the following: 
+    string animalSpecies = "";
+    string animalID = "";
+    string animalAge = "";
+    string animalPhysicalDescription = "";
+    string animalPersonalityDescription = "";
+    string animalNickname = "";
+    string suggestedDonation = "";
+
+    // #2 variables that support data entry
+    int maxPets = 8;
+    string? readResult;
+    string menuSelection = "";
+    decimal decimalDonation = 0.00m;
+
+    // #3 array used to store runtime data, there is no persisted data
+    string[,] ourAnimals = new string[maxPets, 7];
+
+    // #4 create sample data ourAnimals array entries
+    for (int i = 0; i < maxPets; i++)
+    {
+        switch (i)
+        {
+            case 0:
+                animalSpecies = "dog";
+                animalID = "d1";
+                animalAge = "2";
+                animalPhysicalDescription = "medium sized cream colored female golden retriever weighing about 45 pounds. housebroken.";
+                animalPersonalityDescription = "loves to have her belly rubbed and likes to chase her tail. gives lots of kisses.";
+                animalNickname = "lola";
+                suggestedDonation = "85,00";
+                break;
+
+            case 1:
+                animalSpecies = "dog";
+                animalID = "d2";
+                animalAge = "9";
+                animalPhysicalDescription = "large reddish-brown male golden retriever weighing about 85 pounds. housebroken.";
+                animalPersonalityDescription = "loves to have his ears rubbed when he greets you at the door, or at any time! loves to lean-in and give doggy hugs.";
+                animalNickname = "gus";
+                suggestedDonation = "49,00";
+                break;
+
+            case 2:
+                animalSpecies = "cat";
+                animalID = "c3";
+                animalAge = "1";
+                animalPhysicalDescription = "small white female weighing about 8 pounds. litter box trained.";
+                animalPersonalityDescription = "friendly";
+                animalNickname = "snow";
+                suggestedDonation = "40,00";
+                break;
+
+            case 3:
+                animalSpecies = "cat";
+                animalID = "c4";
+                animalAge = "3";
+                animalPhysicalDescription = "Medium sized, long hair, yellow, female, about 10 pounds. Uses litter box.";
+                animalPersonalityDescription = "A people loving cat that likes to sit on your lap.";
+                animalNickname = "Lion";
+                suggestedDonation = "";
+                break;
+
+            default:
+                animalSpecies = "";
+                animalID = "";
+                animalAge = "";
+                animalPhysicalDescription = "";
+                animalPersonalityDescription = "";
+                animalNickname = "";
+                suggestedDonation = "";
+                break;
+
+        }
+
+        ourAnimals[i, 0] = "ID #: " + animalID;
+        ourAnimals[i, 1] = "Species: " + animalSpecies;
+        ourAnimals[i, 2] = "Age: " + animalAge;
+        ourAnimals[i, 3] = "Nickname: " + animalNickname;
+        ourAnimals[i, 4] = "Physical description: " + animalPhysicalDescription;
+        ourAnimals[i, 5] = "Personality: " + animalPersonalityDescription;
+
+        if (!decimal.TryParse(suggestedDonation, out decimalDonation))
+        {
+            decimalDonation = 45.00m;
+        }
+        ourAnimals[i, 6] = $"Suggested donation: {decimalDonation:c2}";
+    }
+
+    // #5 display the top-level menu options
+    do
+    {
+        Console.Clear();
+
+        Console.WriteLine($"{welcomeMessage}");
+        Console.WriteLine();
+        Console.WriteLine("Enter your selection number (or type Exit to exit the program)");
+
+        readResult = Console.ReadLine();
+        if (readResult != null)
+        {
+            menuSelection = readResult.ToLower();
+        }
+
+        // use switch-case to process the selected menu option
+        switch (menuSelection)
+        {
+            case "1":
+                // list all pet info
+                for (int i = 0; i < maxPets; i++)
+                {
+                    if (ourAnimals[i, 0] != "ID #: ")
+                    {
+                        Console.WriteLine();
+                        for (int j = 0; j < 7; j++)
+                        {
+                            Console.WriteLine(ourAnimals[i, j]);
+                        }
+                    }
+                }
+                Console.WriteLine("\n\rPress the Enter key to continue");
+                readResult = Console.ReadLine();
+
+                break;
+
+            case "2":
+                // Display all dogs with a specified characteristic
+                string userInput = string.Empty;
+                int matches = 0;
+
+                while (string.IsNullOrEmpty(userInput))
+                {
+                    Console.Clear();
+
+                    Console.WriteLine($"{welcomeMessage}");
+                    Console.WriteLine();
+                    Console.WriteLine("Enter your selection number (or type Exit to exit the program)");
+                    Console.WriteLine("2");
+                    Console.WriteLine();
+                    Console.WriteLine("Enter one desired dog characteristic to search for:");
+                    readResult = Console.ReadLine();
+
+                    if (!string.IsNullOrEmpty(readResult))
+                    {
+                        userInput = readResult.ToLower().Trim();
+                    }
+                }
+
+                for (int i = 0; i < maxPets; i++)
+                {
+                    if (ourAnimals[i, 1].Contains("dog"))
+                    {
+                        Regex regex = new Regex(userInput);
+                        string characteristics = $"{ourAnimals[i, 4]}{ourAnimals[i, 5]}";
+
+                        if (regex.Match(characteristics).Success)
+                        {
+                            Console.WriteLine();
+                            for (int j = 0; j < 7; j++)
+                            {
+                                Console.WriteLine(ourAnimals[i, j]);
+                            }
+
+                            matches++;
+                        }
+                    }
+                }
+
+                if (matches < 1)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("No matches found.");
+                }
+
+                Console.WriteLine();
+                Console.WriteLine("Press the Enter key to continue.");
+                readResult = Console.ReadLine();
+                break;
+
+            default:
+                break;
+        }
+
+    } while (menuSelection != "exit");
+}
+```
+
+#### Project 6: CRUD stray animal app 3
+
+```csharp 
+public static void Contoso3()
+{
+    CultureInfo.CurrentCulture = new CultureInfo("fr-FR");
+    Console.OutputEncoding = Encoding.UTF8;
+
+    string welcomeMessage = $"Welcome to the Contoso PetFriends app. Your main menu options are:" +
+        $"\n 1. List all of our current pet information." +
+        $"\n 2. Display all dogs with a specified characteristic.";
+
+    // Data entry variables -------------------------------------------
+    int id = 0;
+    string? readResult;
+    string menuSelection = "";
+
+    // Static data ----------------------------------------------------
+    List<Animal> ourAnimals = new List<Animal>() {
+    new Animal(
+        ++id,
+        "dog",
+        "2",
+        "medium sized cream colored female golden retriever weighing about 45 pounds. housebroken.",
+        "loves to have her belly rubbed and likes to chase her tail. gives lots of kisses.",
+        "lola",
+        "85,00"),
+
+    new Animal(
+        ++id,
+        "dog",
+        "9",
+        "large reddish-brown male golden retriever weighing about 85 pounds. housebroken.",
+        "loves to have his ears rubbed when he greets you at the door, or at any time! loves to lean-in and give doggy hugs.",
+        "gus",
+        "49,00"),
+
+    new Animal(
+        ++id,
+        "cat",
+        "1",
+        "small white female weighing about 8 pounds. litter box trained.",
+        "friendly",
+        "snow",
+        "40,00"),
+
+    new Animal(
+        ++id,
+        "cat",
+        "3",
+        "Medium sized, long hair, yellow, female, about 10 pounds. Uses litter box.",
+        "A people loving cat that likes to sit on your lap.",
+        "Lion")
+    };
+
+    // Menu options ---------------------------------------------------
+    do
+    {
+        Console.Clear();
+
+        Console.WriteLine($"{welcomeMessage}");
+        Console.WriteLine();
+        Console.WriteLine("Enter your selection number (or type Exit to exit the program)");
+
+        readResult = Console.ReadLine();
+        if (readResult != null)
+        {
+            menuSelection = readResult.ToLower();
+        }
+
+        // Switch case ------------------------------------------------
+        switch (menuSelection)
+        {
+            case "1":
+                foreach (Animal animal in ourAnimals)
+                {
+                    Console.WriteLine();
+
+                    PropertyInfo[] properties = animal.GetType().GetProperties();
+                    foreach (PropertyInfo property in properties)
+                    {
+                        Console.WriteLine($"{property.Name}: {property.GetValue(animal)}");
+                    }
+                }
+
+                Console.WriteLine("\n\rPress the Enter key to continue");
+                readResult = Console.ReadLine();
+
+                break;
+
+            case "2":
+                // 2. Search functionality ----------------------------
+                string[] loadingIcons = [".", "..", "..."];
+                List<string> lookUpWords = new List<string>();
+                List<string> lookAgainstWords = new List<string>();
+                List<string> notFoundWords = new List<string>();
+                Dictionary<Animal, List<string>> results = new Dictionary<Animal, List<string>>();
+
+                readResult = string.Empty;
+
+                // List input data ------------------------------------
+                while (string.IsNullOrEmpty(readResult))
+                {
+                    Console.Clear();
+
+                    Console.WriteLine($"{welcomeMessage}");
+                    Console.WriteLine();
+                    Console.WriteLine("Enter your selection number (or type Exit to exit the program)");
+                    Console.WriteLine("2");
+                    Console.WriteLine();
+                    Console.WriteLine("Enter desired dog characteristics to search for:");
+                    readResult = Console.ReadLine();
+
+                    if (!string.IsNullOrEmpty(readResult))
+                    {
+                        Regex regex = new Regex(@"\w+");
+                        foreach (Match match in regex.Matches(readResult))
+                        {
+                            lookUpWords.Add(match.Value.ToLower());
+                        }
+                    }
+                }
+
+                Console.WriteLine();
+
+                // Loading icons --------------------------------------
+                foreach (string icon in loadingIcons)
+                {
+                    Console.Write($"\rSearching {icon}");
+                    Thread.Sleep(200);
+                }
+
+                Console.WriteLine();
+
+                // Compare input against base -------------------------
+                foreach (Animal animal in ourAnimals)
+                {
+                    if (animal.Species != "dog")
+                    {
+                        continue;
+                    }
+
+                    foreach (string word in lookUpWords)
+                    {
+                        string lookAgainstString = $"{animal.Characteristics} {animal.Personality}";
+                        if (!string.IsNullOrEmpty(lookAgainstString))
+                        {
+                            Regex regex = new Regex(@"\w+");
+                            foreach (Match match in regex.Matches(lookAgainstString))
+                            {
+                                lookAgainstWords.Add(match.Value.ToLower());
+                            }
+                        }
+
+                        if (lookAgainstWords.Contains(word))
+                        {
+                            if (results.ContainsKey(animal))
+                            {
+                                results[animal].Add(word);
+                            }
+                            else
+                            {
+                                results.Add(animal, new List<string> { word });
+                            }
+                        }
+                        lookAgainstWords.Clear();
+                    }
+                }
+
+                // Print found data -----------------------------------
+                foreach (var entry in results)
+                {
+                    Console.WriteLine();
+
+                    foreach (var word in entry.Value)
+                    {
+                        Console.WriteLine($"=> Match found for pet {entry.Key.Nickname}, word: '{word}'");
+                    }
+
+                    Console.WriteLine();
+
+                    PropertyInfo[] properties = entry.Key.GetType().GetProperties();
+                    foreach (PropertyInfo property in properties)
+                    {
+                        Console.WriteLine($"{property.Name}: {property.GetValue(entry.Key)}");
+                    }
+                }
+
+                // Print not found data -------------------------------
+                foreach (string lookUpWord in lookUpWords)
+                {
+                    if (results.Count < 1)
+                    {
+                        notFoundWords.Add(lookUpWord);
+                    }
+                    else
+                    {
+                        foreach (var entry in results)
+                        {
+                            if (!entry.Value.Contains(lookUpWord))
+                            {
+                                notFoundWords.Add(lookUpWord);
+                            }
+                        }
+                    }
+                }
+
+                if (notFoundWords.Count > 0)
+                {
+                    Console.WriteLine();
+
+                    foreach (string word in notFoundWords)
+                    {
+                        Console.WriteLine($"=> No match found for word: '{word}'");
+                    }
+                }
+
+                Console.WriteLine();
+                Console.WriteLine("Press the Enter key to continue.");
+                readResult = Console.ReadLine();
+                break;
+
+            default:
+                break;
+        }
+
+    } while (menuSelection != "exit");
+}
+```
+
+## MODULE 5: METHODS
+
+A method is like a black box performing operations on input data:
+
+```mermaid
+graph LR
+subgraph Method
+Operation
+end
+
+Input --> Method --> Output
+```
+
+### Parameter vs argument
+
+```csharp
+// Parameter: variable in the method signature.
+public static void PrintMessage(string message) => Console.WriteLine(message);
+
+// Argument: Value passed to the method.
+PrintMessage("Hello world.");
+```
+
+### Scope
+
+It is best practice to keep variables within the smallest scope necessary.
+
+If a global variable is used, passing it as an argument keeps the method independent and modular.
+
+```csharp
+double pi = 3.14159; // Global (top-level) variable, shared by more than one method.
+
+void PrintCircleArea(int radius, double pi)
+{
+    double area = pi * (radius * radius); // Local variable.
+    Console.WriteLine($"Area = {area}");
+}
+
+PrintCircleArea(12, pi);
+```
+
+### Parameter behavior by type
+
+#### Value type
+
+```csharp
+// The argument variable is actually a copy.
+// Changes made to the copy (inner) do not affect the original variable (outer).
+void ModifyValue(int x)
+{
+    x = 10;
+}
+
+int x = 0;
+Console.WriteLine(x); // 0.
+        
+ModifyValue(x);
+Console.WriteLine(x); // Still 0.
+```
+
+#### Reference type
+
+```csharp
+// The argument variable is not a copy, but a reference to the value itself.
+// Changes made to the copy (inner) do affect the original variable (outer).
+void ModifyReference(int[] arr)
+{
+    arr[0] = 10;
+    arr[1] = 20;
+    arr[2] = 30;
+}
+
+int[] arr = [1, 2, 3];
+Console.WriteLine(string.Join(", ", arr)); // 1, 2, 3.
+
+ModifyReference(arr);
+Console.WriteLine(string.Join(", ", arr)); // 10, 20, 30.
+```
+
+##### String type
+
+```csharp
+// string is a special type: it is an immutable reference type behaving like a value type.
+
+void ModifyString(string str)
+{
+    str = "World Hello";
+}
+
+string original = "Hello World";
+Console.WriteLine(original); // Hello World.
+        
+ModifyString(original);
+Console.WriteLine(original); // Still Hello World.
+```
+
+### Practice
+
+#### Project 7: RVSP app
+
+```csharp
+public static void RSVP()
+{
+    Invitee[] invitees =
+    [
+        new Invitee("Rebecca"),
+        new Invitee("Nadia", partySize: 2, allergie: "Nuts"),
+        new Invitee("Linh", partySize: 2, inviteOnly: false),
+        new Invitee("Tony", allergie: "Jackfruit"),
+        new Invitee("Noor", 4, inviteOnly: false),
+        new Invitee("Jonte", 2, false, "Stone fruit")
+    ];
+
+    string[] guestList = { "Rebecca", "Nadia", "Noor", "Jonte" };
+    string[] rsvps = new string[10];
+    int count = 0;
+
+    foreach (Invitee invitee in invitees)
+    {
+        bool isOnList = RSVP(invitee.Name, invitee.PartySize, invitee.Allergies, invitee.InviteOnly, guestList, rsvps, count);
+        if (isOnList)
+        {
+            count++;
+        }
+    }
+
+    ShowRSVPs(rsvps, count);
+}
+
+public static bool RSVP(string name, int partySize, string allergies, bool inviteOnly, string[] guestList, string[] rsvps, int count)
+{
+    if (inviteOnly)
+    {
+        bool found = false;
+        foreach (string guest in guestList)
+        {
+            if (guest.Equals(name))
+            {
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+        {
+            Console.WriteLine($"Sorry, {name} is not on the guest list");
+            return false;
+        }
+    }
+
+    rsvps[count] = $"Name: {name}, \tParty Size: {partySize}, \tAllergies: {allergies}";
+    return true;
+}
+
+public static void ShowRSVPs(string[] rsvps, int count)
+{
+    Console.WriteLine("\nTotal RSVPs:");
+    for (int i = 0; i < count; i++)
+    {
+        Console.WriteLine(rsvps[i]);
+    }
+}
+```
+
+```terminal
+Sorry, Tony is not on the guest list
+
+Total RSVPs:
+Name: Rebecca,  Party Size: 1,  Allergies: none
+Name: Nadia,    Party Size: 2,  Allergies: Nuts
+Name: Linh,     Party Size: 2,  Allergies: none
+Name: Noor,     Party Size: 4,  Allergies: none
+Name: Jonte,    Party Size: 2,  Allergies: Stone fruit
+```
+
+#### Project 8: Employees' emails
+
+```csharp
+public static void EmployeeEmails()
+{
+    string[,] employees =
+    {
+        {"int", "Robert", "Bavin"}, {"int", "Simon", "Bright"},
+        {"int", "Kim", "Sinclair"}, {"int", "Aashrita", "Kamath"},
+        {"int", "Sarah", "Delucchi"}, {"int", "Sinan", "Ali"},
+        {"ext", "Vinnie", "Ashton"}, {"ext", "Cody", "Dysart"},
+        {"ext", "Shay", "Lawrence"}, {"ext", "Daren", "Valdes"}
+    };
+
+    string externalDomain = "hayworth.com";
+
+    for (int i = 0; i < employees.GetLength(0); i++)
+    {
+        DisplayEmail(
+            name: employees[i, 1],
+            surName: employees[i, 2],
+            domain: employees[i, 0] == "ext" ? externalDomain : "contoso.com");
+    }
+}
+
+public static void DisplayEmail(string name, string surName, string domain)
+{
+    string email = $"{name.Substring(0, 2).ToLower()}";
+    email += $"{surName.ToLower()}";
+    email += $"@{domain}";
+
+    Console.WriteLine($"{email}");
+}
+```
+
+```terminal
+robavin@contoso.com
+sibright@contoso.com
+kisinclair@contoso.com
+aakamath@contoso.com
+sadelucchi@contoso.com
+siali@contoso.com
+viashton@hayworth.com
+codysart@hayworth.com
+shlawrence@hayworth.com
+davaldes@hayworth.com
+```
 
 # -
 
