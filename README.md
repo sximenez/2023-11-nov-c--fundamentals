@@ -120,8 +120,12 @@ Resource: [Microsoft documentation](https://learn.microsoft.com/en-us/dotnet/api
       - [Reference type](#reference-type)
         - [String type](#string-type)
     - [Practice](#practice)
+      - [Challenge 21: Refactor a method](#challenge-21-refactor-a-method)
+      - [Challenge 22: IP addresses](#challenge-22-ip-addresses)
+      - [Challenge 23: Fortune teller](#challenge-23-fortune-teller)
       - [Project 7: RVSP app](#project-7-rvsp-app)
       - [Project 8: Employees' emails](#project-8-employees-emails)
+    - [Next](#next)
 - [-](#-)
   - [Basics](#basics)
   - [Booleans](#booleans)
@@ -3863,6 +3867,15 @@ end
 Input --> Method --> Output
 ```
 
+```csharp
+void MyMethod(){};
+
+// void: return type.
+// MyMethod: name.
+// (): arguments.
+// {}: description.
+```
+
 ### Parameter vs argument
 
 ```csharp
@@ -3947,6 +3960,261 @@ Console.WriteLine(original); // Still Hello World.
 ```
 
 ### Practice
+
+#### Challenge 21: Refactor a method
+
+```csharp
+public static void FormatAndDisplayMedicineTimes(int[] times)
+{
+    foreach (int val in times)
+    {
+        string time = val.ToString();
+        int len = time.Length;
+
+        if (len >= 3)
+        {
+            time = time.Insert(len - 2, ":");
+        }
+        else if (len == 2)
+        {
+            time = time.Insert(0, "0:");
+        }
+        else
+        {
+            time = time.Insert(0, "0:0");
+        }
+
+        Console.Write($"{time} ");
+    }
+
+    Console.WriteLine();
+    Console.WriteLine();
+}
+
+public static void AdjustTimes(int currentGMT, int newGMT, int[] times, int diff)
+{
+    /* Adjust the times by adding the difference, keeping the value within 24 hours */
+    for (int i = 0; i < times.Length; i++)
+    {
+        times[i] = ((times[i] + diff)) % 2400;
+    }
+}
+
+public static void RefactorAMethod()
+{
+    int[] times = [800, 1200, 1600, 2000];
+    int diff = 0;
+
+    Console.WriteLine("Enter current GMT");
+    int currentGMT = Convert.ToInt32(Console.ReadLine());
+
+    Console.WriteLine("Current Medicine Schedule:");
+
+    /* Format and display medicine times */
+    FormatAndDisplayMedicineTimes(times);
+
+    Console.WriteLine("Enter new GMT");
+    int newGMT = Convert.ToInt32(Console.ReadLine());
+
+    if (Math.Abs(newGMT) > 12 || Math.Abs(currentGMT) > 12)
+    {
+        Console.WriteLine("Invalid GMT");
+    }
+    else if (newGMT <= 0 && currentGMT <= 0 || newGMT >= 0 && currentGMT >= 0)
+    {
+        diff = 100 * (Math.Abs(newGMT) - Math.Abs(currentGMT));
+        AdjustTimes(currentGMT, newGMT, times, diff);
+    }
+    else
+    {
+        diff = 100 * (Math.Abs(newGMT) + Math.Abs(currentGMT));
+        AdjustTimes(currentGMT, newGMT, times, diff);
+    }
+
+    Console.WriteLine("New Medicine Schedule:");
+
+    /* Format and display medicine times */
+    FormatAndDisplayMedicineTimes(times);
+}
+```
+
+```terminal
+Enter current GMT
++6
+Current Medicine Schedule:
+8:00 12:00 16:00 20:00
+
+Enter new GMT
+-6
+New Medicine Schedule:
+20:00 0:00 4:00 8:00
+```
+
+#### Challenge 22: IP addresses
+
+```csharp
+public static void IpAdressValidator(string ipAdress)
+{
+    /*
+        if ipAddress consists of 4 numbers
+        and
+        if each ipAddress number has no leading zeroes
+        and
+        if each ipAddress number is in range 0 - 255
+
+        then ipAddress is valid
+
+        else ipAddress is invalid
+    */
+
+    int[] requiredNumberPerSegment = [3, 1, 1, 1];
+    string[] input = ipAdress.Split('.');
+
+    bool hasInvalidInput = false;
+    bool hasLeadingZero = false;
+    bool isOutOfRange = false;
+
+    Console.Write($"{ipAdress} => ");
+    for (int i = 0; i < 4; i++)
+    {
+        if (!ValidateLength(input[i], i))
+        {
+            hasInvalidInput = true;
+            break;
+        }
+
+        if (!ValidateZeroes(input[i], i))
+        {
+            hasLeadingZero = true;
+            break;
+        }
+
+        if (!ValidateRange(input[i], i))
+        {
+            isOutOfRange = true;
+            break;
+        }
+    }
+
+    if (!hasInvalidInput && !hasLeadingZero && !isOutOfRange)
+    {
+        Console.WriteLine($"IP address '{ipAdress}' is valid IPv4.");
+    }
+
+    bool ValidateLength(string number, int segment)
+    {
+        if (string.IsNullOrEmpty(number))
+        {
+            Console.WriteLine($"Error: input is null of empty on segment '{segment + 1}'.");
+            return false;
+        }
+        
+        if (!int.TryParse(number, out int _))
+        {
+            Console.WriteLine($"Error: input is not valid on segment '{segment + 1}', '{input[segment]}', must be a number.");
+            return false;
+        }
+
+        if (!(number.Length == requiredNumberPerSegment[segment]))
+        {
+            Console.WriteLine($"Error: length is not valid on segment '{segment + 1}', '{input[segment]}', must be {requiredNumberPerSegment[segment]} number(s) long.");
+            return false;
+        }
+
+        return true;
+    }
+
+    bool ValidateZeroes(string number, int segment)
+    {
+        if (int.Parse(number[0].ToString()) == 0)
+        {
+            Console.WriteLine($"Error: input has leading zero on segment '{segment + 1}', '{number}'.");
+            return false;
+        }
+
+        return true;
+    }
+
+    bool ValidateRange(string number, int segment)
+    {
+        if (int.Parse(number.ToString()) > 255)
+        {
+            Console.WriteLine($"Error: input is out of range 0 - 255 on segment '{segment + 1}', '{number}'.");
+            return false;
+        }
+
+        return true;
+    }
+}
+
+public static void Main()
+{
+    string[] mockInput = ["192..2.1", "19.1.2.1", "192.12.2.1", "hello.1.2.1", "192.1.test.1", "900.1.2.1", "192.1.2.1"];
+    foreach (string input in mockInput)
+    {
+        IpAdressValidator(input);
+    }
+}
+```
+
+```terminal
+192..2.1 => Error: input is null of empty on segment '2'.
+19.1.2.1 => Error: length is not valid on segment '1', '19', must be 3 number(s) long.
+192.12.2.1 => Error: length is not valid on segment '2', '12', must be 1 number(s) long.
+hello.1.2.1 => Error: input is not valid on segment '1', 'hello', must be a number.
+192.1.test.1 => Error: input is not valid on segment '3', 'test', must be a number.
+900.1.2.1 => Error: input is out of range 0 - 255 on segment '1', '900'.
+192.1.2.1 => IP address '192.1.2.1' is valid IPv4.
+```
+
+#### Challenge 23: Fortune teller
+
+```csharp
+public static void TellFortune()
+{
+    string[] text = ["You have much to", "Today is a day to", "Whatever work you do", "This is an ideal time to"];
+    string[] good = ["look forward to.", "try new things!", "is likely to succeed.", "accomplish your dreams!"];
+    string[] bad = ["fear.", "avoid major decisions.", "may have unexpected outcomes.", "re-evaluate your life."];
+    string[] neutral = ["appreciate.", "enjoy time with friends.", "should align with your values.", "get in tune with nature."];
+
+    int[] testLuck = [0, 50, 99];
+
+    foreach (int luck in testLuck)
+    {
+        TellFortune(luck);
+    }
+
+    void TellFortune(int luck = -1)
+    {
+        if (luck < 0)
+        {
+            Random random = new Random();
+            luck = random.Next(100);
+        }
+
+        Console.WriteLine("A fortune teller whispers the following words:");
+        string[] fortune = (luck > 75 ? good : (luck < 25 ? bad : neutral));
+        for (int i = 0; i < 4; i++)
+        {
+            Console.Write($"{text[i]} {fortune[i]} ");
+        }
+
+        Console.WriteLine();
+        Console.WriteLine();
+    }
+}
+```
+
+```terminal
+A fortune teller whispers the following words:
+You have much to fear. Today is a day to avoid major decisions. Whatever work you do may have unexpected outcomes. This is an ideal time to re-evaluate your life.
+
+A fortune teller whispers the following words:
+You have much to appreciate. Today is a day to enjoy time with friends. Whatever work you do should align with your values. This is an ideal time to get in tune with nature.
+
+A fortune teller whispers the following words:
+You have much to look forward to. Today is a day to try new things! Whatever work you do is likely to succeed. This is an ideal time to accomplish your dreams!
+```
 
 #### Project 7: RVSP app
 
@@ -4071,6 +4339,8 @@ codysart@hayworth.com
 shlawrence@hayworth.com
 davaldes@hayworth.com
 ```
+
+### Next
 
 # -
 
