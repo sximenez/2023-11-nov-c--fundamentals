@@ -1,8 +1,10 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using static Program;
@@ -1952,6 +1954,255 @@ public class Program
         }
     }
 
+    public static void ReturnValues()
+    {
+        double total = 0;
+        double minimumSpend = 30.00;
+
+        double[] items = { 15.97, 3.50, 12.25, 22.99, 10.98 };
+        double[] discounts = { 0.30, 0.00, 0.10, 0.20, 0.50 };
+
+        for (int i = 0; i < items.Length; i++)
+        {
+            total += GetDiscountedPrice(i);
+        }
+
+        if (TotalMeetsMinimum())
+        {
+            total -= 5.00;
+        }
+
+        Console.WriteLine($"Total: ${total:n2}");
+
+        double GetDiscountedPrice(int itemIndex)
+        {
+            return items[itemIndex] * (1 - discounts[itemIndex]);
+        }
+
+        bool TotalMeetsMinimum()
+        {
+            return total >= minimumSpend;
+        }
+    }
+
+    public static void CoinsForChange()
+    {
+        int[] targets = [30, 40, 50, 100, 300];
+        int[] coins = [5, 5, 50, 25, 25, 10, 5];
+
+        for (int i = 0; i < targets.Length; i++)
+        {
+            HashSet<(int, int)> result = TwoCoins(coins, targets[i]);
+
+            Console.WriteLine($"Entry {i + 1} ".PadRight(30, '-'));
+
+            if (result.Count == 0)
+            {
+                Console.WriteLine($"Target: {targets[i]}");
+                Console.WriteLine($"Coins: {string.Join(", ", coins)}");
+                Console.WriteLine("No two combinations found.");
+            }
+            else
+            {
+                Console.WriteLine($"Target: {targets[i]}");
+                Console.WriteLine($"Coins: {string.Join(", ", coins)}");
+                Console.WriteLine($"Following two combinations found:");
+                foreach (var entry in result)
+                {
+                    Console.WriteLine($"{entry.Item1} + {entry.Item2} = {targets[i]}");
+                }
+            }
+            Console.WriteLine();
+        }
+
+        HashSet<(int, int)> TwoCoins(int[] coins, int target)
+        {
+            HashSet<(int, int)> result = new HashSet<(int, int)>();
+
+            for (int curr = 0; curr < coins.Length; curr++)
+            {
+                for (int next = curr + 1; next < coins.Length; next++)
+                {
+                    if (coins[curr] + coins[next] == target)
+                    {
+                        result.Add((coins[curr], coins[next]));
+                    }
+                }
+            }
+
+            return result;
+        }
+    }
+
+    public static void DiceMiniGame()
+    {
+        int target;
+        int roll;
+        Random random = new Random();
+
+        if (ShouldPlay())
+        {
+            PlayGame();
+        }
+
+        void PlayGame()
+        {
+            bool play = true;
+
+            while (play)
+            {
+                target = random.Next(1, 5);
+                roll = random.Next(1, 6);
+
+                Console.WriteLine($"Roll a number greater than {target} to win!");
+                Console.WriteLine($"You rolled a {roll}");
+                Console.WriteLine(WinOrLose());
+                Console.WriteLine("\nPlay again? (Y/N)");
+
+                play = ShouldPlay(1);
+            }
+        }
+
+        bool ShouldPlay(int counter = 0)
+        {
+            string? input;
+            bool isPlay = false;
+
+            do
+            {
+                if (counter == 0)
+                {
+                    Console.WriteLine("Would you like to play? (Y/N)");
+                }
+
+                input = Console.ReadLine();
+
+                if (input?.ToLower() == "y")
+                {
+                    isPlay = true;
+                    Console.Clear();
+                    break;
+                }
+                else if (input?.ToLower() == "n")
+                {
+                    isPlay = false;
+                    break;
+                }
+                else
+                {
+                    Console.Clear();
+                    counter = 0;
+                }
+
+            } while (input?.ToLower() != "y");
+
+            return isPlay;
+        }
+
+        string WinOrLose()
+        {
+            return roll > target ? "You win!" : "You lose!";
+        }
+    }
+
+    public static void PettingZoo(string schoolName, int groups)
+    {
+        /*
+         - There will be three visiting schools
+            - School A has six visiting groups (the default number)
+            - School B has three visiting groups
+            - School C has two visiting groups
+
+        - For each visiting school, perform the following tasks
+            - Randomize the animals
+            - Assign the animals to the correct number of groups
+            - Print the school name
+            - Print the animal groups
+        */
+
+        string[] pettingZoo =
+        {
+            "alpacas", "capybaras", "chickens", "ducks", "emus", "geese",
+            "goats", "iguanas", "kangaroos", "lemurs", "llamas", "macaws",
+            "ostriches", "pigs", "ponies", "rabbits", "sheep", "tortoises",
+        };
+
+        RandomizeAnimals();
+        string[,] group = AssignGroup(groups);
+        Console.WriteLine($"{"School",-10} {schoolName}");
+        PrintGroup(group);
+
+        void RandomizeAnimals()
+        {
+            Random random = new Random();
+
+            for (int i = 0; i < pettingZoo.Length; i++)
+            {
+                int j = random.Next(i, pettingZoo.Length);
+
+                string temp = pettingZoo[j];
+                pettingZoo[j] = pettingZoo[i];
+                pettingZoo[i] = temp;
+            }
+        }
+
+        string[,] AssignGroup(int groups = 6)
+        {
+            string[,] result = new string[groups, pettingZoo.Length / groups];
+            int start = 0;
+
+            for (int i = 0; i < groups; i++)
+            {
+                for (int j = 0; j < result.GetLength(1); j++)
+                {
+                    result[i, j] = pettingZoo[start++];
+                }
+            }
+
+            return result;
+        }
+
+        void PrintGroup(string[,] group, int tour = 0)
+        {
+            int counter = 0;
+
+            while (counter < group.GetLength(0))
+            {
+                for (int i = 0; i < group.GetLength(0); i++)
+                {
+                    Console.Write($"{"Group",-10} {i + 1}  =>  ");
+                    for (int j = 0; j < group.GetLength(1); j++)
+                    {
+                        Console.Write($"{group[i, j]} ");
+                    }
+
+                    counter++;
+                    Console.WriteLine();
+                }
+            }
+        }
+
+        //bool ShouldContinue()
+        //{
+        //    string? input;
+
+        //    do
+        //    {
+        //        Console.Write("\rFinished tour? (y) ");
+        //        input = Console.ReadLine();
+
+        //        if (input == "n")
+        //        {
+        //            return false;
+        //        }
+
+        //    } while (input?.ToLower() != "y");
+
+
+        //    return true;
+        //}
+    }
+
     public static void Main()
     {
         //GetNumberOfTimesALetterAppearsInText("The quick brown fox jumps over the lazy dog.", 'o');
@@ -2025,6 +2276,21 @@ public class Program
         //    IpAdressValidator(input);
         //}
 
-        TellFortune();
+        //TellFortune();
+        //ReturnValues();
+        //CoinsForChange();
+        //DiceMiniGame();
+        List<(string, int)> schools = new List<(string, int)>()
+        {
+            ("A", 2),
+            ("B", 6),
+            ("C", 5)
+        };
+
+        foreach (var school in schools)
+        {
+            PettingZoo(school.Item1, school.Item2);
+            Console.WriteLine();
+        }
     }
 }

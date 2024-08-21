@@ -119,12 +119,16 @@ Resource: [Microsoft documentation](https://learn.microsoft.com/en-us/dotnet/api
       - [Value type](#value-type)
       - [Reference type](#reference-type)
         - [String type](#string-type)
+    - [Return values](#return-values)
     - [Practice](#practice)
       - [Challenge 21: Refactor a method](#challenge-21-refactor-a-method)
       - [Challenge 22: IP addresses](#challenge-22-ip-addresses)
       - [Challenge 23: Fortune teller](#challenge-23-fortune-teller)
+      - [Challenge 24: Coins for change](#challenge-24-coins-for-change)
+      - [Challenge 25: Dice mini-game](#challenge-25-dice-mini-game)
       - [Project 7: RVSP app](#project-7-rvsp-app)
       - [Project 8: Employees' emails](#project-8-employees-emails)
+    - [Project 9: Petting zoo app](#project-9-petting-zoo-app)
     - [Next](#next)
 - [-](#-)
   - [Basics](#basics)
@@ -3959,6 +3963,38 @@ ModifyString(original);
 Console.WriteLine(original); // Still Hello World.
 ```
 
+### Return values
+
+```csharp
+double total = 0;
+double minimumSpend = 30.00;
+
+double[] items = { 15.97, 3.50, 12.25, 22.99, 10.98 };
+double[] discounts = { 0.30, 0.00, 0.10, 0.20, 0.50 };
+
+for (int i = 0; i < items.Length; i++)
+{
+    total += GetDiscountedPrice(i);
+}
+
+if (TotalMeetsMinimum())
+{
+    total -= 5.00;
+}
+
+Console.WriteLine($"Total: ${total:n2}");
+
+double GetDiscountedPrice(int itemIndex)
+{
+    return items[itemIndex] * (1 - discounts[itemIndex]);
+}
+
+bool TotalMeetsMinimum()
+{
+    return total >= minimumSpend;
+}
+```
+
 ### Practice
 
 #### Challenge 21: Refactor a method
@@ -4216,6 +4252,173 @@ A fortune teller whispers the following words:
 You have much to look forward to. Today is a day to try new things! Whatever work you do is likely to succeed. This is an ideal time to accomplish your dreams!
 ```
 
+#### Challenge 24: Coins for change
+
+```csharp
+public static void CoinsForChange()
+{
+    int[] targets = [30, 40, 50, 100, 300];
+    int[] coins = [5, 5, 50, 25, 25, 10, 5];
+
+    for (int i = 0; i < targets.Length; i++)
+    {
+        HashSet<(int, int)> result = TwoCoins(coins, targets[i]);
+
+        Console.WriteLine($"Entry {i + 1} ".PadRight(30, '-'));
+
+        if (result.Count == 0)
+        {
+            Console.WriteLine($"Target: {targets[i]}");
+            Console.WriteLine($"Coins: {string.Join(", ", coins)}");
+            Console.WriteLine("No two combinations found.");
+        }
+        else
+        {
+            Console.WriteLine($"Target: {targets[i]}");
+            Console.WriteLine($"Coins: {string.Join(", ", coins)}");
+            Console.WriteLine($"Following two combinations found:");
+            foreach (var entry in result)
+            {
+                Console.WriteLine($"{entry.Item1} + {entry.Item2} = {targets[i]}");
+            }
+        }
+        Console.WriteLine();
+    }
+
+    HashSet<(int, int)> TwoCoins(int[] coins, int target)
+    {
+        HashSet<(int, int)> result = new HashSet<(int, int)>();
+
+        for (int curr = 0; curr < coins.Length; curr++)
+        {
+            for (int next = curr + 1; next < coins.Length; next++)
+            {
+                if (coins[curr] + coins[next] == target)
+                {
+                    result.Add((coins[curr], coins[next]));
+                }
+            }
+        }
+
+        return result;
+    }
+}
+```
+
+```terminal
+Entry 1 ----------------------
+Target: 30
+Coins: 5, 5, 50, 25, 25, 10, 5
+Following two combinations found:
+5 + 25 = 30
+25 + 5 = 30
+
+Entry 2 ----------------------
+Target: 40
+Coins: 5, 5, 50, 25, 25, 10, 5
+No two combinations found.
+
+Entry 3 ----------------------
+Target: 50
+Coins: 5, 5, 50, 25, 25, 10, 5
+Following two combinations found:
+25 + 25 = 50
+
+Entry 4 ----------------------
+Target: 100
+Coins: 5, 5, 50, 25, 25, 10, 5
+No two combinations found.
+
+Entry 5 ----------------------
+Target: 300
+Coins: 5, 5, 50, 25, 25, 10, 5
+No two combinations found.
+```
+
+#### Challenge 25: Dice mini-game
+
+```csharp
+public static void DiceMiniGame()
+{
+    int target;
+    int roll;
+    Random random = new Random();
+
+    if (ShouldPlay())
+    {
+        PlayGame();
+    }
+
+    void PlayGame()
+    {
+        bool play = true;
+
+        while (play)
+        {
+            target = random.Next(1, 5);
+            roll = random.Next(1, 6);
+
+            Console.WriteLine($"Roll a number greater than {target} to win!");
+            Console.WriteLine($"You rolled a {roll}");
+            Console.WriteLine(WinOrLose());
+            Console.WriteLine("\nPlay again? (Y/N)");
+
+            play = ShouldPlay(1);
+        }
+    }
+
+    bool ShouldPlay(int counter = 0)
+    {
+        string? input;
+        bool isPlay = false;
+
+        do
+        {
+            if (counter == 0)
+            {
+                Console.WriteLine("Would you like to play? (Y/N)");
+            }
+                
+            input = Console.ReadLine();
+
+            if (input?.ToLower() == "y")
+            {
+                isPlay = true;
+                Console.Clear();
+                break;
+            }
+            else if (input?.ToLower() == "n")
+            {
+                isPlay = false;
+                break;
+            }
+            else
+            {
+                Console.Clear();
+                counter = 0;
+            }
+
+        } while (input?.ToLower() != "y");
+
+        return isPlay;
+    }
+
+    string WinOrLose()
+    {
+        return roll > target ? "You win!" : "You lose!";
+    }
+}
+```
+
+```terminal
+Roll a number greater than 3 to win!
+You rolled a 1
+You lose!
+
+Play again? (Y/N)
+y
+```
+
 #### Project 7: RVSP app
 
 ```csharp
@@ -4338,6 +4541,129 @@ viashton@hayworth.com
 codysart@hayworth.com
 shlawrence@hayworth.com
 davaldes@hayworth.com
+```
+
+### Project 9: Petting zoo app
+
+```csharp
+public static void PettingZoo(string schoolName, int groups)
+{
+    /*
+        - There will be three visiting schools
+        - School A has six visiting groups (the default number)
+        - School B has three visiting groups
+        - School C has two visiting groups
+
+    - For each visiting school, perform the following tasks
+        - Randomize the animals
+        - Assign the animals to the correct number of groups
+        - Print the school name
+        - Print the animal groups
+    */
+
+    string[] pettingZoo =
+    {
+        "alpacas", "capybaras", "chickens", "ducks", "emus", "geese",
+        "goats", "iguanas", "kangaroos", "lemurs", "llamas", "macaws",
+        "ostriches", "pigs", "ponies", "rabbits", "sheep", "tortoises",
+    };
+
+    RandomizeAnimals();
+    string[,] group = AssignGroup(groups);
+    Console.WriteLine($"{"School",-10} {schoolName}");
+    PrintGroup(group);
+
+    void RandomizeAnimals()
+    {
+        Random random = new Random();
+
+        for (int i = 0; i < pettingZoo.Length; i++)
+        {
+            int j = random.Next(i, pettingZoo.Length);
+
+            string temp = pettingZoo[j];
+            pettingZoo[j] = pettingZoo[i];
+            pettingZoo[i] = temp;
+        }
+    }
+
+    string[,] AssignGroup(int groups = 6)
+    {
+        string[,] result = new string[groups, pettingZoo.Length / groups];
+        int start = 0;
+
+        for (int i = 0; i < groups; i++)
+        {
+            for (int j = 0; j < result.GetLength(1); j++)
+            {
+                result[i, j] = pettingZoo[start++];
+            }
+        }
+
+        return result;
+    }
+
+    void PrintGroup(string[,] group, int tour = 0)
+    {
+        int counter = 0;
+
+        while (counter < group.GetLength(0))
+        {
+            for (int i = 0; i < group.GetLength(0); i++)
+            {
+                Console.Write($"{"Group",-10} {i + 1}  =>  ");
+                for (int j = 0; j < group.GetLength(1); j++)
+                {
+                    Console.Write($"{group[i, j]} ");
+                }
+
+                counter++;
+                Console.WriteLine();
+            }
+        }
+    }
+
+    //bool ShouldContinue()
+    //{
+    //    string? input;
+
+    //    do
+    //    {
+    //        Console.Write("\rFinished tour? (y) ");
+    //        input = Console.ReadLine();
+
+    //        if (input == "n")
+    //        {
+    //            return false;
+    //        }
+
+    //    } while (input?.ToLower() != "y");
+
+
+    //    return true;
+    //}
+}
+```
+
+```terminal
+School     A
+Group      1  =>  emus kangaroos goats sheep ducks capybaras tortoises rabbits ostriches
+Group      2  =>  chickens alpacas pigs lemurs ponies geese macaws iguanas llamas
+
+School     B
+Group      1  =>  lemurs macaws tortoises
+Group      2  =>  pigs rabbits ducks
+Group      3  =>  ostriches alpacas llamas
+Group      4  =>  sheep goats chickens
+Group      5  =>  kangaroos ponies geese
+Group      6  =>  capybaras emus iguanas
+
+School     C
+Group      1  =>  lemurs macaws ostriches
+Group      2  =>  kangaroos ponies sheep
+Group      3  =>  emus geese llamas
+Group      4  =>  ducks rabbits goats
+Group      5  =>  tortoises capybaras alpacas
 ```
 
 ### Next
