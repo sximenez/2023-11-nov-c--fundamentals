@@ -7,186 +7,6 @@ Resource: [Microsoft documentation](https://learn.microsoft.com/en-us/dotnet/api
 ## Table of contents
 
 <!--TOC-->
-  - [MODULE 1: BASIC C# CODE](#module-1-basic-c-code)
-    - [Introduction](#introduction)
-    - [Variables](#variables)
-      - [Data types](#data-types)
-      - [Implicitly typed variables](#implicitly-typed-variables)
-    - [Character escape sequences](#character-escape-sequences)
-    - [String interpolation](#string-interpolation)
-    - [Type casting](#type-casting)
-    - [Practice](#practice)
-      - [Challenge 1: Printing on console](#challenge-1-printing-on-console)
-      - [Challenge 2: Typed variables](#challenge-2-typed-variables)
-      - [Challenge 3: String interpolation](#challenge-3-string-interpolation)
-      - [Challenge 4: Operations](#challenge-4-operations)
-      - [Project 1 : Average calculator](#project-1-average-calculator)
-        - [Console application](#console-application)
-      - [Project 2 : GPA calculator](#project-2-gpa-calculator)
-  - [MODULE 2: SIMPLE CONSOLE APPLICATIONS](#module-2-simple-console-applications)
-    - [Runtime](#runtime)
-    - [.NET](#.net)
-    - [Create a console application (higher-level)](#create-a-console-application-higher-level)
-    - [Build a console application (intermediate level)](#build-a-console-application-intermediate-level)
-    - [Run a console application (lower level)](#run-a-console-application-lower-level)
-    - [.NET Class Library](#.net-class-library)
-    - [Methods](#methods)
-      - [Stateful vs stateless](#stateful-vs-stateless)
-      - [Object instantiation](#object-instantiation)
-      - [Void vs non-void](#void-vs-non-void)
-      - [Signature vs overloaded](#signature-vs-overloaded)
-    - [Decision logic](#decision-logic)
-      - [Code branching](#code-branching)
-    - [Arrays](#arrays)
-      - [Iteration using foreach](#iteration-using-foreach)
-    - [Naming conventions](#naming-conventions)
-    - [Commenting](#commenting)
-    - [Whitespacing](#whitespacing)
-    - [Practice](#practice)
-      - [Challenge 5: Method call](#challenge-5-method-call)
-      - [Challenge 6: if-else block](#challenge-6-if-else-block)
-      - [Challenge 7: foreach  loop](#challenge-7-foreach-loop)
-      - [Challenge 8: Code readability](#challenge-8-code-readability)
-      - [Project 3: Student grade calculator](#project-3-student-grade-calculator)
-  - [MODULE 3: CONSOLE APPLICATIONS LOGIC](#module-3-console-applications-logic)
-    - [Variable scope](#variable-scope)
-    - [Less is more](#less-is-more)
-    - [Booleans](#booleans)
-      - [Expression vs statement](#expression-vs-statement)
-      - [Evaluation operators](#evaluation-operators)
-    - [Inequality operator vs logical negation](#inequality-operator-vs-logical-negation)
-    - [Conditional (ternary) operator](#conditional-ternary-operator)
-    - [Switch](#switch)
-    - [Iteration using for](#iteration-using-for)
-    - [Iteration using do-while and while](#iteration-using-do-while-and-while)
-    - [Practice](#practice)
-      - [Challenge 9: Problematic code](#challenge-9-problematic-code)
-      - [Challenge 10: Ternary](#challenge-10-ternary)
-      - [Challenge 11: Decision logic](#challenge-11-decision-logic)
-      - [Challenge 12: rewrite if-else-if into switch construct](#challenge-12-rewrite-if-else-if-into-switch-construct)
-      - [Challenge 13: FizzBuzz](#challenge-13-fizzbuzz)
-      - [Challenge 14: Role playing game](#challenge-14-role-playing-game)
-      - [Challenge 15: Do-while vs while](#challenge-15-do-while-vs-while)
-        - [Integer input](#integer-input)
-        - [String input](#string-input)
-        - [String array](#string-array)
-      - [Project 4: CRUD stray animals app](#project-4-crud-stray-animals-app)
-  - [MODULE 4: VARIABLE DATA](#module-4-variable-data)
-    - [Data types](#data-types)
-      - [Bits and bytes](#bits-and-bytes)
-      - [Values (stack) vs references (heap)](#values-stack-vs-references-heap)
-      - [Value types](#value-types)
-        - [Integral](#integral)
-          - [Signed vs unsigned](#signed-vs-unsigned)
-        - [Floating](#floating)
-      - [Reference types](#reference-types)
-      - [Stack vs heap](#stack-vs-heap)
-      - [Choosing the right type](#choosing-the-right-type)
-    - [Array helper methods](#array-helper-methods)
-      - [ref keyword](#ref-keyword)
-      - [Removing empty elements from an array](#removing-empty-elements-from-an-array)
-      - [Reversing an array](#reversing-an-array)
-      - [Splitting an array](#splitting-an-array)
-    - [String formatting](#string-formatting)
-      - [Specifiers](#specifiers)
-      - [Padding](#padding)
-    - [String helper methods](#string-helper-methods)
-      - [IndexOf](#indexof)
-      - [LastIndexOf](#lastindexof)
-      - [IndexOfAny](#indexofany)
-      - [Remove](#remove)
-      - [Replace](#replace)
-    - [Data type casting](#data-type-casting)
-      - [Implicit casting (safe conversion)](#implicit-casting-safe-conversion)
-      - [Explicit casting (unsafe conversion)](#explicit-casting-unsafe-conversion)
-    - [Casting methods](#casting-methods)
-      - [Helper method on variable](#helper-method-on-variable)
-      - [Helper method on data type](#helper-method-on-data-type)
-        - [With exception handling](#with-exception-handling)
-      - [Convert class methods](#convert-class-methods)
-    - [Practice](#practice)
-      - [Challenge 16: String arrays and int](#challenge-16-string-arrays-and-int)
-      - [Challenge 17: Output specific number types](#challenge-17-output-specific-number-types)
-      - [Challenge 18: Reversing words in a sentence](#challenge-18-reversing-words-in-a-sentence)
-      - [Challenge 19: Parsing and sorting an array](#challenge-19-parsing-and-sorting-an-array)
-      - [Challenge 20: Format string data](#challenge-20-format-string-data)
-      - [Project 5: CRUD stray animal app 2](#project-5-crud-stray-animal-app-2)
-      - [Project 6: CRUD stray animal app 3](#project-6-crud-stray-animal-app-3)
-  - [MODULE 5: METHODS](#module-5-methods)
-    - [Parameter vs argument](#parameter-vs-argument)
-    - [Scope](#scope)
-    - [Parameter behavior by type](#parameter-behavior-by-type)
-      - [Value type](#value-type)
-      - [Reference type](#reference-type)
-        - [String type](#string-type)
-    - [Return values](#return-values)
-    - [Practice](#practice)
-      - [Challenge 21: Refactor a method](#challenge-21-refactor-a-method)
-      - [Challenge 22: IP addresses](#challenge-22-ip-addresses)
-      - [Challenge 23: Fortune teller](#challenge-23-fortune-teller)
-      - [Challenge 24: Coins for change](#challenge-24-coins-for-change)
-      - [Challenge 25: Dice mini-game](#challenge-25-dice-mini-game)
-      - [Project 7: RVSP app](#project-7-rvsp-app)
-      - [Project 8: Employees' emails](#project-8-employees-emails)
-      - [Project 9: Petting zoo app](#project-9-petting-zoo-app)
-      - [Project 10: Console mini-game](#project-10-console-mini-game)
-    - [Next](#next)
-- [-](#-)
-  - [Basics](#basics)
-  - [Booleans](#booleans)
-  - [Strings](#strings)
-    - [Substring](#substring)
-    - [Regex](#regex)
-  - [Numbers](#numbers)
-  - [Extended methods](#extended-methods)
-  - [Tuples](#tuples)
-    - [Dictionary](#dictionary)
-  - [Nullability](#nullability)
-  - [While](#while)
-    - [Do While](#do-while)
-  - [Class](#class)
-    - [Encapsulation](#encapsulation)
-  - [Collections](#collections)
-    - [For and foreach loop](#for-and-foreach-loop)
-    - [Lists](#lists)
-  - [Inheritance](#inheritance)
-    - [Polymorphism](#polymorphism)
-  - [Collections](#collections)
-- [Software craft](#software-craft)
-  - [Intro](#intro)
-  - [Historique](#historique)
-    - [V-model](#v-model)
-    - [Méthode agile](#methode-agile)
-    - [Scrum](#scrum)
-    - [XP (Extreme programming)](#xp-extreme-programming)
-    - [Agile hangover](#agile-hangover)
-    - [Craft](#craft)
-  - [Test-driven development (TDD)](#test-driven-development-tdd)
-    - [Nommage](#nommage)
-    - [Arrange Act Assert](#arrange-act-assert)
-    - [Exemple FizzBuzz](#exemple-fizzbuzz)
-    - [Red phase](#red-phase)
-    - [Green phase](#green-phase)
-    - [Final code](#final-code)
-- [General knowledge](#general-knowledge)
-  - [Extract, Transform, Load (ETL)](#extract-transform-load-etl)
-  - [Git](#git)
-  - [32-bit (x86), 64-bit (x64)](#32-bit-x86-64-bit-x64)
-  - [Data and data accessing](#data-and-data-accessing)
-    - [OLEDB](#oledb)
-  - [Exception handling](#exception-handling)
-    - [Understanding stack tracing](#understanding-stack-tracing)
-    - [Three error handling strategies](#three-error-handling-strategies)
-  - [Multi-threading](#multi-threading)
-    - [Task](#task)
-    - [Parallel](#parallel)
-  - [Namespaces](#namespaces)
-  - [Glossary](#glossary)
-  - [Variables](#variables)
-    - [Primitive types: numeric](#primitive-types-numeric)
-    - [Type casting](#type-casting)
-    - [Primitive types: strings](#primitive-types-strings)
-    - [Constants](#constants)
 <!--/TOC-->
 
 ## MODULE 1: BASIC C# CODE
@@ -4853,6 +4673,138 @@ public static void ConsoleMiniGame()
         ShowFood();
         Console.SetCursorPosition(0, 0);
         Console.Write(player);
+    }
+}
+```
+
+## MODULE 6: DEBUGGING
+
+### Debugger
+
+```mermaid
+graph LR
+
+subgraph Runtime instance
+Program -->|Runtime| 1[Operating system]
+end
+
+Debugger -->|API| Program
+```
+
+Errors at build time (compilation) are errors.
+
+Errors at runtime are `exceptions`.
+
+Developers are responsible for handling both,
+
+using `try` `catch` blocks to handle exceptions.
+
+Exceptions are object instances of different classes, inheriting the Exception base class.
+
+### Exceptions
+
+#### Common scenarios
+
+| Scenario | Example |
+| --- | --- |
+| User input | Wrong format, out of range. |
+| Data calculations | Divide by zero. |
+| Conversions | Unsupported cast. |
+| File read/write (I/O) | File doesn't exist, file is already in use. |
+| Database | SQL syntax error. |
+| Network | Timeout. |
+| External services (API, libraries) | Connection issues, malformed data. | 
+
+#### try-catch-finally
+
+```csharp
+try
+{   
+   // try code block - code that may generate an exception
+}
+catch
+{   
+   // catch code block - code to handle an exception
+}
+finally
+{   
+   // finally code block - code to clean up resources
+}
+```
+
+#### Handling process
+
+```csharp
+try
+{
+    // Step 1: code execution begins
+    try
+    {
+        // Step 2: an exception occurs here
+    }
+    finally
+    {
+        // Step 4: the system executes the finally code block associated with the try statement where the exception occurred
+    }
+
+}
+catch // Step 3: the system finds a catch clause that can handle the exception
+{   
+   // Step 5: the system transfers control to the first line of the catch code block
+}
+```
+
+##### Call stack
+
+```mermaid
+graph TB
+
+Main --> Method1 --> 0["Method2 (try-catch)"]--> Method3 --> Exception
+Exception --> Method3 --> 0
+
+style 0 stroke:red
+```
+
+### Practice
+
+#### Challenge 26: try-catch
+
+```csharp
+public static void TryCatch()
+{
+    try
+    {
+        Process1();
+    }
+    catch
+
+    {
+        Console.WriteLine("An exception occured.");
+    }
+
+    Console.WriteLine("Exit program");
+
+    void Process1()
+    {
+        try
+        {
+            HelloWorld();
+        }
+        catch
+        {
+            Console.WriteLine($"Exception caught in Process1");
+        }
+    }
+
+    void HelloWorld()
+    {
+        double float1 = 3000.0;
+        double float2 = 0.0;
+        int number1 = 3000;
+        int number2 = 0;
+
+        Console.WriteLine(float1 / float2);
+        Console.WriteLine(number1 / number2);
     }
 }
 ```

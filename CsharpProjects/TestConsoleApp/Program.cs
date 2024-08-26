@@ -4,6 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -2204,7 +2205,7 @@ public class Program
     }
 
     public static void ConsoleMiniGame()
-    {       
+    {
         Random random = new Random();
         Console.CursorVisible = false;
         bool shouldExit = false;
@@ -2212,7 +2213,7 @@ public class Program
         // Terminal window size -----------------------------------------------
 
         int height = Console.WindowHeight - 1;
-        int width = Console.WindowWidth - 5; 
+        int width = Console.WindowWidth - 5;
 
         // Player and food locations ------------------------------------------
 
@@ -2381,6 +2382,48 @@ public class Program
         }
     }
 
+    public static void TryCatch()
+    {
+        try
+        {
+            Process1();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Exception produced in {e.TargetSite}; caught in {MethodBase.GetCurrentMethod()?.Name}");
+        }
+
+        Console.WriteLine("Exit program");
+
+        void Process1()
+        {
+            try
+            {
+                HelloWorld();
+            }
+            catch (DivideByZeroException e)
+            {
+                Console.WriteLine($"Exception produced in {e.TargetSite}; caught in {MethodBase.GetCurrentMethod()?.Name}");
+            }
+        }
+
+        void HelloWorld()
+        {
+            double float1 = 3000.0;
+            double float2 = 0.0;
+            int number1 = 3000;
+            int number2 = 0;
+            byte smallNumber;
+
+            Console.WriteLine(float1 / float2);
+            //Console.WriteLine(number1 / number2);
+            checked
+            {
+                smallNumber = (byte) number1;
+            }
+        }
+    }
+
     public static void Main()
     {
         //GetNumberOfTimesALetterAppearsInText("The quick brown fox jumps over the lazy dog.", 'o');
@@ -2471,6 +2514,7 @@ public class Program
         //    Console.WriteLine();
         //}
 
-        ConsoleMiniGame();
+        //ConsoleMiniGame();
+        TryCatch();
     }
 }
