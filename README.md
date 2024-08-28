@@ -7,6 +7,204 @@ Resource: [Microsoft documentation](https://learn.microsoft.com/en-us/dotnet/api
 ## Table of contents
 
 <!--TOC-->
+  - [MODULE 1: BASIC C# CODE](#module-1-basic-c-code)
+    - [Introduction](#introduction)
+    - [Variables](#variables)
+      - [Data types](#data-types)
+      - [Implicitly typed variables](#implicitly-typed-variables)
+    - [Character escape sequences](#character-escape-sequences)
+    - [String interpolation](#string-interpolation)
+    - [Type casting](#type-casting)
+    - [Practice](#practice)
+      - [Challenge 1: Printing on console](#challenge-1-printing-on-console)
+      - [Challenge 2: Typed variables](#challenge-2-typed-variables)
+      - [Challenge 3: String interpolation](#challenge-3-string-interpolation)
+      - [Challenge 4: Operations](#challenge-4-operations)
+      - [Project 1 : Average calculator](#project-1-average-calculator)
+        - [Console application](#console-application)
+      - [Project 2 : GPA calculator](#project-2-gpa-calculator)
+  - [MODULE 2: SIMPLE CONSOLE APPLICATIONS](#module-2-simple-console-applications)
+    - [Runtime](#runtime)
+    - [.NET](#.net)
+    - [Create a console application (higher-level)](#create-a-console-application-higher-level)
+    - [Build a console application (intermediate level)](#build-a-console-application-intermediate-level)
+    - [Run a console application (lower level)](#run-a-console-application-lower-level)
+    - [.NET Class Library](#.net-class-library)
+    - [Methods](#methods)
+      - [Stateful vs stateless](#stateful-vs-stateless)
+      - [Object instantiation](#object-instantiation)
+      - [Void vs non-void](#void-vs-non-void)
+      - [Signature vs overloaded](#signature-vs-overloaded)
+    - [Decision logic](#decision-logic)
+      - [Code branching](#code-branching)
+    - [Arrays](#arrays)
+      - [Iteration using foreach](#iteration-using-foreach)
+      - [Multidimensional vs jagged](#multidimensional-vs-jagged)
+    - [Naming conventions](#naming-conventions)
+    - [Commenting](#commenting)
+    - [Whitespacing](#whitespacing)
+    - [Practice](#practice)
+      - [Challenge 5: Method call](#challenge-5-method-call)
+      - [Challenge 6: if-else block](#challenge-6-if-else-block)
+      - [Challenge 7: foreach  loop](#challenge-7-foreach-loop)
+      - [Challenge 8: Code readability](#challenge-8-code-readability)
+      - [Project 3: Student grade calculator](#project-3-student-grade-calculator)
+  - [MODULE 3: CONSOLE APPLICATIONS LOGIC](#module-3-console-applications-logic)
+    - [Variable scope](#variable-scope)
+    - [Less is more](#less-is-more)
+    - [Booleans](#booleans)
+      - [Expression vs statement](#expression-vs-statement)
+      - [Evaluation operators](#evaluation-operators)
+    - [Inequality operator vs logical negation](#inequality-operator-vs-logical-negation)
+    - [Conditional (ternary) operator](#conditional-ternary-operator)
+    - [Switch](#switch)
+    - [Iteration using for](#iteration-using-for)
+    - [Iteration using do-while and while](#iteration-using-do-while-and-while)
+    - [Practice](#practice)
+      - [Challenge 9: Problematic code](#challenge-9-problematic-code)
+      - [Challenge 10: Ternary](#challenge-10-ternary)
+      - [Challenge 11: Decision logic](#challenge-11-decision-logic)
+      - [Challenge 12: rewrite if-else-if into switch construct](#challenge-12-rewrite-if-else-if-into-switch-construct)
+      - [Challenge 13: FizzBuzz](#challenge-13-fizzbuzz)
+      - [Challenge 14: Role playing game](#challenge-14-role-playing-game)
+      - [Challenge 15: Do-while vs while](#challenge-15-do-while-vs-while)
+        - [Integer input](#integer-input)
+        - [String input](#string-input)
+        - [String array](#string-array)
+      - [Project 4: CRUD stray animals app](#project-4-crud-stray-animals-app)
+  - [MODULE 4: VARIABLE DATA](#module-4-variable-data)
+    - [Data types](#data-types)
+      - [Bits and bytes](#bits-and-bytes)
+      - [Values (stack) vs references (heap)](#values-stack-vs-references-heap)
+      - [Value types](#value-types)
+        - [Integral](#integral)
+          - [Signed vs unsigned](#signed-vs-unsigned)
+        - [Floating](#floating)
+      - [Reference types](#reference-types)
+      - [Stack vs heap](#stack-vs-heap)
+      - [Choosing the right type](#choosing-the-right-type)
+    - [Array helper methods](#array-helper-methods)
+      - [ref keyword](#ref-keyword)
+      - [Removing empty elements from an array](#removing-empty-elements-from-an-array)
+      - [Reversing an array](#reversing-an-array)
+      - [Splitting an array](#splitting-an-array)
+    - [String formatting](#string-formatting)
+      - [Specifiers](#specifiers)
+      - [Padding](#padding)
+    - [String helper methods](#string-helper-methods)
+      - [IndexOf](#indexof)
+      - [LastIndexOf](#lastindexof)
+      - [IndexOfAny](#indexofany)
+      - [Remove](#remove)
+      - [Replace](#replace)
+    - [Data type casting](#data-type-casting)
+      - [Implicit casting (safe conversion)](#implicit-casting-safe-conversion)
+      - [Explicit casting (unsafe conversion)](#explicit-casting-unsafe-conversion)
+    - [Casting methods](#casting-methods)
+      - [Helper method on variable](#helper-method-on-variable)
+      - [Helper method on data type](#helper-method-on-data-type)
+        - [With exception handling](#with-exception-handling)
+      - [Convert class methods](#convert-class-methods)
+    - [Practice](#practice)
+      - [Challenge 16: String arrays and int](#challenge-16-string-arrays-and-int)
+      - [Challenge 17: Output specific number types](#challenge-17-output-specific-number-types)
+      - [Challenge 18: Reversing words in a sentence](#challenge-18-reversing-words-in-a-sentence)
+      - [Challenge 19: Parsing and sorting an array](#challenge-19-parsing-and-sorting-an-array)
+      - [Challenge 20: Format string data](#challenge-20-format-string-data)
+      - [Project 5: CRUD stray animal app 2](#project-5-crud-stray-animal-app-2)
+      - [Project 6: CRUD stray animal app 3](#project-6-crud-stray-animal-app-3)
+  - [MODULE 5: METHODS](#module-5-methods)
+    - [Parameter vs argument](#parameter-vs-argument)
+    - [Scope](#scope)
+    - [Parameter behavior by type](#parameter-behavior-by-type)
+      - [Value type](#value-type)
+      - [Reference type](#reference-type)
+        - [String type](#string-type)
+    - [Return values](#return-values)
+    - [Practice](#practice)
+      - [Challenge 21: Refactor a method](#challenge-21-refactor-a-method)
+      - [Challenge 22: IP addresses](#challenge-22-ip-addresses)
+      - [Challenge 23: Fortune teller](#challenge-23-fortune-teller)
+      - [Challenge 24: Coins for change](#challenge-24-coins-for-change)
+      - [Challenge 25: Dice mini-game](#challenge-25-dice-mini-game)
+      - [Project 7: RVSP app](#project-7-rvsp-app)
+      - [Project 8: Employees' emails](#project-8-employees-emails)
+      - [Project 9: Petting zoo app](#project-9-petting-zoo-app)
+      - [Project 10: Console mini-game](#project-10-console-mini-game)
+  - [MODULE 6: DEBUGGING](#module-6-debugging)
+    - [Debugger](#debugger)
+    - [Exceptions](#exceptions)
+      - [Common scenarios](#common-scenarios)
+      - [try-catch-finally](#try-catch-finally)
+      - [Handling process](#handling-process)
+        - [Call stack](#call-stack)
+      - [Properties](#properties)
+        - [Specific exceptions](#specific-exceptions)
+    - [Throw exceptions](#throw-exceptions)
+      - [Best practices](#best-practices)
+        - [Debug vs release](#debug-vs-release)
+    - [Practice](#practice)
+      - [Challenge 26: try-catch](#challenge-26-try-catch)
+      - [Challenge 27: catch multiple exceptions](#challenge-27-catch-multiple-exceptions)
+      - [Challenge 28: catch specific exceptions](#challenge-28-catch-specific-exceptions)
+      - [Challenge 29: throw exceptions](#challenge-29-throw-exceptions)
+    - [Next](#next)
+- [-](#-)
+  - [Basics](#basics)
+  - [Booleans](#booleans)
+  - [Strings](#strings)
+    - [Substring](#substring)
+    - [Regex](#regex)
+  - [Numbers](#numbers)
+  - [Extended methods](#extended-methods)
+  - [Tuples](#tuples)
+    - [Dictionary](#dictionary)
+  - [Nullability](#nullability)
+  - [While](#while)
+    - [Do While](#do-while)
+  - [Class](#class)
+    - [Encapsulation](#encapsulation)
+  - [Collections](#collections)
+    - [For and foreach loop](#for-and-foreach-loop)
+    - [Lists](#lists)
+  - [Inheritance](#inheritance)
+    - [Polymorphism](#polymorphism)
+  - [Collections](#collections)
+- [Software craft](#software-craft)
+  - [Intro](#intro)
+  - [Historique](#historique)
+    - [V-model](#v-model)
+    - [Méthode agile](#methode-agile)
+    - [Scrum](#scrum)
+    - [XP (Extreme programming)](#xp-extreme-programming)
+    - [Agile hangover](#agile-hangover)
+    - [Craft](#craft)
+  - [Test-driven development (TDD)](#test-driven-development-tdd)
+    - [Nommage](#nommage)
+    - [Arrange Act Assert](#arrange-act-assert)
+    - [Exemple FizzBuzz](#exemple-fizzbuzz)
+    - [Red phase](#red-phase)
+    - [Green phase](#green-phase)
+    - [Final code](#final-code)
+- [General knowledge](#general-knowledge)
+  - [Extract, Transform, Load (ETL)](#extract-transform-load-etl)
+  - [Git](#git)
+  - [32-bit (x86), 64-bit (x64)](#32-bit-x86-64-bit-x64)
+  - [Data and data accessing](#data-and-data-accessing)
+    - [OLEDB](#oledb)
+  - [Exception handling](#exception-handling)
+    - [Understanding stack tracing](#understanding-stack-tracing)
+    - [Three error handling strategies](#three-error-handling-strategies)
+  - [Multi-threading](#multi-threading)
+    - [Task](#task)
+    - [Parallel](#parallel)
+  - [Namespaces](#namespaces)
+  - [Glossary](#glossary)
+  - [Variables](#variables)
+    - [Primitive types: numeric](#primitive-types-numeric)
+    - [Type casting](#type-casting)
+    - [Primitive types: strings](#primitive-types-strings)
+    - [Constants](#constants)
 <!--/TOC-->
 
 ## MODULE 1: BASIC C# CODE
@@ -739,6 +937,26 @@ Bin 3 = 700 items (Running total: 1350)
 Bin 4 = 175 items (Running total: 1525)
 Bin 5 = 250 items (Running total: 1775)
 We have 1775 items in inventory.
+```
+
+#### Multidimensional vs jagged
+
+```csharp
+// A multidimensional array contains singlevalued sub-arrays.
+
+string[,] multiArray = new string[2, 2];
+multiArray[0, 0] = "apple";
+multiArray[0, 1] = "banana";
+multiArray[1, 0] = "cherry";
+multiArray[1, 1] = "date";
+```
+
+```csharp
+// A jagged array can contain multivalued sub-arrays.
+
+string[][] jaggedArray = new string[2][];
+jaggedArray[0] = new string[] { "apple", "banana" };
+jaggedArray[1] = new string[] { "cherry" };
 ```
 
 ### Naming conventions
@@ -4765,6 +4983,131 @@ Exception --> Method3 --> 0
 style 0 stroke:red
 ```
 
+#### Properties
+
+```terminal
+Object
+    Exception
+        SystemException // Base class.
+            InvalidCastException // Specific class.
+```
+
+| Property | Definition |
+| --- | --- |
+| Data | Holds arbitrary data in key-value pairs. |
+| HelpLink | Holds a URL (or URN) to a help file providing further information. |
+| HResult | Coded numerical value assigned to a specific exception. |
+| InnerException | Create and preserve a series of exceptions during exception handling. |
+| Message | Details about the cause of an exception. |
+| Source | Name of the application or the object that causes the error. |
+| StackTrace | Trace to determine where an error occurred. |
+| TargetSite | Method throwing the current exception. |
+
+##### Specific exceptions
+
+"You should only catch the exceptions that your code knows how to recover from".
+
+"The exception type should be as specific as possible".
+
+```csharp
+void Process1()
+{
+    try
+    {
+        HelloWorld();
+    }
+    catch (DivideByZeroException e)
+    {
+        Console.WriteLine($"Exception produced in {e.TargetSite}; caught in {MethodBase.GetCurrentMethod()?.Name}");
+    }
+}
+```
+
+```terminal
+Exception produced in Void <TryCatch>g__HelloWorld|78_1(); caught in <TryCatch>g__Process1|78_0
+```
+
+```csharp
+void HelloWorld()
+{
+    double float1 = 3000.0;
+    double float2 = 0.0;
+    int number1 = 3000;
+    int number2 = 0;
+    byte smallNumber;
+
+    Console.WriteLine(float1 / float2); // Possible: float can handle division by zero.
+    Console.WriteLine(number1 / number2); // Impossible: int can't handle division by zero (DivideByZeroException).
+    
+    checked // OverflowException handler.
+    {
+        // smallNumber can hold a number between 0 and 255.
+        // When assigned 3000, an OverflowException is thrown.
+        smallNumber = (byte) number1;
+    }
+
+    // If unckecked, casting an int into a byte calculates 3000 % 256 = 184.
+    smallNumber = (byte) number1; // 184.
+}
+```
+
+```csharp
+string[] inputValues = new string[] { "three", "9999999999", "0", "2" };
+
+foreach (string inputValue in inputValues)
+{
+    int numValue = 0;
+    try
+    {
+        numValue = int.Parse(inputValue);
+    }
+    catch (FormatException)
+    {
+        Console.WriteLine($"'{inputValue}' is not a valid number.");
+    }
+    catch (OverflowException)
+    {
+        Console.WriteLine($"'{inputValue}' is too large or too small.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+    }
+}
+```
+
+```terminal
+'three' is not a valid number.
+'9999999999' is too large or too small.
+```
+
+### Throw exceptions
+
+"When an exception is thrown by your code using keyword `throw`, 
+
+the runtime searches for the nearest `catch` clause that can handle the exception."
+
+```csharp
+throw new FormatException("FormatException: Calculations in process XYZ have been cancelled due to invalid data format."); // Prefer precise wording.
+```
+
+Common scenarios for throwing exceptions listed above.
+
+#### Best practices
+
+| Property | Definition |
+| --- | --- |
+| Don't use `try-catch` blocks to handle program flow. | Prefer `if-else` blocks for flow, `try-catch` for reporting on expected errors. |
+| Don't return exceptions. |  |
+| Avoid throwing very general exceptions like `System.Exception`, `System.SystemException`, `System.NullReferenceException`, or `System.IndexOutOfRangeException`. | Prefer specific types. |
+| Exceptions should work in debug and release mode. |  |
+
+##### Debug vs release
+
+Debug mode = debugging on, slower.
+
+Release mode = debugging off, faster.
+
 ### Practice
 
 #### Challenge 26: try-catch
@@ -4807,6 +5150,132 @@ public static void TryCatch()
         Console.WriteLine(number1 / number2);
     }
 }
+```
+
+#### Challenge 27: catch multiple exceptions
+
+```csharp
+public static void TryCatch()
+{
+    Process1();
+    Console.WriteLine("Exit program");
+
+    void Process1()
+    {
+        try
+        {
+            HelloWorld();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Exception: {e.Message} Caught in {MethodBase.GetCurrentMethod()?.Name}");
+        }
+    }
+
+    void HelloWorld()
+    {
+        double float1 = 3000.0;
+        double float2 = 0.0;
+        int number1 = 3000;
+        int number2 = 0;
+        byte smallNumber;
+
+        try
+        {
+            Console.WriteLine(float1 / float2);
+            Console.WriteLine(number1 / number2);
+        }
+        catch (DivideByZeroException e)
+        {
+            Console.WriteLine($"Exception: {e.Message} Caught in {MethodBase.GetCurrentMethod()?.Name}");
+        }
+
+        checked
+        {
+            try
+            {
+                smallNumber = (byte)number1;
+            }
+            catch (OverflowException e)
+            {
+                Console.WriteLine($"Exception: {e.Message} Caught in {MethodBase.GetCurrentMethod()?.Name}");
+            }
+        }
+    }
+}
+```
+
+#### Challenge 28: catch specific exceptions
+
+```csharp
+public static void SpecificExceptions()
+{
+    checked
+    {
+        try
+        {
+            int num1 = int.MaxValue;
+            int num2 = int.MaxValue;
+            int result = num1 + num2;
+            Console.WriteLine("Result: " + result);
+        }
+        catch (OverflowException ex)
+        {
+            Console.WriteLine("Error: The number is too large to be represented as an integer." + ex.Message);
+        }
+    }
+
+    try
+    {
+        string str = null;
+        int length = str.Length;
+        Console.WriteLine("String Length: " + length);
+    }
+    catch (NullReferenceException ex)
+    {
+        Console.WriteLine("Error: The reference is null." + ex.Message);
+    }
+
+    try
+    {
+        int[] numbers = new int[5];
+        numbers[5] = 10;
+        Console.WriteLine("Number at index 5: " + numbers[5]);
+    }
+
+    catch (IndexOutOfRangeException ex)
+    {
+        Console.WriteLine("Error: Index out of range." + ex.Message);
+    }
+
+    try
+    {
+        int num3 = 10;
+        int num4 = 0;
+        int result2 = num3 / num4;
+        Console.WriteLine("Result: " + result2);
+    }
+    catch (DivideByZeroException ex)
+    {
+        Console.WriteLine("Error: Cannot divide by zero." + ex.Message);
+    }
+
+    Console.WriteLine("Exiting program.");
+}
+```
+
+```terminal
+Error: The number is too large to be represented as an integer.Arithmetic operation resulted in an overflow.
+Error: The reference is null.Object reference not set to an instance of an object.
+Error: Index out of range.Index was outside the bounds of the array.
+Error: Cannot divide by zero.Attempted to divide by zero.
+Exiting program.
+```
+
+#### Challenge 29: throw exceptions
+
+```csharp
+
 ```
 
 ### Next
