@@ -8,6 +8,7 @@ using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Transactions;
 using static Program;
 
 public class Program
@@ -2599,112 +2600,116 @@ public class Program
 
     public static void ExceptionMachine()
     {
-        // Left here.
+        Dictionary<string, int> bounds = new Dictionary<string, int>()
+        {
+            { "lower", 0 },
+            { "upper", 0 }
+        };
 
-        string[,] bounds = [["lower", 0], ["upper", 0]];
-        int upperBound = 0;
-        int lowerBound = 0;
-        bool exit = false;
+        bool exit;
 
-        foreach (string bound in bounds)
+        // User input ---------------------------------------------------------
+
+        foreach (var bound in bounds)
         {
             do
             {
-                Console.Write($"Enter the {bound} bound: ");
-
-                string? input = Console.ReadLine();
-                string output = ValidateInput(input, bound);
-
-                // Avoid when possible the overhead of Exceptions.
-                if (output.Contains("invalid", StringComparison.OrdinalIgnoreCase))
+                if (!bool.TryParse(ProcessUserInput(bound.Key), out exit))
                 {
-                    Console.WriteLine(output);
-                }
-                else
-                {
-                    if (bound == "lower")
-                    {
-                        lowerBound = int.Parse(input!);
-                    }
-                    else
-                    {
-                        upperBound = int.Parse(input!);
-                    }
-                    exit = true;
+                    exit = false;
                 }
             } while (!exit);
 
             exit = false;
         }
 
-        //exit = false;
+        decimal averageValue = 0;
 
-        //decimal averageValue = 0;
+        // Operation ----------------------------------------------------------
 
-        //// Operation ----------------------------------------------------------
-        //do
-        //{
-        //    try
-        //    {
-        //        averageValue = AverageOfEvenNumbers(lowerBound, upperBound);
-        //        Console.WriteLine($"The average of even numbers between {lowerBound} and {upperBound} is {averageValue}.");
+        do
+        {
+            try
+            {
+                averageValue = AverageOfEvenNumbers(bounds["lower"], bounds["upper"]);
+                Console.WriteLine($"The average of even numbers between {bounds["lower"]} and {bounds["upper"]} is {averageValue}.");
 
-        //        exit = true;
-        //    }
-        //    catch (ArgumentOutOfRangeException ex1)
-        //    {
-        //        Console.WriteLine($"Error: {ex1.ParamName}");
-        //        Console.WriteLine();
+                exit = true;
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                Console.WriteLine($"ERROR => upper bound must be greater than lower bound.");
+                Console.WriteLine();
 
-        //        // New upper bound input --------------------------------------
-        //        do
-        //        {
-        //            try
-        //            {
-        //                Console.Write("Enter a new upper bound (or type 'exit' to exit): ");
-        //                string? input = Console.ReadLine();
+                // New upper bound input --------------------------------------
 
-        //                if (input!.Contains("exit", StringComparison.OrdinalIgnoreCase))
-        //                {
-        //                    exit = true;
-        //                    break;
-        //                }
+                do
+                {
+                    if (!bool.TryParse(ProcessUserInput("upper", true), out exit))
+                    {
+                        return;
+                    }
+                } while (!exit);
 
-        //                if (ValidateInput(input, "upper bound"))
-        //                {
-        //                    upperBound = int.Parse(input!);
-        //                    break;
-        //                }
-        //            }
-        //            catch (Exception ex2)
-        //            {
-        //                Console.WriteLine($"Error: {ex2.Message}");
-        //                Console.WriteLine();
-        //            }
-        //        } while (true);
-        //    }
-        //} while (!exit);
+                exit = false;
+            }
 
-        static string ValidateInput(string? input, string bound)
+        } while (!exit);
+
+        string ProcessUserInput(string bound, bool newUpperBound = false)
+        {
+            try
+            {
+                string message = !newUpperBound ? $"Enter the {bound} bound: " : "Enter a new upper bound (or type 'exit' to exit): ";
+
+                Console.Write(message);
+
+                string? input = Console.ReadLine();
+
+                if (input!.Contains("exit", StringComparison.OrdinalIgnoreCase))
+                {
+                    return "exit";
+                }
+                else if (ValidateInput(input))
+                {
+                    bounds[bound] = int.Parse(input!);
+                    Console.WriteLine();
+                }
+            }
+            catch (ArgumentNullException)
+            {
+                Console.WriteLine($"ERROR => {bound} bound can't be empty.\n");
+                return "false";
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine($"ERROR => {bound} bound must be an integer.\n");
+                return "false";
+            }
+
+            return "true";
+        }
+
+        static bool ValidateInput(string? input)
         {
             if (string.IsNullOrEmpty(input))
             {
-                return $"Invalid input: {bound} bound can't be empty.\n";
+                throw new ArgumentNullException();
             }
 
             if (!int.TryParse(input, out int output))
             {
-                return $"Invalid input: {bound} bound must be an integer.\n";
+                throw new FormatException();
             }
 
-            return $"Valid input.";
+            return true;
         }
 
         static decimal AverageOfEvenNumbers(int lowerBound, int upperBound)
         {
             if (lowerBound >= upperBound)
             {
-                throw new ArgumentOutOfRangeException("upper bound must be greater than lower bound.");
+                throw new ArgumentOutOfRangeException();
             }
 
             int sum = 0;
@@ -2723,6 +2728,247 @@ public class Program
             average = (decimal)sum / count;
 
             return average;
+        }
+    }
+
+    public static void ExceptionMachine2()
+    {
+        string[][] userEnteredValues =
+        [
+            ["1", "2", "3"],
+            ["1", "two", "3"],
+            ["0", "1", "2"]
+        ];
+
+        try
+        {
+            Workflow1(userEnteredValues);
+            Console.WriteLine("'Workflow1' completed successfully.");
+        }
+        catch (DivideByZeroException ex)
+        {
+            Console.WriteLine("An error occurred during 'Workflow1'.");
+            Console.WriteLine(ex.Message);
+        }
+
+        static void Workflow1(string[][] userEnteredValues)
+        {
+            foreach (string[] userEntries in userEnteredValues)
+            {
+                try
+                {
+                    Process1(userEntries);
+                    Console.WriteLine("'Process1' completed successfully.");
+                    Console.WriteLine();
+                }
+                catch (FormatException ex)
+                {
+                    Console.WriteLine("'Process1' encountered an issue, process aborted.");
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine();
+                }
+            }
+        }
+
+        static void Process1(string[] userEntries)
+        {
+            int valueEntered;
+
+            foreach (string userValue in userEntries)
+            {
+                bool integerFormat = int.TryParse(userValue, out valueEntered);
+
+                if (integerFormat)
+                {
+                    if (valueEntered != 0)
+                    {
+                        checked
+                        {
+                            int calculatedValue = 4 / valueEntered;
+                        }
+                    }
+                    else
+                    {
+                        throw new DivideByZeroException("Invalid data. User input values must be non-zero values.");
+                    }
+                }
+                else
+                {
+                    throw new FormatException("Invalid data. User input values must be valid integers.");
+                }
+            }
+        }
+    }
+
+    public static void TransactionManager()
+    {
+        string? readResult = null;
+        bool useTestData = false;
+
+        Console.Clear();
+
+        int[] cashTill = [0, 0, 0, 0];
+        int registerCheckTillTotal = 0;
+
+        // registerDailyStartingCash: $1 x 50, $5 x 20, $10 x 10, $20 x 5 => ($350 total)
+        int[,] registerDailyStartingCash = new int[,] { { 1, 50 }, { 5, 20 }, { 10, 10 }, { 20, 5 } };
+
+        int[] testData = [6, 10, 17, 20, 31, 36, 40, 41];
+        int testCounter = 0;
+
+        LoadTillEachMorning(registerDailyStartingCash, cashTill);
+
+        for (int i = 0; i < registerDailyStartingCash.GetLength(0); i++)
+        {
+            registerCheckTillTotal += registerDailyStartingCash[i, 0] * registerDailyStartingCash[i, 1];
+        }
+
+        // display the number of bills of each denomination currently in the till
+        LogTillStatus(cashTill);
+
+        // display a message showing the amount of cash in the till
+        Console.WriteLine(TillAmountSummary(cashTill));
+
+        // display the expected registerDailyStartingCash total
+        Console.WriteLine($"Expected till value: {registerCheckTillTotal}\n\r");
+        Console.WriteLine();
+
+        var valueGenerator = new Random((int)DateTime.Now.Ticks);
+
+        int transactions = 100;
+
+        if (useTestData)
+        {
+            transactions = testData.Length;
+        }
+
+        while (transactions > 0)
+        {
+            transactions -= 1;
+            int itemCost = valueGenerator.Next(2, 50);
+
+            if (useTestData)
+            {
+                itemCost = testData[testCounter];
+                testCounter += 1;
+            }
+
+            int paymentOnes = itemCost % 2;                 // value is 1 when itemCost is odd, value is 0 when itemCost is even
+            int paymentFives = (itemCost % 10 > 7) ? 1 : 0; // value is 1 when itemCost ends with 8 or 9, otherwise value is 0
+            int paymentTens = (itemCost % 20 > 13) ? 1 : 0; // value is 1 when 13 < itemCost < 20 OR 33 < itemCost < 40, otherwise value is 0
+            int paymentTwenties = (itemCost < 20) ? 1 : 2;  // value is 1 when itemCost < 20, otherwise value is 2
+            int amountPaid = paymentTwenties * 20 + paymentTens * 10 + paymentFives * 5 + paymentOnes;
+            int changeNeeded = amountPaid - itemCost;
+
+            // display messages describing the current transaction
+            Console.WriteLine($"Customer is making a ${itemCost} purchase");
+            Console.WriteLine($"\t Using {paymentTwenties} twenty dollar bills");
+            Console.WriteLine($"\t Using {paymentTens} ten dollar bills");
+            Console.WriteLine($"\t Using {paymentFives} five dollar bills");
+            Console.WriteLine($"\t Using {paymentOnes} one dollar bills");
+            Console.WriteLine($"\t\tTotal paid: ${amountPaid} - ${itemCost} = ${changeNeeded}");
+
+            try
+            {
+                // MakeChange manages the transaction and updates the till 
+                MakeChange(itemCost, cashTill, paymentTwenties, paymentTens, paymentFives, paymentOnes, amountPaid, changeNeeded);
+
+                Console.WriteLine($"Transaction successfully completed.");
+                registerCheckTillTotal += itemCost;
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine($"ERROR => {ex.Message}");
+            }
+
+            Console.WriteLine(TillAmountSummary(cashTill));
+            Console.WriteLine($"Expected till value: {registerCheckTillTotal}\n\r");
+            Console.WriteLine();
+        }
+
+        Console.WriteLine("Press the Enter key to exit");
+        do
+        {
+            readResult = Console.ReadLine();
+
+        } while (readResult == null);
+
+
+        static void LoadTillEachMorning(int[,] registerDailyStartingCash, int[] cashTill)
+        {
+            cashTill[0] = registerDailyStartingCash[0, 1];
+            cashTill[1] = registerDailyStartingCash[1, 1];
+            cashTill[2] = registerDailyStartingCash[2, 1];
+            cashTill[3] = registerDailyStartingCash[3, 1];
+        }
+
+
+        static void MakeChange(int cost, int[] cashTill, int twenties, int tens = 0, int fives = 0, int ones = 0, int amountPaid = 0, int changeNeeded = 0)
+        {
+            int tempTwenties = cashTill[3] + twenties;
+            int tempTens = cashTill[2] + tens;
+            int tempFives = cashTill[1] + fives;
+            int tempOnes = cashTill[0] + ones;
+
+            if (changeNeeded < 0)
+            {
+                throw new InvalidOperationException("Not enough money provided.");
+            }
+
+            Console.WriteLine("Cashier Returns:");
+
+            while ((changeNeeded > 19) && (tempTwenties > 0))
+            {
+                tempTwenties--;
+                changeNeeded -= 20;
+                Console.WriteLine("\t A twenty");
+            }
+
+            while ((changeNeeded > 9) && (tempTens > 0))
+            {
+                tempTens--;
+                changeNeeded -= 10;
+                Console.WriteLine("\t A ten");
+            }
+
+            while ((changeNeeded > 4) && (tempFives > 0))
+            {
+                tempFives--;
+                changeNeeded -= 5;
+                Console.WriteLine("\t A five");
+            }
+
+            while ((changeNeeded > 0) && (tempOnes > 0))
+            {
+                tempOnes--;
+                changeNeeded--;
+                Console.WriteLine("\t A one");
+            }
+
+            if (changeNeeded > 0)
+            {
+                throw new InvalidOperationException("The till is unable to make change for the cash provided.");
+            }
+
+            cashTill[3] = tempTwenties;
+            cashTill[2] = tempTens;
+            cashTill[1] = tempFives;
+            cashTill[0] = tempOnes;
+        }
+
+        static void LogTillStatus(int[] cashTill)
+        {
+            Console.WriteLine("The till currently has:");
+            Console.WriteLine($"{cashTill[3] * 20} in twenties");
+            Console.WriteLine($"{cashTill[2] * 10} in tens");
+            Console.WriteLine($"{cashTill[1] * 5} in fives");
+            Console.WriteLine($"{cashTill[0]} in ones");
+            Console.WriteLine();
+        }
+
+        static string TillAmountSummary(int[] cashTill)
+        {
+            return $"The till has {cashTill[3] * 20 + cashTill[2] * 10 + cashTill[1] * 5 + cashTill[0]} dollars: {cashTill[3]} x $20 | {cashTill[2]} x $10 | {cashTill[1]} x $10 | {cashTill[0]} x $1";
         }
     }
 
@@ -2821,6 +3067,8 @@ public class Program
         //SeparateExceptions();
         //SpecificExceptions();
         //ThrowExceptions();
-        ExceptionMachine();
+        //ExceptionMachine();
+        //ExceptionMachine2();
+        TransactionManager();
     }
 }
