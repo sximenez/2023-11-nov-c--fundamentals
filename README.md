@@ -152,6 +152,7 @@ Resources: [C# documentation](https://learn.microsoft.com/en-us/dotnet/csharp/to
       - [Challenge 29: throw exceptions](#challenge-29-throw-exceptions)
       - [Challenge 30: create and throw exceptions](#challenge-30-create-and-throw-exceptions)
       - [Project 11: transaction manager](#project-11-transaction-manager)
+  - [Conclusion](#conclusion)
 
 ## MODULE 1: BASIC C# CODE
 
@@ -5682,3 +5683,13 @@ public static void TransactionManager()
     }
 }
 ```
+
+## Conclusion
+
+Through the completion of this certification work, I've been able to:
+
+| Description | Skill |
+| --- | --- |
+| Structure and solidify previous C# knowledge acquired in a non-linear manner. | Consolidation |
+| Acquire new insights on more advanced key notions such as compiling, runtime, and data types. | Computer science |
+| Practice with hands-on exercises and projects. | Application |
