@@ -2,7 +2,9 @@
 
 Source: [Microsoft Learn](https://learn.microsoft.com/en-gb/training/)
 
-Resources: [C# documentation](https://learn.microsoft.com/en-us/dotnet/csharp/tour-of-csharp/) | [.NET documentation](https://learn.microsoft.com/en-us/dotnet/fundamentals/) 
+Resources: [C# documentation](https://learn.microsoft.com/en-us/dotnet/csharp/tour-of-csharp/) | [.NET documentation](https://learn.microsoft.com/en-us/dotnet/fundamentals/)
+
+Certification: [freeCodeCamp](https://www.freecodecamp.org/certification/s_ximenez/foundational-c-sharp-with-microsoft)
 
 ## Table of contents
 
